@@ -8,7 +8,7 @@ public class LoginResponse {
     @Expose
     private String userId;
 
-    @SerializedName("password")
+    @SerializedName("token")
     @Expose
     private String token="";
 

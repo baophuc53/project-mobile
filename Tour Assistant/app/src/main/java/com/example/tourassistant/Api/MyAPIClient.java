@@ -24,11 +24,12 @@ public class MyAPIClient {
 
     private String accessToken;
 
-    private MyAPIClient(final String Header) {
+    private MyAPIClient() {
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                    request.addHeader("Authorization", Header);
+                if(!accessToken.isEmpty())
+                    request.addHeader("Authorization", accessToken);
             }
         };
         adapter = new RestAdapter.Builder()
@@ -41,15 +42,9 @@ public class MyAPIClient {
         return adapter;
     }
 
-    public static MyAPIClient getInstance(String Header) {
-        if (instance == null)
-            instance = new MyAPIClient(Header);
-        return instance;
-    }
-
     public static MyAPIClient getInstance() {
         if (instance == null)
-            instance = new MyAPIClient(null);
+            instance = new MyAPIClient();
         return instance;
     }
 }

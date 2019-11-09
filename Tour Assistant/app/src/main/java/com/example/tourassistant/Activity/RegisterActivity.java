@@ -1,5 +1,6 @@
 package com.example.tourassistant.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -65,7 +66,10 @@ public class RegisterActivity extends AppCompatActivity {
         userService.register(request, new Callback<RegisterResponse>() {
             @Override
             public void success(RegisterResponse registerResponse, Response response) {
-                Log.i("response", response.getBody().toString());
+                Toast.makeText(RegisterActivity.this, "Đăng ký thành công!!", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
@@ -76,10 +80,6 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "Email hoặc số điện thoại đã tồn tại hoặc sai định dạng", Toast.LENGTH_LONG).show();
                         else if(error.getResponse().getStatus() == 503)
                         Toast.makeText(RegisterActivity.this, "Dịch vụ tạm thời không hoạt đông", Toast.LENGTH_LONG).show();
-                        break;
-                    case NETWORK:
-                    case UNEXPECTED:
-                        Toast.makeText(RegisterActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         Toast.makeText(RegisterActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();

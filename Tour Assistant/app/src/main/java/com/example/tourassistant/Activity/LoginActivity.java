@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +48,13 @@ public class LoginActivity extends AppCompatActivity {
         userService.login(loginRequest, new Callback<LoginResponse>() {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
-
+                SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putString("token",loginResponse.getToken());
+                editor.commit();
+                Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override
@@ -58,10 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Missing email/phone or password", Toast.LENGTH_LONG).show();
                         else if (error.getResponse().getStatus() == 404)
                             Toast.makeText(LoginActivity.this, "Wrong email/phone or password", Toast.LENGTH_LONG).show();
-                        break;
-                    case NETWORK:
-                    case UNEXPECTED:
-                        Toast.makeText(LoginActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         Toast.makeText(LoginActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();

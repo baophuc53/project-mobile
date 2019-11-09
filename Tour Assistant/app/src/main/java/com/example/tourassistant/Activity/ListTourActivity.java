@@ -1,26 +1,19 @@
-package com.example.tourassistant;
+package com.example.tourassistant.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
-<<<<<<< Updated upstream:Tour Assistant/app/src/main/java/com/example/tourassistant/MainActivity.java
-import android.view.Gravity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
-=======
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
->>>>>>> Stashed changes:Tour Assistant/app/src/main/java/com/example/tourassistant/Activity/ListTourActivity.java
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
 import com.example.tourassistant.Object.Tour;
@@ -30,7 +23,6 @@ import com.example.tourassistant.model.ListTourResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -38,7 +30,7 @@ import retrofit.client.Response;
 
 import static com.example.tourassistant.Activity.Constants.defaultToken;
 
-public class MainActivity extends AppCompatActivity {
+public class ListTourActivity extends AppCompatActivity {
 
     Tour tour;
     ArrayList<Tour> toursList = new ArrayList<Tour>();
@@ -87,18 +79,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Show() {
-<<<<<<< Updated upstream:Tour Assistant/app/src/main/java/com/example/tourassistant/MainActivity.java
-        tour = new Tour("HCM - Nha Trang",  10, 15, 0, 1, 2, 3, false, 10, 5,10000, 50000, "https://cdnimg.vietnamplus.vn/uploaded/fsmsr/2018_12_03/31.jpg");
-        toursList.add(tour);
-        tourAdapters = new TourAdapters(MainActivity.this, R.layout.listview_tour_layout, toursList);
-        lvTours.setAdapter(tourAdapters);
-=======
         tour = new Tour();
         ListTourRequest request=new ListTourRequest();
         request.setPageNum(1);
         request.setRowPerPage(183);
         UserService userService;
-        userService = MyAPIClient.getInstance(defaultToken).getAdapter().create(UserService.class);
+
+        SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
+        String Token =sharedPreferences.getString("token","");
+
+
+        MyAPIClient.getInstance().setAccessToken(Token);
+        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         userService.getListTour(request.getRowPerPage(),
                 request.getPageNum(),
                 request.getOrderBy(),
@@ -127,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
->>>>>>> Stashed changes:Tour Assistant/app/src/main/java/com/example/tourassistant/Activity/ListTourActivity.java
     }
 
     private void addControls() {
