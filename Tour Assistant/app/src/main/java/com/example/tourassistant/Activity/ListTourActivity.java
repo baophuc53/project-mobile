@@ -21,7 +21,7 @@ public class ListTourActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list_tour);
         //title vao giua
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
@@ -33,7 +33,7 @@ public class ListTourActivity extends AppCompatActivity {
     private void Show() {
         tour = new Tour("HCM - Nha Trang",  10, 15, 0, 1, 2, 3, false, 10, 5,10000, 50000, "https://cdnimg.vietnamplus.vn/uploaded/fsmsr/2018_12_03/31.jpg");
         toursList.add(tour);
-        tourAdapters = new TourAdapters(ListTourActivity.this, R.layout.listview_tour_layout, toursList);
+        tourAdapters = new TourAdapters(ListTourActivity.this, R.layout.items_list_tour_layout, toursList);
         lvTours.setAdapter(tourAdapters);
     }
 

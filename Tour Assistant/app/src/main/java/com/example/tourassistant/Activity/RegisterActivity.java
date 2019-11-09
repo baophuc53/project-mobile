@@ -29,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_activity);
+        setContentView(R.layout.activity_register);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         UserService userService;
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
-        userService.login(request, new Callback<RegisterResponse>() {
+        userService.register(request, new Callback<RegisterResponse>() {
             @Override
             public void success(RegisterResponse registerResponse, Response response) {
                 Log.i("response", response.getBody().toString());
