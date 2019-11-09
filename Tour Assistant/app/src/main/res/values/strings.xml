@@ -2,4 +2,6 @@
     <string name="app_name">Tour Assistant</string>
     <string name="search_tour">Search</string>
     <string name="add">+</string>
+    <string name="confirm_password">CONFIRM PASSWORD</string>
+    <string name="sign_up">SIGN UP</string>
 </resources>
