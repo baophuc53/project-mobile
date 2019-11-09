@@ -23,6 +23,7 @@ import com.example.tourassistant.Object.Tour;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TourAdapters extends ArrayAdapter<Tour> {
 
@@ -73,11 +74,24 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
         Tour tour = getItem(position);
         new DownloadImageTask(avtTour).execute(tour.getAvatar());
+
+        //
         nameTour.setText(tour.getName());
-        timeTour.setText(tour.getStartDate().toString().concat(" - ").concat(tour.getEndDate().toString()));
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTimeInMillis(tour.getStartDate());
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTimeInMillis(tour.getEndDate());
+        timeTour.setText(String.valueOf(startDate.get(Calendar.DAY_OF_MONTH)).concat("/")
+                .concat(String.valueOf(startDate.get(Calendar.MONTH))).concat("/")
+                .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
+                .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
+                .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
+                .concat(String.valueOf(endDate.get(Calendar.YEAR))));
+
+
         numPeopletour.setText(tour.getAdults().toString().concat(" adults").concat(" - ")
         .concat(tour.getChilds().toString().concat(" childrens")));
-        priceTour.setText(tour.getMinCost().toString().concat(" - ").concat(tour.getMaxCost().toString()));
+        priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
 
         return customView;
     }

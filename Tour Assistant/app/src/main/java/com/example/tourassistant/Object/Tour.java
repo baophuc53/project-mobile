@@ -16,16 +16,16 @@ public class Tour {
     private String name;
     @SerializedName("minCost")
     @Expose
-    private String minCost;
+    private Long minCost;
     @SerializedName("maxCost")
     @Expose
-    private String maxCost;
+    private Long maxCost;
     @SerializedName("startDate")
     @Expose
-    private String startDate;
+    private Long startDate;
     @SerializedName("endDate")
     @Expose
-    private String endDate;
+    private Long endDate;
     @SerializedName("adults")
     @Expose
     private Integer adults;
@@ -63,35 +63,35 @@ public class Tour {
         this.name = name;
     }
 
-    public String getMinCost() {
+    public Long getMinCost() {
         return minCost;
     }
 
-    public void setMinCost(String minCost) {
+    public void setMinCost(Long minCost) {
         this.minCost = minCost;
     }
 
-    public String getMaxCost() {
+    public Long getMaxCost() {
         return maxCost;
     }
 
-    public void setMaxCost(String maxCost) {
+    public void setMaxCost(Long maxCost) {
         this.maxCost = maxCost;
     }
 
-    public String getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 

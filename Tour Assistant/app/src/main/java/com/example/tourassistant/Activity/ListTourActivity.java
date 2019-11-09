@@ -36,6 +36,7 @@ public class ListTourActivity extends AppCompatActivity {
     ArrayList<Tour> toursList = new ArrayList<Tour>();
     TourAdapters tourAdapters;
     ListView lvTours;
+    TextView totalTour;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +83,7 @@ public class ListTourActivity extends AppCompatActivity {
         tour = new Tour();
         ListTourRequest request=new ListTourRequest();
         request.setPageNum(1);
-        request.setRowPerPage(183);
+        request.setRowPerPage(1000);
         UserService userService;
 
         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
@@ -98,6 +99,10 @@ public class ListTourActivity extends AppCompatActivity {
                 , new Callback<ListTourResponse>() {
             @Override
             public void success(ListTourResponse listTourResponse, Response response) {
+                if (listTourResponse.getTotal() == 1)
+                    totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
+                else
+                    totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
                 tourAdapters = new TourAdapters(ListTourActivity.this,
                         R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
                 lvTours.setAdapter(tourAdapters);
@@ -123,5 +128,6 @@ public class ListTourActivity extends AppCompatActivity {
 
     private void addControls() {
         lvTours = (ListView) findViewById(R.id.listTour);
+        totalTour = (TextView) findViewById(R.id.total_tour);
     }
 }
