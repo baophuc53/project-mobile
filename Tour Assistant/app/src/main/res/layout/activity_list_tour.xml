@@ -10,7 +10,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
+        android:background="@color/list_background"
         android:orientation="vertical"
         app:layout_constraintVertical_weight="6">
 
@@ -26,8 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/rectangle">
+            android:background="@drawable/bg_rectangle">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +68,7 @@
         android:layout_height="71dp"
         android:layout_marginBottom="70dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/round_button"
+        android:background="@drawable/btn_round"
         android:fontFamily="serif-monospace"
         android:text="@string/add"
         android:textColor="@android:color/white"
