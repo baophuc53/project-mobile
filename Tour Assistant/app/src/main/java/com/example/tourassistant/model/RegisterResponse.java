@@ -1,37 +1,48 @@
 package com.example.tourassistant.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RegisterRequest {
-
-    @SerializedName("password")
-    
-    private String password;
-    @SerializedName("fullName")
-    
-    private String fullName="";
+public class RegisterResponse{
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("username")
+    @Expose
+    private String username;
+    @SerializedName("full_name")
+    @Expose
+    private String fullName;
     @SerializedName("email")
-    
+    @Expose
     private String email;
     @SerializedName("phone")
-    
+    @Expose
     private String phone;
     @SerializedName("address")
-    
-    private String address="";
+    @Expose
+    private String address;
     @SerializedName("dob")
-    
-    private String dob="";
+    @Expose
+    private String dob;
     @SerializedName("gender")
+    @Expose
+    private Integer gender;
 
-    private int gender;
-
-    public String getPassword() {
-        return password;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFullName() {
@@ -74,12 +85,11 @@ public class RegisterRequest {
         this.dob = dob;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
-
 }

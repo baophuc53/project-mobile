@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email.getText().toString())) {
             email.setError("Vui lòng điền thông tin");
             correct = false;
-        } else if (!isValidEmail(email.getText().toString())){
+        } else if (!isValidEmail(email.getText().toString())) {
             email.setError("Email không hợp lệ");
             correct = false;
         }
@@ -108,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
+
                 @Override
                 public void failure(RetrofitError error) {
                     switch (error.getKind()) {
@@ -126,15 +127,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
 
     boolean isValidEmail(String email) {
-        return email.contains("@");
-    }
+            return email.contains("@");
+        }
 
 }

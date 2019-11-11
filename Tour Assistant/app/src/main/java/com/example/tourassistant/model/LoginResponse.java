@@ -7,7 +7,6 @@ public class LoginResponse {
     @SerializedName("userId")
     @Expose
     private String userId;
-
     @SerializedName("emailVerified")
     @Expose
     private String emailVerified="";
@@ -19,6 +18,7 @@ public class LoginResponse {
     @SerializedName("token")
     @Expose
     private String token;
+
 
     public String getUserId() {
         return userId;
