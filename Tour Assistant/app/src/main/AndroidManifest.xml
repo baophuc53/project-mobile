@@ -23,7 +23,9 @@
 
         </activity>
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".ListTourActivity"></activity>
+        <activity
+            android:name=".ListTourActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>
