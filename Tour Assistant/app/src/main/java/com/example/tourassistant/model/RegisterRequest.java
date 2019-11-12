@@ -23,8 +23,8 @@ public class RegisterRequest {
     
     private String dob="";
     @SerializedName("gender")
-    
-    private String gender="";
+
+    private int gender;
 
     public String getPassword() {
         return password;
@@ -74,11 +74,11 @@ public class RegisterRequest {
         this.dob = dob;
     }
 
-    public String getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 

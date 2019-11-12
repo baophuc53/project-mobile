@@ -7,10 +7,18 @@ public class LoginResponse {
     @SerializedName("userId")
     @Expose
     private String userId;
+    @SerializedName("emailVerified")
+    @Expose
+    private String emailVerified="";
+
+    @SerializedName("phoneVerified")
+    @Expose
+    private String phoneVerified="";
 
     @SerializedName("token")
     @Expose
-    private String token="";
+    private String token;
+
 
     public String getUserId() {
         return userId;

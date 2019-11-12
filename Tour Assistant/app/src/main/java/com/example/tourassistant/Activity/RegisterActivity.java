@@ -3,6 +3,7 @@ package com.example.tourassistant.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,63 +54,82 @@ public class RegisterActivity extends AppCompatActivity {
         EditText email = findViewById(R.id.edit_register_email);
         EditText phone = findViewById(R.id.edit_register_phone);
         EditText password = findViewById(R.id.edit_register_password);
-//        name.setText("abc abc");
-//        email.setText("testtest@sad.com");
-//        phone.setText("0123956899");
-//        password.setText("aagg");
+        EditText confirm = findViewById(R.id.edit_register_confirmPass);
+        boolean correct = true;
+        if (TextUtils.isEmpty(name.getText().toString())) {
+            name.setError("Vui lòng điền thông tin");
+            correct = false;
+        }
 
-        RegisterRequest request=new RegisterRequest();
-        request.setEmail(email.getText().toString());
-        request.setFullName(name.getText().toString());
-        request.setPhone(phone.getText().toString());
-        request.setPassword(password.getText().toString());
-        UserService userService;
+        if (TextUtils.isEmpty(email.getText().toString())) {
+            email.setError("Vui lòng điền thông tin");
+            correct = false;
+        } else if (!isValidEmail(email.getText().toString())) {
+            email.setError("Email không hợp lệ");
+            correct = false;
+        }
 
-        MyAPIClient.getInstance().setAccessToken("");
-        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+        if (TextUtils.isEmpty(phone.getText().toString())) {
+            phone.setError("Vui lòng điền thông tin");
+            correct = false;
+        }
 
-        userService.register(request, new Callback<RegisterResponse>() {
-            @Override
-            public void success(RegisterResponse registerResponse, Response response) {
-                Toast.makeText(RegisterActivity.this, "Đăng ký thành công!!", Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                switch (error.getKind()) {
-                    case HTTP:
-                        if (error.getResponse().getStatus() == 400)
-                            Toast.makeText(RegisterActivity.this, "Email hoặc số điện thoại đã tồn tại hoặc sai định dạng", Toast.LENGTH_LONG).show();
-                        else if(error.getResponse().getStatus() == 503)
-                        Toast.makeText(RegisterActivity.this, "Dịch vụ tạm thời không hoạt đông", Toast.LENGTH_LONG).show();
-                        break;
-                    default:
-                        Toast.makeText(RegisterActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(password.getText().toString())) {
+            password.setError("Vui lòng điền thông tin");
+            correct = false;
+        }
+        if (!confirm.getText().toString().equals(password.getText().toString())) {
+            confirm.setError("Xác nhận mật khẩu không chính xác");
+            correct = false;
+        }
+        if (correct) {
+            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if (false) {
+            RegisterRequest request = new RegisterRequest();
+            request.setEmail(email.getText().toString());
+            request.setFullName(name.getText().toString());
+            request.setPhone(phone.getText().toString());
+            request.setPassword(password.getText().toString());
+            request.setAddress("");
+            request.setDob("1999-01-01");
+            request.setGender(1);
+            UserService userService;
+            MyAPIClient.getInstance().setAccessToken("");
+            userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+            userService.register(request, new Callback<RegisterResponse>() {
+                @Override
+                public void success(RegisterResponse registerResponse, Response response) {
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thành công!!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
-                SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putString("token",defaultToken);
-                editor.commit();
-                Intent intent=new Intent(RegisterActivity.this,ListTourActivity.class);
-                startActivity(intent);
-                finish();
-
-            }
-        });
-
+                @Override
+                public void failure(RetrofitError error) {
+                    switch (error.getKind()) {
+                        case HTTP:
+                            if (error.getResponse().getStatus() == 400)
+                                Toast.makeText(RegisterActivity.this, "Email hoặc số điện thoại đã tồn tại hoặc sai định dạng", Toast.LENGTH_LONG).show();
+                            else if (error.getResponse().getStatus() == 503)
+                                Toast.makeText(RegisterActivity.this, "Dịch vụ tạm thời không hoạt đông", Toast.LENGTH_LONG).show();
+                            break;
+                        default:
+                            Toast.makeText(RegisterActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId()==android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
 
+    boolean isValidEmail(String email) {
+            return email.contains("@");
+        }
 
 }
