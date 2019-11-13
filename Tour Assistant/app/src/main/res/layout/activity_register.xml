@@ -24,22 +24,7 @@
         android:paddingEnd="10dp"
         android:background="@drawable/bg_edittext"/>
 
-    <TextView
-        android:id="@+id/register_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
 
-        android:text="@string/email"/>
-    <EditText
-        android:id="@+id/edit_register_email"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:inputType="textEmailAddress"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:background="@drawable/bg_edittext"/>
 
     <TextView
         android:id="@+id/register_phone"
@@ -53,6 +38,21 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:inputType="phone"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@drawable/bg_edittext"/>
+    <TextView
+        android:id="@+id/register_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/email"/>
+    <EditText
+        android:id="@+id/edit_register_email"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:inputType="textEmailAddress"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:background="@drawable/bg_edittext"/>
