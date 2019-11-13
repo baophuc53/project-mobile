@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,16 @@ import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
 import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import java.util.Arrays;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -22,6 +33,7 @@ import retrofit.client.Response;
 
 public class LoginActivity extends AppCompatActivity {
     Button signinButton;
+    CallbackManager callbackManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
                 userLogin();
             }
         });
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        addEventFacebookLogin();
     }
 
     private void userLogin() {
@@ -75,8 +89,40 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void addEventFacebookLogin(){
+       callbackManager = CallbackManager.Factory.create();
+       LoginButton loginButton = (LoginButton) findViewById(R.id.login_facebook);
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                String accessToken = loginResult.getAccessToken().getToken();
+
+                // save accessToken to SharedPreference
+                Toast.makeText(LoginActivity.this, accessToken, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(LoginActivity.this, "Lỗi lol xác định", Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(LoginActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+
+            }
+            });
+    }
+
     public void Signup(View view) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
