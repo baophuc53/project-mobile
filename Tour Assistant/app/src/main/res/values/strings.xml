@@ -12,16 +12,4 @@
     <string name="email_phone">EMAIL/PHONE</string>
     <string name="tour_assistant">Tour Assistant</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="create_tour_name">Tour name</string>
-    <string name="create_tour_startDate">Start date</string>
-    <string name="create_tour_endDate">End date</string>
-    <string name="create_tour_adults">Adults</string>
-    <string name="create_tour_childrens">Children</string>
-    <string name="create_tour_minCost">Min Cost</string>
-    <string name="create_tour_maxCost">Max Cost</string>
-    <string name="create_tour_image">Choose Your Image</string>
-    <string name="create_tour_private">This is your private trip ?</string>
-    <string name="create_tour_btnCreate">Create</string>
-    <string name="facebook_app_id">2202244300075659</string>
-    <string name="fb_login_protocol_scheme">fb2202244300075659</string>
 </resources>
