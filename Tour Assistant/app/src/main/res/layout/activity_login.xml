@@ -30,7 +30,7 @@
         android:inputType="textShortMessage"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:background="@drawable/bg_edittext"/>
+        android:background="@drawable/bg_radius_edittext"/>
 
     <TextView
         android:id="@+id/login_password"
@@ -45,7 +45,7 @@
         android:inputType="textPassword"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:background="@drawable/bg_edittext"/>
+        android:background="@drawable/bg_radius_edittext"/>
 
     <Button
         android:id="@+id/SignInButton"

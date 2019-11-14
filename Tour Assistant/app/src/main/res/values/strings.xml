@@ -13,4 +13,15 @@
     <string name="tour_assistant">Tour Assistant</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="title_activity_maps">Map</string>
+    <string name="create_tour_name">Tour name</string>
+    <string name="create_tour_startDate">Start date</string>
+    <string name="create_tour_endDate">End date</string>
+    <string name="create_tour_Date_hint">Select Date</string>
+    <string name="create_tour_minCost">Min cost</string>
+    <string name="create_tour_maxCost">Max cost</string>
+    <string name="create_tour_Adults">Adults</string>
+    <string name="create_tour_Childrens">Childrens</string>
+    <string name="create_tour_image">Choose tour image</string>
+    <string name="create_tour_private">This is your private trip ?</string>
+    <string name="create_tour_Create">Create</string>
 </resources>

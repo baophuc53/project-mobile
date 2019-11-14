@@ -17,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.tourassistant.Activity.ListTourActivity;
 import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Object.Tour;
 
@@ -73,7 +76,12 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         TextView priceTour = customView.findViewById(R.id.pricetour);
 
         Tour tour = getItem(position);
-        new DownloadImageTask(avtTour).execute(tour.getAvatar());
+        Glide.with(customView)
+                .load("https://kenhhomestay.com/wp-content/uploads/2019/05/Bien-Le-Thuy-6.jpg")
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.bg_avatar))
+                .into(avtTour);
 
         //
         nameTour.setText(tour.getName());
@@ -94,31 +102,6 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
 
         return customView;
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 
 }
