@@ -6,11 +6,17 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,16 +35,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
+    //vars
     private boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         getLocationPermission();
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
+        initMap();
     }
 
     private void initMap() {
@@ -46,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
 
     private void getLocationPermission(){
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
@@ -67,41 +76,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        mLocationPermissionsGranted = false;
-        switch (requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE: {
-                if(grantResults.length > 0){
-                    for (int i = 0; i<grantResults.length; i++) {
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            mLocationPermissionsGranted = false;
-                            return;
-                        }
-                    }
-                    mLocationPermissionsGranted = true;
-                    //inittialize our map
-                    initMap();
-                }
-            }
-        }
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         Toast.makeText(MapsActivity.this, "Map is ready", Toast.LENGTH_SHORT).show();
-        Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.US);
-        try {
-            List<Address> FoundAddresses = geocoder.getFromLocationName(
-                    " Main Ave. Ohio ", 5);
-            double lat = FoundAddresses.get(0).getLatitude();
-            double lng = FoundAddresses.get(0).getLongitude();
-            LatLng ohio = new LatLng(lat, lng);
-            mMap.addMarker(new MarkerOptions().position(ohio).title("ohio"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ohio, 15.0f));
-        } catch (Exception e) {
-            Log.e("Goecoder>>>", "ERROR " + e.getMessage());
-        }
+        LatLng HCM = new LatLng(10.743702, 106.676026);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HCM, 15.0f));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(point));
+                final Dialog dialog = new Dialog(MapsActivity.this);
+                dialog.setContentView(R.layout.layout_stop_point);
+                dialog.setCancelable(false);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Button create = dialog.findViewById(R.id.StopPointBtn);
+                ImageButton cancel = dialog.findViewById(R.id.cancel_dialog);
+
+                create.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 }
