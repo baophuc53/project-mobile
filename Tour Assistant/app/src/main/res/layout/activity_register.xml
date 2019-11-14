@@ -28,7 +28,7 @@
                 android:inputType="textShortMessage"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/bg_edittext"/>
+                android:background="@drawable/bg_radius_edittext"/>
 
             <TextView
                 android:id="@+id/register_email"
@@ -45,7 +45,7 @@
                 android:inputType="textEmailAddress"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/bg_edittext"/>
+                android:background="@drawable/bg_radius_edittext"/>
 
             <TextView
                 android:id="@+id/register_phone"
@@ -61,7 +61,7 @@
                 android:inputType="phone"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/bg_edittext"/>
+                android:background="@drawable/bg_radius_edittext"/>
 
             <TextView
                 android:id="@+id/register_password"
@@ -77,7 +77,7 @@
                 android:inputType="textPassword"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/bg_edittext"/>
+                android:background="@drawable/bg_radius_edittext"/>
 
             <TextView
                 android:id="@+id/register_confirmPass"
@@ -92,7 +92,7 @@
                 android:layout_height="45dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/bg_edittext"
+                android:background="@drawable/bg_radius_edittext"
                 android:inputType="textPassword" />
 
             <Button
