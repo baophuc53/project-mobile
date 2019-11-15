@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         loginRequest.setEmailPhone(emailPhone.getText().toString());
         loginRequest.setPassword(password.getText().toString());
         UserService userService;
-        MyAPIClient.getInstance().setAccessToken("");
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         userService.login(loginRequest, new Callback<LoginResponse>() {
             @Override

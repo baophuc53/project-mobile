@@ -1,7 +1,6 @@
 package com.example.tourassistant.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,8 +23,6 @@ import com.example.tourassistant.model.RegisterResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import static com.example.tourassistant.Activity.Constants.defaultToken;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -64,8 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
         request.setPhone(phone.getText().toString());
         request.setPassword(password.getText().toString());
         UserService userService;
-
-        MyAPIClient.getInstance().setAccessToken("");
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
 
         userService.register(request, new Callback<RegisterResponse>() {
@@ -89,14 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
                     default:
                         Toast.makeText(RegisterActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                 }
-
-                SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putString("token",defaultToken);
-                editor.commit();
-                Intent intent=new Intent(RegisterActivity.this,ListTourActivity.class);
-                startActivity(intent);
-                finish();
 
             }
         });
