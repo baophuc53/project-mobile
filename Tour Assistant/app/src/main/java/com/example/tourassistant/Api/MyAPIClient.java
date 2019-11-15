@@ -22,7 +22,7 @@ public class MyAPIClient {
         this.accessToken = accessToken;
     }
 
-    private String accessToken;
+    private String accessToken = "";
 
     private MyAPIClient() {
         RequestInterceptor requestInterceptor = new RequestInterceptor() {

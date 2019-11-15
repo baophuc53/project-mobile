@@ -2,10 +2,14 @@ package com.example.tourassistant.Activity;
 
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +40,9 @@ public class ListTourActivity extends AppCompatActivity {
     ArrayList<Tour> toursList = new ArrayList<Tour>();
     TourAdapters tourAdapters;
     ListView lvTours;
+    TextView totalTour;
+    Button addTourbtn;
+    SearchView search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +55,24 @@ public class ListTourActivity extends AppCompatActivity {
         addControls();
         Show();
         addActionBottomNavigationView();
+        addEventSearch();
 
+    }
+
+    private void addEventSearch() {
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String text = newText;
+                tourAdapters.filterTag(text);
+                return false;
+            }
+        });
     }
 
     private void addActionBottomNavigationView() {
@@ -82,7 +106,7 @@ public class ListTourActivity extends AppCompatActivity {
         tour = new Tour();
         ListTourRequest request=new ListTourRequest();
         request.setPageNum(1);
-        request.setRowPerPage(183);
+        request.setRowPerPage(10000);
         UserService userService;
 
         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
@@ -98,6 +122,10 @@ public class ListTourActivity extends AppCompatActivity {
                 , new Callback<ListTourResponse>() {
             @Override
             public void success(ListTourResponse listTourResponse, Response response) {
+                if (listTourResponse.getTotal() == 1)
+                    totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
+                else
+                    totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
                 tourAdapters = new TourAdapters(ListTourActivity.this,
                         R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
                 lvTours.setAdapter(tourAdapters);
@@ -119,9 +147,23 @@ public class ListTourActivity extends AppCompatActivity {
                 }
             }
         });
+        addTourbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenCreateTourActivity();
+            }
+        });
+    }
+
+    private void OpenCreateTourActivity() {
+        Intent intent = new Intent(ListTourActivity.this, CreateTourActivity.class);
+        startActivity(intent);
     }
 
     private void addControls() {
         lvTours = (ListView) findViewById(R.id.listTour);
+        totalTour = (TextView) findViewById(R.id.total_tour);
+        addTourbtn = (Button) findViewById(R.id.button_add_tour);
+        search = (SearchView) findViewById(R.id.search_tour);
     }
 }

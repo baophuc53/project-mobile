@@ -6,4 +6,6 @@
     <color name="colorAccent">#9E9E9E</color>
     <color name="colorBorder">#9E9E9E</color>
     <color name="background">@null</color>
+    <color name="list_background">#DDDDDD</color>
+
 </resources>

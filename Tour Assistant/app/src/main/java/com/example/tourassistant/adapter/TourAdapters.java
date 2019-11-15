@@ -17,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.tourassistant.Activity.ListTourActivity;
 import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Object.Tour;
 
@@ -24,6 +27,7 @@ import com.example.tourassistant.Object.Tour;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TourAdapters extends ArrayAdapter<Tour> {
 
@@ -43,7 +47,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
     @Override
     public int getCount(){
-        return tours.size();
+        return toursFilter.size();
     }
 
     @Override
@@ -66,6 +70,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         LayoutInflater inflater = this.context.getLayoutInflater();
         View customView = inflater.inflate(this.resource, null);
 
+
         ImageView avtTour = customView.findViewById(R.id.avtTour);
         TextView nameTour = customView.findViewById(R.id.nameTour);
         TextView timeTour = customView.findViewById(R.id.timeTour);
@@ -73,51 +78,44 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         TextView priceTour = customView.findViewById(R.id.pricetour);
 
         Tour tour = getItem(position);
-        new DownloadImageTask(avtTour).execute(tour.getAvatar());
-        nameTour.setText(tour.getName());
+        Glide.with(customView)
+                .load(tour.getAvatar())
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.bg_avatar))
+                .into(avtTour);
 
+        //
+        nameTour.setText(tour.getName());
         Calendar startDate = Calendar.getInstance();
         startDate.setTimeInMillis(tour.getStartDate());
         Calendar endDate = Calendar.getInstance();
         endDate.setTimeInMillis(tour.getEndDate());
         timeTour.setText(String.valueOf(startDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-                .concat(String.valueOf(startDate.get(Calendar.MONTH + 1))).concat("/")
+                .concat(String.valueOf(startDate.get(Calendar.MONTH))).concat("/")
                 .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
                 .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
-                .concat(String.valueOf(endDate.get(Calendar.MONTH + 1))).concat("/")
+                .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
                 .concat(String.valueOf(endDate.get(Calendar.YEAR))));
 
 
         numPeopletour.setText(tour.getAdults().toString().concat(" adults").concat(" - ")
         .concat(tour.getChilds().toString().concat(" childrens")));
-        priceTour.setText(tour.getMinCost().toString().concat(" - ").concat(tour.getMaxCost().toString()));
+        priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
 
         return customView;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+    public void filterTag(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        // if (notesFilter.size() != 0)
+        toursFilter.clear();
+            for (Tour no : tours) {
+                if (no.getName().toLowerCase(Locale.getDefault()).contains(charText)
+                && !no.getName().isEmpty()) {
+                    toursFilter.add(no);
+                }
             }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+        notifyDataSetChanged();
     }
-
 }
