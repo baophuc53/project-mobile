@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:minWidth="350dp"
+    android:minWidth="320dp"
     android:minHeight="500dp"
     android:background="@drawable/bg_stop_point_dialog">
     <LinearLayout
@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                     android:inputType="textShortMessage"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:background="@drawable/bg_edittext"/>
+                    android:background="@drawable/bg_radius_edittext"/>
 
                 <TextView
                     android:id="@+id/service_type"
@@ -74,7 +74,99 @@
                     android:layout_height="45dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:background="@drawable/bg_edittext"/>
+                    android:background="@drawable/bg_radius_edittext"/>
+
+                <TextView
+                    android:id="@+id/arrive_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Arrive at"/>
+                <LinearLayout
+                    android:id="@+id/edit_arrive_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edit_arrive_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:hint="Time"/>
+                    <EditText
+                        android:id="@+id/edit_arrive_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="2"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:hint="@string/create_tour_Date_hint"/>
+
+                    <ImageView
+                        android:id="@+id/arrive_at_img"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/ic_icons8_calendar" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/leave_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Leave at"/>
+                <LinearLayout
+                    android:id="@+id/edit_leave_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edit_leave_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:hint="Time"/>
+                    <EditText
+                        android:id="@+id/edit_leave_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="2"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:hint="@string/create_tour_Date_hint"/>
+
+                    <ImageView
+                        android:id="@+id/leave_at_img"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/ic_icons8_calendar" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/address"
@@ -90,7 +182,7 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:inputType="textShortMessage"
-                    android:background="@drawable/bg_edittext"/>
+                    android:background="@drawable/bg_radius_edittext"/>
 
                 <TextView
                     android:id="@+id/province"
@@ -106,7 +198,8 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:inputType="textShortMessage"
-                    android:background="@drawable/bg_edittext"/>
+                    android:background="@drawable/bg_radius_edittext"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,8 +224,9 @@
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:inputType="number"
-                            android:background="@drawable/bg_edittext" />
+                            android:background="@drawable/bg_radius_edittext" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,7 +247,7 @@
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:inputType="number"
-                            android:background="@drawable/bg_edittext"/>
+                            android:background="@drawable/bg_radius_edittext"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -162,7 +256,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Create"
+                    android:text="Add"
                     android:textColor="#FFFFFF"
                     android:background="@drawable/bg_button"/>
             </LinearLayout>

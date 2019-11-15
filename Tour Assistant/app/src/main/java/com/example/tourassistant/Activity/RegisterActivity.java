@@ -49,6 +49,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void userRegister() {
         EditText name = findViewById(R.id.edit_register_name);
         EditText email = findViewById(R.id.edit_register_email);

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "508707946697",
+    "firebase_url": "https://nth-skyline-258914.firebaseio.com",
+    "project_id": "nth-skyline-258914",
+    "storage_bucket": "nth-skyline-258914.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508707946697:android:4d573f7aa992f860c24d18",
+        "android_client_info": {
+          "package_name": "com.example.tourassistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508707946697-7m1139oh3cvtt1df4chdg8vut9vnt8d7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tourassistant",
+            "certificate_hash": "748069e2c32c78bcceb3d3a7627f542889846646"
+          }
+        },
+        {
+          "client_id": "508707946697-qb8thb9mq8cm4kll30b45rh24hmtk1om.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRAgSTEbK_HEPaaX30CQmJTXzc7Vr9adU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508707946697-qb8thb9mq8cm4kll30b45rh24hmtk1om.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
