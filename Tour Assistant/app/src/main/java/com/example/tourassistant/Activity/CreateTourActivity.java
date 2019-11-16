@@ -45,6 +45,7 @@ import java.util.Locale;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class CreateTourActivity extends AppCompatActivity {
 
@@ -280,7 +281,7 @@ public class CreateTourActivity extends AppCompatActivity {
                                UpdateAvtRequest updateAvtRequest=new UpdateAvtRequest();
                                updateAvtRequest.setFile(f);
                                updateAvtRequest.setTourId(createTourResponse.getId().toString());
-                               userService.updateAvatarTour(updateAvtRequest
+                               userService.updateAvatarTour(new TypedFile("image/*",updateAvtRequest.getFile()),updateAvtRequest.getTourId()
                                , new Callback<UpdateAvtResponse>(){
                                    @Override
                                    public void success(UpdateAvtResponse msg, Response response) {

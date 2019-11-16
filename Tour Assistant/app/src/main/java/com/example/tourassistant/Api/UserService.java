@@ -17,8 +17,11 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.GET;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
 import retrofit.http.Query;
+import retrofit.mime.TypedFile;
 
 public interface UserService {
     @POST("/user/register/")
@@ -39,7 +42,8 @@ public interface UserService {
     void createTour(@Body CreateTourRequest createTourRequest,
                     Callback<CreateTourResponse> callback);
 
+    @Multipart
     @POST("/tour/update/avatar-for-tour")
-    void updateAvatarTour(@Body UpdateAvtRequest updateAvtRequest,
+    void updateAvatarTour(@Part("file") TypedFile file, @Part("tourId") String id,
                           Callback<UpdateAvtResponse> callback);
 }
