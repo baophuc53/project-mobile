@@ -23,7 +23,6 @@ public class RegisterRequest {
     
     private String dob="";
     @SerializedName("gender")
-
     private int gender;
 
     public String getPassword() {

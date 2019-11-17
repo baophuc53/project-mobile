@@ -19,7 +19,6 @@ public class LoginResponse {
     @Expose
     private String token;
 
-
     public String getUserId() {
         return userId;
     }

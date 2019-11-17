@@ -1,16 +1,10 @@
-package com.example.tourassistant.Object;
+package com.example.tourassistant.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Tour {
+public class CreateTourRequest {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("status")
-    @Expose
-    private Integer status;
     @SerializedName("name")
     @Expose
     private String name;
@@ -26,6 +20,12 @@ public class Tour {
     @SerializedName("endDate")
     @Expose
     private Long endDate;
+    @SerializedName("adults")
+    @Expose
+    private Long adults;
+    @SerializedName("childs")
+    @Expose
+    private Long childs;
     @SerializedName("sourceLat")
     @Expose
     private Long sourceLat;
@@ -38,34 +38,9 @@ public class Tour {
     @SerializedName("desLong")
     @Expose
     private Long desLong;
-    @SerializedName("adults")
-    @Expose
-    private Long adults;
-    @SerializedName("childs")
-    @Expose
-    private Long childs;
     @SerializedName("isPrivate")
     @Expose
-    public Boolean isPrivate=false;
-    @SerializedName("avatar")
-    @Expose
-    private String avatar;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+    private Boolean isPrivate;
 
     public String getName() {
         return name;
@@ -107,6 +82,22 @@ public class Tour {
         this.endDate = endDate;
     }
 
+    public Long getAdults() {
+        return adults;
+    }
+
+    public void setAdults(Long adults) {
+        this.adults = adults;
+    }
+
+    public Long getChilds() {
+        return childs;
+    }
+
+    public void setChilds(Long childs) {
+        this.childs = childs;
+    }
+
     public Long getSourceLat() {
         return sourceLat;
     }
@@ -139,29 +130,12 @@ public class Tour {
         this.desLong = desLong;
     }
 
-    public Long getAdults() {
-        return adults;
+    public Boolean getIsPrivate() {
+        return isPrivate;
     }
 
-    public void setAdults(Long adults) {
-        this.adults = adults;
-    }
-
-    public Long getChilds() {
-        return childs;
-    }
-
-    public void setChilds(Long childs) {
-        this.childs = childs;
-    }
-
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setIsPrivate(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
 }

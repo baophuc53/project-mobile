@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class ListTourActivity extends AppCompatActivity {
     ListView lvTours;
     TextView totalTour;
     Button addTourbtn;
+    SearchView search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,24 @@ public class ListTourActivity extends AppCompatActivity {
         addControls();
         Show();
         addActionBottomNavigationView();
+        addEventSearch();
 
+    }
+
+    private void addEventSearch() {
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String text = newText;
+                tourAdapters.filterTag(text);
+                return false;
+            }
+        });
     }
 
     private void addActionBottomNavigationView() {
@@ -87,7 +106,7 @@ public class ListTourActivity extends AppCompatActivity {
         tour = new Tour();
         ListTourRequest request=new ListTourRequest();
         request.setPageNum(1);
-        request.setRowPerPage(1000);
+        request.setRowPerPage(10000);
         UserService userService;
 
         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
@@ -145,5 +164,6 @@ public class ListTourActivity extends AppCompatActivity {
         lvTours = (ListView) findViewById(R.id.listTour);
         totalTour = (TextView) findViewById(R.id.total_tour);
         addTourbtn = (Button) findViewById(R.id.button_add_tour);
+        search = (SearchView) findViewById(R.id.search_tour);
     }
 }

@@ -7,12 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.icu.util.Freezable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
+import android.telecom.Call;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,23 +28,36 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.tourassistant.Object.Tour;
-
+import com.example.tourassistant.Api.MyAPIClient;
+import com.example.tourassistant.Api.UserService;
+import com.example.tourassistant.Object.Tour;
+import com.example.tourassistant.model.CreateTourRequest;
+import com.example.tourassistant.model.CreateTourResponse;
+import com.example.tourassistant.model.LoginResponse;
+import com.example.tourassistant.model.UpdateAvtRequest;
+import com.example.tourassistant.model.UpdateAvtResponse;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class CreateTourActivity extends AppCompatActivity {
 
     EditText tourName, startDate, endDate, minCost, maxCost, Adults, Childrens, image;
+    String pathAvt;
     CheckBox Isprivate;
     Button createTourbtn, add_image;
     LinearLayout startDateLayout, endDateLayout;
     Tour newTour = new Tour();
     int GALLERY_REQUEST_CODE = 10;
+    Calendar cEndDate = Calendar.getInstance();
+    Calendar cStartDate = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +68,11 @@ public class CreateTourActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.actionbar_textview);
         title.setText("Create Tour");
         addControll();
+        addEvent();
+    }
+
+    private void addEvent() {
+        add_event_startDate();
         add_event_isPrivate();
         add_event_startDate();
         add_event_endDate();
@@ -61,6 +82,7 @@ public class CreateTourActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CreateTourActivity.this, MapsActivity.class);
                 startActivity(intent);
+                createTour();
             }
         });
     }
@@ -97,12 +119,9 @@ public class CreateTourActivity extends AppCompatActivity {
                 Cursor cursor = getContentResolver().query(selectedIMG, filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String imgDecodableString = cursor.getString(columnIndex);
+                pathAvt = cursor.getString(columnIndex);
                 cursor.close();
-                //dưa image len server???
-
-                //ghi ten image
-                File f = new File(imgDecodableString);
+                File f = new File(pathAvt);
                 image.setText(f.getName());
             }
     }
@@ -175,10 +194,9 @@ public class CreateTourActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (Isprivate.isChecked())
-                    newTour.setIsPrivate(true);
+                    newTour.isPrivate= true;
                 else
-                    newTour.setIsPrivate(false);
-                Toast.makeText(CreateTourActivity.this, newTour.getIsPrivate().toString(), Toast.LENGTH_LONG).show();
+                    newTour.isPrivate=false;
             }
         });
     }
@@ -197,5 +215,116 @@ public class CreateTourActivity extends AppCompatActivity {
         add_image = (Button) findViewById(R.id.create_tour_btn_add_image);
         Isprivate = (CheckBox) findViewById(R.id.Is_private_btn);
         createTourbtn = (Button) findViewById(R.id.create_tour_btn);
+    }
+
+    public boolean checkTourInfo(){
+        boolean correct = true;
+        if (TextUtils.isEmpty(tourName.getText().toString())){
+            correct = false;
+            tourName.setError("Vui lòng điền tên chuyến đi");
+        }
+
+        if (TextUtils.isEmpty(startDate.getText().toString())){
+            correct = false;
+            startDate.setError("Vui lòng chọn ngày xuất phát");
+        }
+        if (TextUtils.isEmpty(endDate.getText().toString())){
+            correct = false;
+            endDate.setError("Vui lòng chọn ngày về");
+        }
+        return correct;
+    }
+
+    public void createTour(){
+        boolean correct = checkTourInfo();
+        if (correct) {
+            newTour.setName(tourName.getText().toString());
+            newTour.setSourceLong(Long.parseLong("0"));
+            newTour.setSourceLat(Long.parseLong("0"));
+            newTour.setDesLat(Long.parseLong("1"));
+            newTour.setDesLong(Long.parseLong("1"));
+            newTour.setEndDate(cEndDate.getTimeInMillis());
+            newTour.setStartDate(cStartDate.getTimeInMillis());
+            if (!TextUtils.isEmpty(Adults.getText().toString())){
+                newTour.setAdults(Long.parseLong(Adults.getText().toString()));
+            }
+            else{
+                newTour.setAdults(Long.parseLong("0"));
+            }
+            if (!TextUtils.isEmpty(Childrens.getText().toString())){
+                newTour.setChilds(Long.parseLong(Childrens.getText().toString()));
+            }
+            else{
+                newTour.setChilds(Long.parseLong("0"));
+            }
+            if (!TextUtils.isEmpty(minCost.getText().toString())){
+                newTour.setMinCost(Long.parseLong(minCost.getText().toString()));
+            }
+            else{
+                newTour.setMinCost(Long.parseLong("0"));
+            }
+            if (!TextUtils.isEmpty(maxCost.getText().toString())){
+                newTour.setMaxCost(Long.parseLong(maxCost.getText().toString()));
+            }
+            else{
+                newTour.setMaxCost(Long.parseLong("0"));
+            }
+
+            CreateTourRequest createTourRequest=new CreateTourRequest();
+            createTourRequest.setName(newTour.getName());
+            createTourRequest.setSourceLat(newTour.getSourceLat());
+            createTourRequest.setSourceLong(newTour.getSourceLong());
+            createTourRequest.setDesLat(newTour.getDesLat());
+            createTourRequest.setDesLong(newTour.getDesLong());
+            createTourRequest.setAdults(newTour.getAdults());
+            createTourRequest.setChilds(newTour.getChilds());
+            createTourRequest.setIsPrivate(newTour.isPrivate);
+            createTourRequest.setStartDate(newTour.getStartDate());
+            createTourRequest.setEndDate(newTour.getEndDate());
+            createTourRequest.setMaxCost(newTour.getMaxCost());
+            createTourRequest.setMinCost(newTour.getMinCost());
+
+            final UserService userService;
+            userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+            userService.createTour(createTourRequest,
+                    new Callback<CreateTourResponse>(){
+                        @Override
+                        public void success(CreateTourResponse createTourResponse, Response response) {
+                           if (!TextUtils.isEmpty(image.getText().toString())){
+                               //ghi ten image
+                               File f = new File(pathAvt);
+                               UpdateAvtRequest updateAvtRequest=new UpdateAvtRequest();
+                               updateAvtRequest.setFile(f);
+                               updateAvtRequest.setTourId(createTourResponse.getId().toString());
+                               userService.updateAvatarTour(new TypedFile("image/*",updateAvtRequest.getFile()),updateAvtRequest.getTourId()
+                               , new Callback<UpdateAvtResponse>(){
+                                   @Override
+                                   public void success(UpdateAvtResponse msg, Response response) {
+                                       Toast.makeText(CreateTourActivity.this, "Thành công", Toast.LENGTH_LONG).show();
+                                   }
+                                   @Override
+                                   public void failure(RetrofitError error){
+                                       Toast.makeText(CreateTourActivity.this, "Thất bại", Toast.LENGTH_LONG).show();
+
+                                   }
+                               });
+                           }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            switch (error.getKind()) {
+                                case HTTP:
+                                    if (error.getResponse().getStatus() == 400)
+                                        Toast.makeText(CreateTourActivity.this, "Giá trị sai", Toast.LENGTH_LONG).show();
+                                    else if (error.getResponse().getStatus() == 500)
+                                        Toast.makeText(CreateTourActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
+                                    break;
+                                default:
+                                    Toast.makeText(CreateTourActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        });
+        }
     }
 }

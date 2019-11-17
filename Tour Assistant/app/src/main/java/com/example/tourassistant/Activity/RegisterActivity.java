@@ -1,7 +1,6 @@
 package com.example.tourassistant.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,8 +24,6 @@ import com.example.tourassistant.model.RegisterResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import static com.example.tourassistant.Activity.Constants.defaultToken;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -119,7 +116,6 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-
                 @Override
                 public void failure(RetrofitError error) {
                     switch (error.getKind()) {
@@ -140,7 +136,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     boolean isValidEmail(String email) {
-            return email.contains("@");
-        }
-
+        return email.contains("@");
+    }
 }

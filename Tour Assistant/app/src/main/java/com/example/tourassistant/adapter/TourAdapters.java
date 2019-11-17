@@ -27,6 +27,7 @@ import com.example.tourassistant.Object.Tour;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TourAdapters extends ArrayAdapter<Tour> {
 
@@ -46,7 +47,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
     @Override
     public int getCount(){
-        return tours.size();
+        return toursFilter.size();
     }
 
     @Override
@@ -69,6 +70,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         LayoutInflater inflater = this.context.getLayoutInflater();
         View customView = inflater.inflate(this.resource, null);
 
+
         ImageView avtTour = customView.findViewById(R.id.avtTour);
         TextView nameTour = customView.findViewById(R.id.nameTour);
         TextView timeTour = customView.findViewById(R.id.timeTour);
@@ -77,7 +79,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
         Tour tour = getItem(position);
         Glide.with(customView)
-                .load("https://kenhhomestay.com/wp-content/uploads/2019/05/Bien-Le-Thuy-6.jpg")
+                .load(tour.getAvatar())
                 .apply(new RequestOptions()
                         .centerCrop()
                         .placeholder(R.drawable.bg_avatar))
@@ -104,4 +106,16 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         return customView;
     }
 
+    public void filterTag(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        // if (notesFilter.size() != 0)
+        toursFilter.clear();
+            for (Tour no : tours) {
+                if (no.getName().toLowerCase(Locale.getDefault()).contains(charText)
+                && !no.getName().isEmpty()) {
+                    toursFilter.add(no);
+                }
+            }
+        notifyDataSetChanged();
+    }
 }
