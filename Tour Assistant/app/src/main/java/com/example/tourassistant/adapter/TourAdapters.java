@@ -27,6 +27,9 @@ import com.example.tourassistant.Object.Tour;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
+
+import static java.lang.Long.parseLong;
 
 public class TourAdapters extends ArrayAdapter<Tour> {
 
@@ -46,7 +49,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
     @Override
     public int getCount(){
-        return tours.size();
+        return toursFilter.size();
     }
 
     @Override
@@ -69,6 +72,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         LayoutInflater inflater = this.context.getLayoutInflater();
         View customView = inflater.inflate(this.resource, null);
 
+
         ImageView avtTour = customView.findViewById(R.id.avtTour);
         TextView nameTour = customView.findViewById(R.id.nameTour);
         TextView timeTour = customView.findViewById(R.id.timeTour);
@@ -77,14 +81,15 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
         Tour tour = getItem(position);
         Glide.with(customView)
-                .load("https://kenhhomestay.com/wp-content/uploads/2019/05/Bien-Le-Thuy-6.jpg")
+                .load(tour.getAvatar())
                 .apply(new RequestOptions()
                         .centerCrop()
                         .placeholder(R.drawable.bg_avatar))
                 .into(avtTour);
 
         //
-        nameTour.setText(tour.getName());
+        try
+        {nameTour.setText(tour.getName());
         Calendar startDate = Calendar.getInstance();
         startDate.setTimeInMillis(tour.getStartDate());
         Calendar endDate = Calendar.getInstance();
@@ -94,14 +99,36 @@ public class TourAdapters extends ArrayAdapter<Tour> {
                 .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
                 .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
                 .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
-                .concat(String.valueOf(endDate.get(Calendar.YEAR))));
+                .concat(String.valueOf(endDate.get(Calendar.YEAR))));}
+        catch (Exception e){};
 
+        if(tour.getAdults()==null)
+            numPeopletour.setText("");
+        else
+            numPeopletour.setText(tour.getAdults().toString().concat(" adults"));
+        if(tour.getChilds()!=null)
+            numPeopletour.setText(numPeopletour.getText().toString().concat(" - ").concat(tour.getChilds().toString().concat(" childrens")));
 
-        numPeopletour.setText(tour.getAdults().toString().concat(" adults").concat(" - ")
-        .concat(tour.getChilds().toString().concat(" childrens")));
-        priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
+        if(tour.getMinCost()==null)
+            tour.setMinCost(parseLong("0"));
+
+        if(tour.getMaxCost()==null)
+            priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(" VND"));
+        else
+            priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
 
         return customView;
     }
 
+    public void filterTag(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        // if (notesFilter.size() != 0)
+        toursFilter.clear();
+            for (Tour no : tours) {
+                if (no.getName()!=null&&no.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    toursFilter.add(no);
+                }
+            }
+        notifyDataSetChanged();
+    }
 }
