@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static java.lang.Long.parseLong;
+
 public class TourAdapters extends ArrayAdapter<Tour> {
 
     Activity context;
@@ -86,7 +88,8 @@ public class TourAdapters extends ArrayAdapter<Tour> {
                 .into(avtTour);
 
         //
-        nameTour.setText(tour.getName());
+        try
+        {nameTour.setText(tour.getName());
         Calendar startDate = Calendar.getInstance();
         startDate.setTimeInMillis(tour.getStartDate());
         Calendar endDate = Calendar.getInstance();
@@ -96,12 +99,23 @@ public class TourAdapters extends ArrayAdapter<Tour> {
                 .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
                 .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
                 .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
-                .concat(String.valueOf(endDate.get(Calendar.YEAR))));
+                .concat(String.valueOf(endDate.get(Calendar.YEAR))));}
+        catch (Exception e){};
 
+        if(tour.getAdults()==null)
+            numPeopletour.setText("");
+        else
+            numPeopletour.setText(tour.getAdults().toString().concat(" adults"));
+        if(tour.getChilds()!=null)
+            numPeopletour.setText(numPeopletour.getText().toString().concat(" - ").concat(tour.getChilds().toString().concat(" childrens")));
 
-        numPeopletour.setText(tour.getAdults().toString().concat(" adults").concat(" - ")
-        .concat(tour.getChilds().toString().concat(" childrens")));
-        priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
+        if(tour.getMinCost()==null)
+            tour.setMinCost(parseLong("0"));
+
+        if(tour.getMaxCost()==null)
+            priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(" VND"));
+        else
+            priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
 
         return customView;
     }
@@ -111,8 +125,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         // if (notesFilter.size() != 0)
         toursFilter.clear();
             for (Tour no : tours) {
-                if (no.getName().toLowerCase(Locale.getDefault()).contains(charText)
-                && !no.getName().isEmpty()) {
+                if (no.getName()!=null&&no.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     toursFilter.add(no);
                 }
             }

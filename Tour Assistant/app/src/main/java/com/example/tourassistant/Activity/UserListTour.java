@@ -34,7 +34,7 @@ import retrofit.client.Response;
 
 import static com.example.tourassistant.Activity.Constants.defaultToken;
 
-public class ListTourActivity extends AppCompatActivity {
+public class UserListTour extends AppCompatActivity {
 
     Tour tour;
     ArrayList<Tour> toursList = new ArrayList<Tour>();
@@ -51,7 +51,7 @@ public class ListTourActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         TextView title = findViewById(R.id.actionbar_textview);
-        title.setText("Tour Assistant");
+        title.setText("My Tour");
         addControls();
         Show();
         addActionBottomNavigationView();
@@ -77,24 +77,24 @@ public class ListTourActivity extends AppCompatActivity {
 
     private void addActionBottomNavigationView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
+        bottomNavigationView.setSelectedItemId(R.id.action_recents);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.action_recents:
-                        Intent intent=new Intent(ListTourActivity.this,UserListTour.class);
+                    case R.id.action_list_tour:
+                        Intent intent=new Intent(UserListTour.this,ListTourActivity.class);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.action_map:
-                        Toast.makeText(ListTourActivity.this, "Map", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserListTour.this, "Map", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_notifications:
-                        Toast.makeText(ListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserListTour.this, "Notifications", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_setting:
-                        Toast.makeText(ListTourActivity.this, "Setting", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserListTour.this, "Setting", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return true;
@@ -115,38 +115,36 @@ public class ListTourActivity extends AppCompatActivity {
 
         MyAPIClient.getInstance().setAccessToken(Token);
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-        userService.getListTour(request.getRowPerPage(),
-                request.getPageNum(),
-                request.getOrderBy(),
-                request.isDesc
+        userService.getUserTour(request.getPageNum(),
+                request.getRowPerPage().toString()
                 , new Callback<ListTourResponse>() {
-            @Override
-            public void success(ListTourResponse listTourResponse, Response response) {
-                if (listTourResponse.getTotal() == 1)
-                    totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
-                else
-                    totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
-                tourAdapters = new TourAdapters(ListTourActivity.this,
-                        R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
-                lvTours.setAdapter(tourAdapters);
-            }
+                    @Override
+                    public void success(ListTourResponse listTourResponse, Response response) {
+                        if (listTourResponse.getTotal() == 1)
+                            totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
+                        else
+                            totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
+                        tourAdapters = new TourAdapters(UserListTour.this,
+                                R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
+                        lvTours.setAdapter(tourAdapters);
+                    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                switch (error.getKind()) {
-                    case HTTP:
-                        if (error.getResponse().getStatus() == 500)
-                            Toast.makeText(ListTourActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
-                        break;
-                    case NETWORK:
-                    case UNEXPECTED:
-                        Toast.makeText(ListTourActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
-                        break;
-                    default:
-                        Toast.makeText(ListTourActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        switch (error.getKind()) {
+                            case HTTP:
+                                if (error.getResponse().getStatus() == 500)
+                                    Toast.makeText(UserListTour.this, "Lỗi server", Toast.LENGTH_LONG).show();
+                                break;
+                            case NETWORK:
+                            case UNEXPECTED:
+                                Toast.makeText(UserListTour.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                Toast.makeText(UserListTour.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
         addTourbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +154,7 @@ public class ListTourActivity extends AppCompatActivity {
     }
 
     private void OpenCreateTourActivity() {
-        Intent intent = new Intent(ListTourActivity.this, CreateTourActivity.class);
+        Intent intent = new Intent(UserListTour.this, CreateTourActivity.class);
         startActivity(intent);
     }
 
