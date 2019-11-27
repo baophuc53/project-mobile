@@ -18,7 +18,8 @@
             android:id="@+id/avtTour"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="@drawable/bg_avatar"/>
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_avatar_tour"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,6 +41,7 @@
                 android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                android:hint="@string/name_tour_hints"
                 />
         </LinearLayout>
 
@@ -63,6 +65,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                android:hint="@string/date_tour_hints"
                 />
         </LinearLayout>
 
@@ -86,6 +89,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                android:hint="@string/number_people_tour_hints"
                 />
         </LinearLayout>
 
@@ -93,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             >
@@ -111,6 +115,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
                 android:layout_gravity="center"
+                android:hint="@string/price_tour_hints"
                 />
         </LinearLayout>
 

@@ -2,10 +2,6 @@ package com.example.tourassistant.adapter;
 
 import android.app.Activity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +15,10 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.tourassistant.Activity.ListTourActivity;
 import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Object.Tour;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -81,10 +75,10 @@ public class TourAdapters extends ArrayAdapter<Tour> {
 
         Tour tour = getItem(position);
         Glide.with(customView)
-                .load(tour.getAvatar())
+                .load("https://english4u.com.vn/Uploads/images/bi%E1%BB%83n%202.jpg")
                 .apply(new RequestOptions()
                         .centerCrop()
-                        .placeholder(R.drawable.bg_avatar))
+                        .placeholder(R.drawable.bg_avatar_tour))
                 .into(avtTour);
 
         //

@@ -15,14 +15,6 @@ public class LoginResponse {
     @Expose
     private String phoneVerified="";
 
-    @SerializedName("emailVerified")
-    @Expose
-    private String emailVerified="";
-
-    @SerializedName("phoneVerified")
-    @Expose
-    private String phoneVerified="";
-
     @SerializedName("token")
     @Expose
     private String token;
