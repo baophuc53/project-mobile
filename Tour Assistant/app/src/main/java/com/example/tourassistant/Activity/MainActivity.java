@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_tour);
+
         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
         String token=sharedPreferences.getString("token","");
         if(token.isEmpty())

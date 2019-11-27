@@ -4,6 +4,8 @@ package com.example.tourassistant.Api;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
 import com.example.tourassistant.model.ListTourResponse;
+import com.example.tourassistant.model.LoginByFaceRequest;
+import com.example.tourassistant.model.LoginByFaceResponse;
 import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
 import com.example.tourassistant.model.RegisterRequest;
@@ -36,6 +38,15 @@ public interface UserService {
                      @Query("pageNum") Number pageNum,
                      @Query("orderBy") String orderBy,
                      @Query("isDesc") Boolean isDesc,
+                     Callback<ListTourResponse> callback);
+
+    @POST("/user/login/by-facebook")
+    void loginByFacebook(@Body LoginByFaceRequest loginByFaceRequest,
+                         Callback<LoginByFaceResponse> callback);
+
+    @GET("/tour/history-user")
+    void getUserTour(@Query("pageIndex") Number pageIndex,
+                     @Query("pageSize") String pageSize,
                      Callback<ListTourResponse> callback);
 
     @POST("/tour/create")

@@ -24,4 +24,6 @@
     <string name="create_tour_image">Choose tour image</string>
     <string name="create_tour_private">This is your private trip ?</string>
     <string name="create_tour_Create">Create</string>
+    <string name="facebook_app_id">502760397115169</string>
+    <string name="fb_login_protocol_scheme">fb502760397115169</string>
 </resources>
