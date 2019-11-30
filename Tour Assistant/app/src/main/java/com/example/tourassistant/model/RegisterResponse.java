@@ -28,6 +28,9 @@ public class RegisterResponse{
     @SerializedName("gender")
     @Expose
     private Integer gender;
+    @SerializedName("avatar ")
+    @Expose
+    private String avatar=null;
 
     public Integer getId() {
         return id;
@@ -91,5 +94,13 @@ public class RegisterResponse{
 
     public void setGender(Integer gender) {
         this.gender = gender;
+    }
+
+    public String getAvatar(){
+        return this.avatar;
+    }
+
+    public void setAvatar(String avatar){
+        this.avatar = avatar;
     }
 }

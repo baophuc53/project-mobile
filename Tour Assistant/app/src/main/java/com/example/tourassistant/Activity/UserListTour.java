@@ -81,9 +81,10 @@ public class UserListTour extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.action_list_tour:
-                        Intent intent=new Intent(UserListTour.this,ListTourActivity.class);
+                        intent=new Intent(UserListTour.this,ListTourActivity.class);
                         startActivity(intent);
                         finish();
                         break;
@@ -94,7 +95,9 @@ public class UserListTour extends AppCompatActivity {
                         Toast.makeText(UserListTour.this, "Notifications", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_setting:
-                        Toast.makeText(UserListTour.this, "Setting", Toast.LENGTH_SHORT).show();
+                        intent=new Intent(UserListTour.this,SettingActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                 }
                 return true;

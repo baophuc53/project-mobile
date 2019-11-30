@@ -19,10 +19,16 @@ import android.widget.Toast;
 
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
+import com.example.tourassistant.model.CreateTourRequest;
+import com.example.tourassistant.model.CreateTourResponse;
+import com.example.tourassistant.model.ListTourResponse;
 import com.example.tourassistant.model.LoginByFaceRequest;
 import com.example.tourassistant.model.LoginByFaceResponse;
 import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
+import com.example.tourassistant.model.RegisterRequest;
+import com.example.tourassistant.model.RegisterResponse;
+import com.example.tourassistant.model.UpdateAvtResponse;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,7 +36,9 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -42,6 +50,7 @@ import java.security.NoSuchAlgorithmException;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
 
 public class LoginActivity extends AppCompatActivity {
     private Button signinButton;
@@ -100,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.putString("token", loginByFaceResponse.getToken());
+                        editor.putBoolean("LoginByFB", true);
                         editor.commit();
                         Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);
                         startActivity(intent);
@@ -118,6 +128,17 @@ public class LoginActivity extends AppCompatActivity {
                             default:
                                 Toast.makeText(LoginActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                         }
+                        if (AccessToken.getCurrentAccessToken() == null) {
+                            return; // already logged out
+                        }
+
+                        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                                .Callback() {
+                            @Override
+                            public void onCompleted(GraphResponse graphResponse) {
+                                LoginManager.getInstance().logOut();
+                            }
+                        }).executeAsync();
                     }
                 });
             }
@@ -176,6 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putString("token",loginResponse.getToken());
+                editor.putBoolean("LoginByFB", false);
                 editor.commit();
                 Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);
                 startActivity(intent);

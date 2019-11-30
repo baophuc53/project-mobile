@@ -2,7 +2,12 @@ package com.example.tourassistant.adapter;
 
 import android.app.Activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
+import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.IconCompatParcelizer;
 
 
 import com.bumptech.glide.Glide;
@@ -82,18 +88,24 @@ public class TourAdapters extends ArrayAdapter<Tour> {
                 .into(avtTour);
 
         //
-        try
-        {nameTour.setText(tour.getName());
-        Calendar startDate = Calendar.getInstance();
-        startDate.setTimeInMillis(tour.getStartDate());
-        Calendar endDate = Calendar.getInstance();
-        endDate.setTimeInMillis(tour.getEndDate());
-        timeTour.setText(String.valueOf(startDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-                .concat(String.valueOf(startDate.get(Calendar.MONTH))).concat("/")
-                .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
-                .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
-                .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
-                .concat(String.valueOf(endDate.get(Calendar.YEAR))));}
+        try {
+            nameTour.setText(tour.getName());
+            Calendar startDate = Calendar.getInstance();
+            startDate.setTimeInMillis(tour.getStartDate());
+            Calendar endDate = Calendar.getInstance();
+            endDate.setTimeInMillis(tour.getEndDate());
+            timeTour.setText(String.valueOf(startDate.get(Calendar.DAY_OF_MONTH)).concat("/")
+                    .concat(String.valueOf(startDate.get(Calendar.MONTH))).concat("/")
+                    .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
+                    .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
+                    .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
+                    .concat(String.valueOf(endDate.get(Calendar.YEAR))));
+            ;
+            //Đừng xóa
+//            byte[] imageBytes = Base64.decode(tour.getAvatar(), Base64.DEFAULT);
+//            Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+//            avtTour.setImageBitmap(decodedImage);
+        }
         catch (Exception e){};
 
         if(tour.getAdults()==null)

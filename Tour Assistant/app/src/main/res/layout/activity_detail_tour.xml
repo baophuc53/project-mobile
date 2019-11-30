@@ -1,6 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/list_background"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_list_items">
+                <ImageView
+                    android:id="@+id/avtTour"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_avatar_tour"/>
+                <TextView
+                    android:id="@+id/nameTour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:hint="@string/name_tour_hints"/>
+                <TextView
+                    android:id="@+id/statusTour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:hint="Status of Tour"
+                    android:textColor="@color/colorPrimary"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    >
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_price_tag_usd" />
+
+                    <TextView
+                        android:id="@+id/pricetour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:hint="@string/price_tour_hints"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/priceLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:textAlignment="textEnd"
+                        android:textStyle="bold"
+                        android:hint="Normal"
+
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_icons8_calendar" />
+
+                    <TextView
+                        android:id="@+id/timeTour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/date_tour_hints"
+                        />
+                    <TextView
+                        android:id="@+id/numDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:textAlignment="textEnd"
+                        android:hint="Numbers of date"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_multiple_users_silhouette" />
+
+                    <TextView
+                        android:id="@+id/numPeopletour"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:hint="@string/number_people_tour_hints"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_lock" />
+
+                    <TextView
+                        android:id="@+id/privateTour"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:hint="Private"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    >
+
+                    <Button
+                        android:id="@+id/stopPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Stop Point"
+                        android:background="@drawable/bg_radius_edittext"
+                        />
+                    <Button
+                        android:id="@+id/member"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:text="Members"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_radius_edittext"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/bg_list_items">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/avtUsersmall"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/bg_avatar_user"/>
+
+                <EditText
+                    android:id="@+id/addCmtEdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_radius_edittext"
+                    android:hint="Leave a comment..."
+                    />
+                </LinearLayout>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

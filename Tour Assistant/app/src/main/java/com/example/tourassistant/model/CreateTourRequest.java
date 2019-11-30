@@ -5,137 +5,148 @@ import com.google.gson.annotations.SerializedName;
 
 public class CreateTourRequest {
 
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("minCost")
-    @Expose
-    private Long minCost;
-    @SerializedName("maxCost")
-    @Expose
-    private Long maxCost;
-    @SerializedName("startDate")
-    @Expose
-    private Long startDate;
-    @SerializedName("endDate")
-    @Expose
-    private Long endDate;
-    @SerializedName("adults")
-    @Expose
-    private Long adults;
-    @SerializedName("childs")
-    @Expose
-    private Long childs;
-    @SerializedName("sourceLat")
-    @Expose
-    private Long sourceLat;
-    @SerializedName("sourceLong")
-    @Expose
-    private Long sourceLong;
-    @SerializedName("desLat")
-    @Expose
-    private Long desLat;
-    @SerializedName("desLong")
-    @Expose
-    private Long desLong;
-    @SerializedName("isPrivate")
-    @Expose
-    private Boolean isPrivate;
+        @SerializedName("name")
+        @Expose
+        private String name;
+        @SerializedName("minCost")
+        @Expose
+        private Long minCost;
+        @SerializedName("maxCost")
+        @Expose
+        private Long maxCost;
+        @SerializedName("startDate")
+        @Expose
+        private Long startDate;
+        @SerializedName("endDate")
+        @Expose
+        private Long endDate;
+        @SerializedName("adults")
+        @Expose
+        private Long adults;
+        @SerializedName("childs")
+        @Expose
+        private Long childs;
+        @SerializedName("sourceLat")
+        @Expose
+        private Long sourceLat;
+        @SerializedName("sourceLong")
+        @Expose
+        private Long sourceLong;
+        @SerializedName("desLat")
+        @Expose
+        private Long desLat;
+        @SerializedName("desLong")
+        @Expose
+        private Long desLong;
+        @SerializedName("isPrivate")
+        @Expose
+        private Boolean isPrivate;
+        @SerializedName("avatar")
+        @Expose
+        private String avatar;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public Long getMinCost() {
-        return minCost;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public void setMinCost(Long minCost) {
-        this.minCost = minCost;
-    }
+        public Long getMinCost() {
+            return minCost;
+        }
 
-    public Long getMaxCost() {
-        return maxCost;
-    }
+        public void setMinCost(Long minCost) {
+            this.minCost = minCost;
+        }
 
-    public void setMaxCost(Long maxCost) {
-        this.maxCost = maxCost;
-    }
+        public Long getMaxCost() {
+            return maxCost;
+        }
 
-    public Long getStartDate() {
-        return startDate;
-    }
+        public void setMaxCost(Long maxCost) {
+            this.maxCost = maxCost;
+        }
 
-    public void setStartDate(Long startDate) {
-        this.startDate = startDate;
-    }
+        public Long getStartDate() {
+            return startDate;
+        }
 
-    public Long getEndDate() {
-        return endDate;
-    }
+        public void setStartDate(Long startDate) {
+            this.startDate = startDate;
+        }
 
-    public void setEndDate(Long endDate) {
-        this.endDate = endDate;
-    }
+        public Long getEndDate() {
+            return endDate;
+        }
 
-    public Long getAdults() {
-        return adults;
-    }
+        public void setEndDate(Long endDate) {
+            this.endDate = endDate;
+        }
 
-    public void setAdults(Long adults) {
-        this.adults = adults;
-    }
+        public Long getAdults() {
+            return adults;
+        }
 
-    public Long getChilds() {
-        return childs;
-    }
+        public void setAdults(Long adults) {
+            this.adults = adults;
+        }
 
-    public void setChilds(Long childs) {
-        this.childs = childs;
-    }
+        public Long getChilds() {
+            return childs;
+        }
 
-    public Long getSourceLat() {
-        return sourceLat;
-    }
+        public void setChilds(Long childs) {
+            this.childs = childs;
+        }
 
-    public void setSourceLat(Long sourceLat) {
-        this.sourceLat = sourceLat;
-    }
+        public Long getSourceLat() {
+            return sourceLat;
+        }
 
-    public Long getSourceLong() {
-        return sourceLong;
-    }
+        public void setSourceLat(Long sourceLat) {
+            this.sourceLat = sourceLat;
+        }
 
-    public void setSourceLong(Long sourceLong) {
-        this.sourceLong = sourceLong;
-    }
+        public Long getSourceLong() {
+            return sourceLong;
+        }
 
-    public Long getDesLat() {
-        return desLat;
-    }
+        public void setSourceLong(Long sourceLong) {
+            this.sourceLong = sourceLong;
+        }
 
-    public void setDesLat(Long desLat) {
-        this.desLat = desLat;
-    }
+        public Long getDesLat() {
+            return desLat;
+        }
 
-    public Long getDesLong() {
-        return desLong;
-    }
+        public void setDesLat(Long desLat) {
+            this.desLat = desLat;
+        }
 
-    public void setDesLong(Long desLong) {
-        this.desLong = desLong;
-    }
+        public Long getDesLong() {
+            return desLong;
+        }
 
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
+        public void setDesLong(Long desLong) {
+            this.desLong = desLong;
+        }
 
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
+        public Boolean getIsPrivate() {
+            return isPrivate;
+        }
 
+        public void setIsPrivate(Boolean isPrivate) {
+            this.isPrivate = isPrivate;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 }
