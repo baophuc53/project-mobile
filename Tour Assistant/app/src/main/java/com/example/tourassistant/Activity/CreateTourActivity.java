@@ -1,5 +1,6 @@
 package com.example.tourassistant.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import android.icu.util.Freezable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -30,7 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.tourassistant.Object.Tour;
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
 import com.example.tourassistant.Object.Tour;
@@ -94,6 +96,16 @@ public class CreateTourActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void pickFromGallery() {
         //Create an Intent with action as ACTION_PICK
@@ -146,12 +158,14 @@ public class CreateTourActivity extends AppCompatActivity {
     }
 
     private void add_event_endDate() {
+        final Calendar cEndDate = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener pickEndDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 cEndDate.set(Calendar.YEAR, year);
                 cEndDate.set(Calendar.MONTH, month);
                 cEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                newTour.setEndDate(cEndDate.getTimeInMillis());
                 updateEndDateEdt(cEndDate);
             }
         };
@@ -171,12 +185,14 @@ public class CreateTourActivity extends AppCompatActivity {
     }
 
     private void add_event_startDate() {
+        final Calendar cStartDate = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener pickStartDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 cStartDate.set(Calendar.YEAR, year);
                 cStartDate.set(Calendar.MONTH, month);
                 cStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                newTour.setStartDate(cStartDate.getTimeInMillis());
                 updateStarDateEdt(cStartDate);
             }
         };
@@ -203,7 +219,6 @@ public class CreateTourActivity extends AppCompatActivity {
                     newTour.isPrivate= true;
                 else
                     newTour.isPrivate=false;
-
             }
         });
     }
@@ -303,7 +318,30 @@ public class CreateTourActivity extends AppCompatActivity {
                     new Callback<CreateTourResponse>(){
                         @Override
                         public void success(CreateTourResponse createTourResponse, Response response) {
-                            Toast.makeText(CreateTourActivity.this, "Tạo chuyến đi thành công", Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateTourActivity.this, "Thành công", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CreateTourActivity.this, MapsActivity.class);
+                            intent.putExtra("tourId", Integer.parseInt(createTourResponse.getId().toString()));
+                            startActivity(intent);
+                            finish();
+                           if (!TextUtils.isEmpty(image.getText().toString())){
+                               //ghi ten image
+                               File f = new File(pathAvt);
+                               UpdateAvtRequest updateAvtRequest=new UpdateAvtRequest();
+                               updateAvtRequest.setFile(f);
+                               updateAvtRequest.setTourId(createTourResponse.getId().toString());
+                               userService.updateAvatarTour(new TypedFile("image/*",updateAvtRequest.getFile()),updateAvtRequest.getTourId()
+                               , new Callback<UpdateAvtResponse>(){
+                                   @Override
+                                   public void success(UpdateAvtResponse msg, Response response) {
+                                       Toast.makeText(CreateTourActivity.this, "Thành công", Toast.LENGTH_LONG).show();
+                                   }
+                                   @Override
+                                   public void failure(RetrofitError error){
+                                       Toast.makeText(CreateTourActivity.this, "Thất bại", Toast.LENGTH_LONG).show();
+
+                                   }
+                               });
+                           }
                         }
 
                         @Override

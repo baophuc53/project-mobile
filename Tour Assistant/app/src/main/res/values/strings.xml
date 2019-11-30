@@ -12,6 +12,7 @@
     <string name="email_phone">EMAIL/PHONE</string>
     <string name="tour_assistant">Tour Assistant</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="title_activity_maps">Map</string>
     <string name="create_tour_name">Tour name</string>
     <string name="create_tour_startDate">Start date</string>
     <string name="create_tour_endDate">End date</string>
@@ -25,6 +26,7 @@
     <string name="create_tour_Create">Create</string>
     <string name="facebook_app_id">502760397115169</string>
     <string name="fb_login_protocol_scheme">fb502760397115169</string>
+    <string name="title_activity_location_maps">Map</string>
     <string name="name_tour_hints">Name of Tour</string>
     <string name="date_tour_hints">Start date - End Date</string>
     <string name="number_people_tour_hints">No.Adults - No.Childs</string>

@@ -46,6 +46,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void userRegister() {
         EditText name = findViewById(R.id.edit_register_name);
         EditText email = findViewById(R.id.edit_register_email);
@@ -61,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email.getText().toString())) {
             email.setError("Vui lòng điền thông tin");
             correct = false;
-        } else if (!isValidEmail(email.getText().toString())){
+        } else if (!isValidEmail(email.getText().toString())) {
             email.setError("Email không hợp lệ");
             correct = false;
         }
@@ -127,5 +138,4 @@ public class RegisterActivity extends AppCompatActivity {
     boolean isValidEmail(String email) {
         return email.contains("@");
     }
-
 }

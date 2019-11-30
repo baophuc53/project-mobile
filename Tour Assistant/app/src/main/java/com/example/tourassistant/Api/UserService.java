@@ -1,6 +1,7 @@
 package com.example.tourassistant.Api;
 
 
+import com.example.tourassistant.Object.StopPoint;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
 import com.example.tourassistant.model.ListTourResponse;
@@ -10,6 +11,8 @@ import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
 import com.example.tourassistant.model.RegisterRequest;
 import com.example.tourassistant.model.RegisterResponse;
+import com.example.tourassistant.model.StopPointRequest;
+import com.example.tourassistant.model.StopPointResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
 
@@ -57,4 +60,8 @@ public interface UserService {
     @POST("/tour/update/avatar-for-tour")
     void updateAvatarTour(@Part("file") TypedFile file, @Part("tourId") String id,
                           Callback<UpdateAvtResponse> callback);
+
+    @POST("/tour/set-stop-points")
+    void addStopPoints(@Body StopPointRequest stopPointRequest,
+                       Callback<StopPointResponse> callback);
 }

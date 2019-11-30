@@ -28,7 +28,6 @@ import com.example.tourassistant.Object.Tour;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
 import static java.lang.Long.parseLong;
 
 public class TourAdapters extends ArrayAdapter<Tour> {
