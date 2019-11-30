@@ -235,7 +235,7 @@ public class CreateTourActivity extends AppCompatActivity {
 
     public void createTour(){
         boolean correct = checkTourInfo();
-        if (correct) {
+        if (correct == true) {
             newTour.setName(tourName.getText().toString());
             newTour.setSourceLong(Long.parseLong("0"));
             newTour.setSourceLat(Long.parseLong("0"));
