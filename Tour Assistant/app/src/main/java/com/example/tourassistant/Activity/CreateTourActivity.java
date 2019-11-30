@@ -80,8 +80,6 @@ public class CreateTourActivity extends AppCompatActivity {
         createTourbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateTourActivity.this, MapsActivity.class);
-                startActivity(intent);
                 createTour();
             }
         });
@@ -290,6 +288,11 @@ public class CreateTourActivity extends AppCompatActivity {
                     new Callback<CreateTourResponse>(){
                         @Override
                         public void success(CreateTourResponse createTourResponse, Response response) {
+                            Toast.makeText(CreateTourActivity.this, "Thành công", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CreateTourActivity.this, MapsActivity.class);
+                            intent.putExtra("tourId", Integer.parseInt(createTourResponse.getId().toString()));
+                            startActivity(intent);
+                            finish();
                            if (!TextUtils.isEmpty(image.getText().toString())){
                                //ghi ten image
                                File f = new File(pathAvt);

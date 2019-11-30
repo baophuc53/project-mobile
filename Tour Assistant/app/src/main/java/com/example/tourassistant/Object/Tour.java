@@ -7,10 +7,10 @@ public class Tour {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Long id;
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private Long status;
     @SerializedName("name")
     @Expose
     private String name;
@@ -51,19 +51,19 @@ public class Tour {
     @Expose
     private String avatar;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
