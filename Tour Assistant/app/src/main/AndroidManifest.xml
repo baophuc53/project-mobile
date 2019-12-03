@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tourassistant.Activity">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -24,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ListStopPointActivity"></activity>
+        <activity android:name=".ListMemberActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,21 +37,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".LocationMapsActivity">
+        <activity android:name=".LocationMapsActivity" />
+        <activity android:name=".DetailTourActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".CreateTourActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".UserListTourActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-         <activity android:name=".DetailTourActivity"/>
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".MapsActivity"/>
-        <activity android:name=".CreateTourActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".UserListTour" />
-        <activity android:name=".MainActivity">
-
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity
@@ -78,7 +76,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <service android:name=".GPS_Service"/>
+
+        <service android:name=".GPS_Service" />
     </application>
 
 </manifest>

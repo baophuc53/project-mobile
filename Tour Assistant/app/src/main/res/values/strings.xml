@@ -35,4 +35,9 @@
     <string name="edit_profile_user">Edit Profile ></string>
     <string name="change_language_user">Language</string>
     <string name="user_sign_out">Sign out</string>
+    <string name="name_of_stop_point_hint">Name\'s stop point</string>
+    <string name="coordinate_of_stop_point_hint">Coordinate\'s stop point</string>
+    <string name="time_of_stop_point_hint">Time\'s stop point</string>
+    <string name="price_of_stop_point_hints">Min.Price - Max.Price</string>
+    <string name="serviceType_stop_point_hints">Service type</string>
 </resources>

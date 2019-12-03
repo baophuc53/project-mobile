@@ -94,10 +94,10 @@ public class TourAdapters extends ArrayAdapter<Tour> {
             Calendar endDate = Calendar.getInstance();
             endDate.setTimeInMillis(tour.getEndDate());
             timeTour.setText(String.valueOf(startDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-                    .concat(String.valueOf(startDate.get(Calendar.MONTH))).concat("/")
+                    .concat(String.valueOf(startDate.get(Calendar.MONTH) + 1)).concat("/")
                     .concat(String.valueOf(startDate.get(Calendar.YEAR))).concat(" - ")
                     .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
-                    .concat(String.valueOf(endDate.get(Calendar.MONTH))).concat("/")
+                    .concat(String.valueOf(endDate.get(Calendar.MONTH) + 1)).concat("/")
                     .concat(String.valueOf(endDate.get(Calendar.YEAR))));
             ;
             //Đừng xóa
@@ -130,7 +130,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         // if (notesFilter.size() != 0)
         toursFilter.clear();
             for (Tour no : tours) {
-                if (no.getName()!=null&&no.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (no.getName()!=null&&no.getName().toString().toLowerCase(Locale.getDefault()).contains(charText)) {
                     toursFilter.add(no);
                 }
             }

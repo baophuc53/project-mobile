@@ -1,6 +1,8 @@
 package com.example.tourassistant.Api;
 
 
+import android.telecom.Call;
+
 import com.example.tourassistant.Object.StopPoint;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
@@ -11,8 +13,10 @@ import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
 import com.example.tourassistant.model.RegisterRequest;
 import com.example.tourassistant.model.RegisterResponse;
+import com.example.tourassistant.model.SendCmtRequest;
 import com.example.tourassistant.model.StopPointRequest;
 import com.example.tourassistant.model.StopPointResponse;
+import com.example.tourassistant.model.TourInfoResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
 
@@ -64,4 +68,13 @@ public interface UserService {
     @POST("/tour/set-stop-points")
     void addStopPoints(@Body StopPointRequest stopPointRequest,
                        Callback<StopPointResponse> callback);
+
+    @GET("/tour/info")
+    void getTourInfo(@Query("tourId") Number tourId,
+                     Callback<TourInfoResponse> callback);
+
+    @POST("/tour/comment")
+    void sendCmttoTour(@Body SendCmtRequest sendCmtRequest,
+                       Callback<StopPointResponse> callback);
+
 }

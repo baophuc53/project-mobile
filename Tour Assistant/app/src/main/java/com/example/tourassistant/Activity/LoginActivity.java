@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.putString("token", loginByFaceResponse.getToken());
+                        editor.putString("userId", loginByFaceResponse.getUserId());
                         editor.putBoolean("LoginByFB", true);
                         editor.commit();
                         Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);
@@ -163,26 +164,6 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-//    private void getFbInfo() {
-//        if (AccessToken.getCurrentAccessToken() != null) {
-//            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-//                    new GraphRequest.GraphJSONObjectCallback() {
-//                        @Override
-//                        public void onCompleted(JSONObject object, GraphResponse response) {
-//                            if (object != null) {
-//                                Toast.makeText(LoginActivity.this, "Name: " + object.optString("name"), Toast.LENGTH_SHORT).show();
-//                                Toast.makeText(LoginActivity.this, "ID: " + object.optString("id"), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//
-//            Bundle parameters = new Bundle();
-//            parameters.putString("fields", "id,name,link");
-//            request.setParameters(parameters);
-//            request.executeAsync();
-//        }
-//    }
-
     private void userLogin() {
         EditText emailPhone = findViewById(R.id.edit_login_username);
         EditText password = findViewById(R.id.edit_login_pasword);
@@ -197,6 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putString("token",loginResponse.getToken());
+                editor.putString("userId", loginResponse.getUserId());
                 editor.putBoolean("LoginByFB", false);
                 editor.commit();
                 Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);

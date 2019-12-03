@@ -56,7 +56,7 @@ public class SettingActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.action_recents:
-                        intent=new Intent(SettingActivity.this,UserListTour.class);
+                        intent=new Intent(SettingActivity.this, UserListTourActivity.class);
                         startActivity(intent);
                         finish();
                         break;

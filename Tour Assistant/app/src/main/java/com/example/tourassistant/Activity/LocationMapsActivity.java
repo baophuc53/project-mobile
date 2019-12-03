@@ -47,7 +47,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_maps);
         getLocationPermission();
-        btn_gps = findViewById(R.id.gps_btn);
+       // btn_gps = findViewById(R.id.gps_btn);
         initMap();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
     }

@@ -1,11 +1,15 @@
 package com.example.tourassistant.Object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Comment implements Serializable {
+public class Member implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -13,12 +17,15 @@ public class Comment implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("comment")
+    @SerializedName("phone")
     @Expose
-    private String comment;
+    private String phone;
     @SerializedName("avatar")
     @Expose
     private String avatar;
+    @SerializedName("isHost")
+    @Expose
+    private Boolean isHost;
 
     public Integer getId() {
         return id;
@@ -36,12 +43,12 @@ public class Comment implements Serializable {
         this.name = name;
     }
 
-    public String getComment() {
-        return comment;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getAvatar() {
@@ -50,6 +57,14 @@ public class Comment implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Boolean getIsHost() {
+        return isHost;
+    }
+
+    public void setIsHost(Boolean isHost) {
+        this.isHost = isHost;
     }
 
 }

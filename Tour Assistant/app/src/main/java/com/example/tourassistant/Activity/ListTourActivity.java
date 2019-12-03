@@ -5,7 +5,6 @@ package com.example.tourassistant.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
 import com.example.tourassistant.Object.Tour;
@@ -33,8 +31,6 @@ import java.util.ArrayList;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import static com.example.tourassistant.Activity.Constants.defaultToken;
 
 public class ListTourActivity extends AppCompatActivity {
 
@@ -66,6 +62,8 @@ public class ListTourActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ListTourActivity.this, DetailTourActivity.class);
+                intent.putExtra("tourId", tourAdapters.getItem(position).getId());
+                
                 startActivity(intent);
             }
         });
@@ -97,7 +95,7 @@ public class ListTourActivity extends AppCompatActivity {
                 Intent intent;
                 switch (item.getItemId()) {
                     case R.id.action_recents:
-                        intent=new Intent(ListTourActivity.this,UserListTour.class);
+                        intent=new Intent(ListTourActivity.this, UserListTourActivity.class);
                         startActivity(intent);
                         finish();
                         break;

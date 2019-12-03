@@ -14,7 +14,9 @@ public class LoginByFaceResponse {
     @SerializedName("token")
     @Expose
     private String token;
-
+    @SerializedName("userId")
+    @Expose
+    private String userId;
     public String getAvatar() {
         return avatar;
     }
@@ -39,4 +41,11 @@ public class LoginByFaceResponse {
         this.token = token;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

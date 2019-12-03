@@ -3,8 +3,12 @@ package com.example.tourassistant.Object;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class StopPoint {
+import java.io.Serializable;
 
+public class StopPoint implements Serializable {
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("arrivalAt")
     @Expose
     private Long arrivalAt;
@@ -29,6 +33,9 @@ public class StopPoint {
     @SerializedName("serviceTypeId")
     @Expose
     private int serviceTypeId;
+    @SerializedName("avatar")
+    @Expose
+    private String avatar;
 
     public Long getArrivalAt() {
         return arrivalAt;
@@ -93,4 +100,29 @@ public class StopPoint {
     public void setServiceTypeId(int serviceTypeId) {
         this.serviceTypeId = serviceTypeId;
     }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Double get_long() {
+        return _long;
+    }
+
+    public void set_long(Double _long) {
+        this._long = _long;
+    }
+
 }

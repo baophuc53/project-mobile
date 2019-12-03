@@ -163,7 +163,7 @@ public class CreateTourActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 cEndDate.set(Calendar.YEAR, year);
-                cEndDate.set(Calendar.MONTH, month);
+                cEndDate.set(Calendar.MONTH  , month);
                 cEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 newTour.setEndDate(cEndDate.getTimeInMillis());
                 updateEndDateEdt(cEndDate);
@@ -180,7 +180,7 @@ public class CreateTourActivity extends AppCompatActivity {
 
     private void updateEndDateEdt(Calendar cEndDate) {
         endDate.setText(String.valueOf(cEndDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-                .concat(String.valueOf(cEndDate.get(Calendar.MONTH))).concat("/")
+                .concat(String.valueOf(cEndDate.get(Calendar.MONTH)+1)).concat("/")
                 .concat(String.valueOf(cEndDate.get(Calendar.YEAR))));
     }
 
@@ -207,7 +207,7 @@ public class CreateTourActivity extends AppCompatActivity {
 
     private void updateStarDateEdt(Calendar cStartDate) {
         startDate.setText(String.valueOf(cStartDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-        .concat(String.valueOf(cStartDate.get(Calendar.MONTH))).concat("/")
+        .concat(String.valueOf(cStartDate.get(Calendar.MONTH)+1)).concat("/")
         .concat(String.valueOf(cStartDate.get(Calendar.YEAR))));
     }
 
@@ -265,8 +265,6 @@ public class CreateTourActivity extends AppCompatActivity {
             newTour.setSourceLat(Long.parseLong("0"));
             newTour.setDesLat(Long.parseLong("1"));
             newTour.setDesLong(Long.parseLong("1"));
-            newTour.setEndDate(cEndDate.getTimeInMillis());
-            newTour.setStartDate(cStartDate.getTimeInMillis());
             if (!TextUtils.isEmpty(Adults.getText().toString())){
                 newTour.setAdults(Long.parseLong(Adults.getText().toString()));
             }
@@ -295,7 +293,7 @@ public class CreateTourActivity extends AppCompatActivity {
                 newTour.setAvatar(avataImageB64);
             }
             else{
-                newTour.setAvatar("0");
+                newTour.setAvatar(null);
             }
 
             CreateTourRequest createTourRequest=new CreateTourRequest();
@@ -315,7 +313,7 @@ public class CreateTourActivity extends AppCompatActivity {
             final UserService userService;
             userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
             userService.createTour(createTourRequest,
-                    new Callback<CreateTourResponse>(){
+                      new Callback<CreateTourResponse>(){
                         @Override
                         public void success(CreateTourResponse createTourResponse, Response response) {
                             Toast.makeText(CreateTourActivity.this, "Thành công", Toast.LENGTH_LONG).show();
@@ -323,25 +321,6 @@ public class CreateTourActivity extends AppCompatActivity {
                             intent.putExtra("tourId", Integer.parseInt(createTourResponse.getId().toString()));
                             startActivity(intent);
                             finish();
-                           if (!TextUtils.isEmpty(image.getText().toString())){
-                               //ghi ten image
-                               File f = new File(pathAvt);
-                               UpdateAvtRequest updateAvtRequest=new UpdateAvtRequest();
-                               updateAvtRequest.setFile(f);
-                               updateAvtRequest.setTourId(createTourResponse.getId().toString());
-                               userService.updateAvatarTour(new TypedFile("image/*",updateAvtRequest.getFile()),updateAvtRequest.getTourId()
-                               , new Callback<UpdateAvtResponse>(){
-                                   @Override
-                                   public void success(UpdateAvtResponse msg, Response response) {
-                                       Toast.makeText(CreateTourActivity.this, "Thành công", Toast.LENGTH_LONG).show();
-                                   }
-                                   @Override
-                                   public void failure(RetrofitError error){
-                                       Toast.makeText(CreateTourActivity.this, "Thất bại", Toast.LENGTH_LONG).show();
-
-                                   }
-                               });
-                           }
                         }
 
                         @Override
@@ -357,7 +336,7 @@ public class CreateTourActivity extends AppCompatActivity {
                                     Toast.makeText(CreateTourActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                             }
                         }
-                        });
+            });
         }
     }
 }
