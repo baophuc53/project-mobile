@@ -26,6 +26,12 @@ public class StopPoint {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("address")
+    @Expose
+    private String address;
+    @SerializedName("provinceId")
+    @Expose
+    private Integer provinceId;
     @SerializedName("serviceTypeId")
     @Expose
     private int serviceTypeId;
@@ -92,5 +98,21 @@ public class StopPoint {
 
     public void setServiceTypeId(int serviceTypeId) {
         this.serviceTypeId = serviceTypeId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
     }
 }

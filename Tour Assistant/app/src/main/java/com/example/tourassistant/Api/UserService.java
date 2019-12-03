@@ -13,6 +13,8 @@ import com.example.tourassistant.model.RegisterRequest;
 import com.example.tourassistant.model.RegisterResponse;
 import com.example.tourassistant.model.StopPointRequest;
 import com.example.tourassistant.model.StopPointResponse;
+import com.example.tourassistant.model.SuggestStopPointRequest;
+import com.example.tourassistant.model.SuggestStopPointResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
 
@@ -64,4 +66,8 @@ public interface UserService {
     @POST("/tour/set-stop-points")
     void addStopPoints(@Body StopPointRequest stopPointRequest,
                        Callback<StopPointResponse> callback);
+
+    @POST("/tour/suggested-destination-list")
+    void suggestStopPoint(@Body SuggestStopPointRequest suggestStopPointRequest,
+                          Callback<SuggestStopPointResponse> callback);
 }

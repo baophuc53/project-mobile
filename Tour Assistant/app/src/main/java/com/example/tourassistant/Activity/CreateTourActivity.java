@@ -156,7 +156,7 @@ public class CreateTourActivity extends AppCompatActivity {
 
     private void updateEndDateEdt(Calendar cEndDate) {
         endDate.setText(String.valueOf(cEndDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-                .concat(String.valueOf(cEndDate.get(Calendar.MONTH))).concat("/")
+                .concat(String.valueOf(cEndDate.get(Calendar.MONTH)+1)).concat("/")
                 .concat(String.valueOf(cEndDate.get(Calendar.YEAR))));
     }
 
@@ -183,7 +183,7 @@ public class CreateTourActivity extends AppCompatActivity {
 
     private void updateStarDateEdt(Calendar cStartDate) {
         startDate.setText(String.valueOf(cStartDate.get(Calendar.DAY_OF_MONTH)).concat("/")
-        .concat(String.valueOf(cStartDate.get(Calendar.MONTH))).concat("/")
+        .concat(String.valueOf(cStartDate.get(Calendar.MONTH)+1)).concat("/")
         .concat(String.valueOf(cStartDate.get(Calendar.YEAR))));
     }
 

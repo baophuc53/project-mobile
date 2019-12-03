@@ -88,7 +88,9 @@ public class ListTourActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.action_map:
-                        Toast.makeText(ListTourActivity.this, "Map", Toast.LENGTH_SHORT).show();
+                        Intent intentMap =new Intent(ListTourActivity.this,LocationMapsActivity.class);
+                        startActivity(intentMap);
+                        finish();
                         break;
                     case R.id.action_notifications:
                         Toast.makeText(ListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
