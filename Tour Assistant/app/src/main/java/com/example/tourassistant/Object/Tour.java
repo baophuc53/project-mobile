@@ -8,6 +8,9 @@ public class Tour {
     @SerializedName("id")
     @Expose
     private Long id;
+    @SerializedName("hostId")
+    @Expose
+    private Long hostId;
     @SerializedName("status")
     @Expose
     private Long status;
@@ -57,6 +60,14 @@ public class Tour {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(Long Hostid) {
+        this.hostId = Hostid;
     }
 
     public Long getStatus() {

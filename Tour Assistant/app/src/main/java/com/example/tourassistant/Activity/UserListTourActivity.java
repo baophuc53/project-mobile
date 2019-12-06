@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -17,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
 import com.example.tourassistant.Object.Tour;
@@ -32,9 +32,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static com.example.tourassistant.Activity.Constants.defaultToken;
-
-public class UserListTour extends AppCompatActivity {
+public class UserListTourActivity extends AppCompatActivity {
 
     Tour tour;
     ArrayList<Tour> toursList = new ArrayList<Tour>();
@@ -56,7 +54,7 @@ public class UserListTour extends AppCompatActivity {
         Show();
         addActionBottomNavigationView();
         addEventSearch();
-
+        addEventClickTour();
     }
 
     private void addEventSearch() {
@@ -81,20 +79,23 @@ public class UserListTour extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.action_list_tour:
-                        Intent intent=new Intent(UserListTour.this,ListTourActivity.class);
+                        intent=new Intent(UserListTourActivity.this,ListTourActivity.class);
                         startActivity(intent);
                         finish();
                         break;
                     case R.id.action_map:
-                        Toast.makeText(UserListTour.this, "Map", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserListTourActivity.this, "Map", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_notifications:
-                        Toast.makeText(UserListTour.this, "Notifications", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_setting:
-                        Toast.makeText(UserListTour.this, "Setting", Toast.LENGTH_SHORT).show();
+                        intent=new Intent(UserListTourActivity.this,SettingActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                 }
                 return true;
@@ -102,6 +103,16 @@ public class UserListTour extends AppCompatActivity {
         });
     }
 
+    private void addEventClickTour() {
+        lvTours.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(UserListTourActivity.this, DetailTourActivity.class);
+                intent.putExtra("tourId", tourAdapters.getItem(position).getId());
+                startActivity(intent);
+            }
+        });
+    }
     private void Show() {
         tour = new Tour();
         ListTourRequest request=new ListTourRequest();
@@ -124,7 +135,7 @@ public class UserListTour extends AppCompatActivity {
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
                         else
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
-                        tourAdapters = new TourAdapters(UserListTour.this,
+                        tourAdapters = new TourAdapters(UserListTourActivity.this,
                                 R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
                         lvTours.setAdapter(tourAdapters);
                     }
@@ -134,14 +145,14 @@ public class UserListTour extends AppCompatActivity {
                         switch (error.getKind()) {
                             case HTTP:
                                 if (error.getResponse().getStatus() == 500)
-                                    Toast.makeText(UserListTour.this, "Lỗi server", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(UserListTourActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
                                 break;
                             case NETWORK:
                             case UNEXPECTED:
-                                Toast.makeText(UserListTour.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
+                                Toast.makeText(UserListTourActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
                                 break;
                             default:
-                                Toast.makeText(UserListTour.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                                Toast.makeText(UserListTourActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -154,7 +165,7 @@ public class UserListTour extends AppCompatActivity {
     }
 
     private void OpenCreateTourActivity() {
-        Intent intent = new Intent(UserListTour.this, CreateTourActivity.class);
+        Intent intent = new Intent(UserListTourActivity.this, CreateTourActivity.class);
         startActivity(intent);
     }
 

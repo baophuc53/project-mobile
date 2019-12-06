@@ -14,13 +14,6 @@
         android:orientation="vertical"
         android:background="@drawable/bg_list_items">
 
-        <ImageView
-            android:id="@+id/avtTour"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_avatar_tour"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,16 +24,16 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_room_24px" />
+                android:background="@drawable/ic_business_card_of_a_man_with_contact_info" />
 
             <TextView
-                android:id="@+id/nameTour"
+                android:id="@+id/nameStopPoint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
-                android:hint="@string/name_tour_hints"
+                android:hint="@string/name_of_stop_point_hint"
                 />
         </LinearLayout>
 
@@ -59,13 +52,12 @@
                 android:background="@drawable/ic_icons8_calendar" />
 
             <TextView
-                android:id="@+id/timeTour"
+                android:id="@+id/timeStopPoint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
-                android:hint="@string/date_tour_hints"
-                />
+                android:layout_marginLeft="10dp"
+                android:hint="@string/time_of_stop_point_hint" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,45 +70,22 @@
             >
 
             <ImageView
+                android:id="@+id/service_type_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_multiple_users_silhouette" />
+               />
 
             <TextView
-                android:id="@+id/numPeopletour"
+                android:id="@+id/ServiceTypeStopPoint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
-                android:hint="@string/number_people_tour_hints"
+                android:hint="@string/coordinate_of_stop_point_hint"
                 />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_price_tag_usd" />
-
-            <TextView
-                android:id="@+id/pricetour"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:layout_gravity="center"
-                android:hint="@string/price_tour_hints"
-                />
-        </LinearLayout>
 
     </LinearLayout>
 

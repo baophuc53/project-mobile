@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -17,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tourassistant.Activity.R;
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
 import com.example.tourassistant.Object.Tour;
@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import static com.example.tourassistant.Activity.Constants.defaultToken;
 
 public class ListTourActivity extends AppCompatActivity {
 
@@ -56,7 +54,19 @@ public class ListTourActivity extends AppCompatActivity {
         Show();
         addActionBottomNavigationView();
         addEventSearch();
+        addEventClickTour();
+    }
 
+    private void addEventClickTour() {
+        lvTours.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ListTourActivity.this, DetailTourActivity.class);
+                intent.putExtra("tourId", tourAdapters.getItem(position).getId());
+                
+                startActivity(intent);
+            }
+        });
     }
 
     private void addEventSearch() {
@@ -76,14 +86,16 @@ public class ListTourActivity extends AppCompatActivity {
     }
 
     private void addActionBottomNavigationView() {
+        Intent intent;
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.action_recents:
-                        Intent intent=new Intent(ListTourActivity.this,UserListTour.class);
+                        intent=new Intent(ListTourActivity.this, UserListTourActivity.class);
                         startActivity(intent);
                         finish();
                         break;
@@ -96,7 +108,9 @@ public class ListTourActivity extends AppCompatActivity {
                         Toast.makeText(ListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_setting:
-                        Toast.makeText(ListTourActivity.this, "Setting", Toast.LENGTH_SHORT).show();
+                        intent =new Intent(ListTourActivity.this,SettingActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                 }
                 return true;
