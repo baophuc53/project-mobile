@@ -22,26 +22,44 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tourassistant.Api.MyAPIClient;
+import com.example.tourassistant.Api.UserService;
+import com.example.tourassistant.Object.Coord;
+import com.example.tourassistant.Object.CoordinateSet;
+import com.example.tourassistant.Object.SuggestStopPoint;
+import com.example.tourassistant.model.SuggestStopPointRequest;
+import com.example.tourassistant.model.SuggestStopPointResponse;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bolts.Task;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class LocationMapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
     private Button btn_start, btn_stop;
     private ImageButton btn_gps;
     private BroadcastReceiver broadcastReceiver;
-
+    private boolean mLocationPermissionsGranted = false;
+    final List<LatLng> suggestPoints = new ArrayList<>();
+    final List<Marker> markerList = new ArrayList<>();
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
 
@@ -50,7 +68,6 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_maps);
         getLocationPermission();
-       // btn_gps = findViewById(R.id.gps_btn);
         initMap();
         addActionBottomNavigationView();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -59,30 +76,6 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
     public void onBackPressed() {
         finish();
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(broadcastReceiver == null){
-            broadcastReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-
-
-
-                }
-            };
-        }
-        registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(broadcastReceiver != null){
-            unregisterReceiver(broadcastReceiver);
-        }
     }
 
 
@@ -99,6 +92,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionsGranted = true;
             } else {
                 ActivityCompat.requestPermissions(this,
                         permissions,
@@ -114,31 +108,52 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-//        btn_start.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getApplicationContext(),GPS_Service.class);
-//                startService(i);
-//            }
-//        });
-//
-//        btn_stop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent i = new Intent(getApplicationContext(),GPS_Service.class);
-//                stopService(i);
-//
-//            }
-//        });
-
+        LatLng HCM = new LatLng(10.743702, 106.676026);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HCM, 15.0f));
         mMap.setMyLocationEnabled(true);
+        if (mLocationPermissionsGranted) {
+            final SuggestStopPointRequest suggestStopPointRequest = new SuggestStopPointRequest();
+            Coord point1 = new Coord();
+            Coord point2 = new Coord();
+            List<Coord> coords = new ArrayList<>();
+            CoordinateSet coordinateSet = new CoordinateSet();
+            List<CoordinateSet> coordList = new ArrayList<>();
+            point1.setLat(23.392954);
+            point1.setLong(101.284320);
+            point2.setLat(8.305351);
+            point2.setLong(110.502890);
+            coords.add(point1);
+            coords.add(point2);
+            coordinateSet.setCoordinateSet(coords);
+            coordList.add(coordinateSet);
+            suggestStopPointRequest.setHasOneCoordinate(false);
+            suggestStopPointRequest.setCoordList(coordList);
+            final UserService userService;
+            userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+            userService.suggestStopPoint(suggestStopPointRequest, new Callback<SuggestStopPointResponse>() {
+                @Override
+                public void success(SuggestStopPointResponse suggestStopPointResponse, Response response) {
+                    for (SuggestStopPoint s : suggestStopPointResponse.getStopPoints()) {
+                        LatLng p = new LatLng(Double.parseDouble(s.getLat()), Double.parseDouble(s.getLong()));
+                        if (!suggestPoints.contains(p)) {
+                            suggestPoints.add(p);
+                            Marker marker = mMap.addMarker(new MarkerOptions()
+                                    .position(p)
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                    .title(s.getName())
+                                    .snippet(s.getAddress()));
+                            marker.setTag(s);
+                            markerList.add(marker);
+                        }
+                    }
+                }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
+        }
     }
 
     private void addActionBottomNavigationView() {

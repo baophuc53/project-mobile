@@ -15,26 +15,26 @@
     tools:context=".MapsActivity" />
 
     <ImageButton
-        android:id="@+id/submit_stop_point_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_round"
-        android:src="@drawable/ic_done_all_24px"
-        android:backgroundTint="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
         android:id="@+id/list_stop_point_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_round"
         android:backgroundTint="#fff"
         android:src="@drawable/ic_list_24px"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/submit_stop_point_btn" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/submit_stop_point_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_round"
+        android:backgroundTint="#fff"
+        android:src="@drawable/ic_done_all_24px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/list_stop_point_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -72,6 +72,10 @@ public interface UserService {
     void addStopPoints(@Body StopPointRequest stopPointRequest,
                        Callback<StopPointResponse> callback);
 
+    @POST("/tour/suggested-destination-list")
+    void suggestStopPoint(@Body SuggestStopPointRequest suggestStopPointRequest,
+                          Callback<SuggestStopPointResponse> callback);
+                          
     @GET("/tour/info")
     void getTourInfo(@Query("tourId") Number tourId,
                      Callback<TourInfoResponse> callback);
