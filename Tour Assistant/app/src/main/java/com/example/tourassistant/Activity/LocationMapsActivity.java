@@ -15,10 +15,12 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import bolts.Task;
 
@@ -49,6 +52,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         getLocationPermission();
        // btn_gps = findViewById(R.id.gps_btn);
         initMap();
+        addActionBottomNavigationView();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
     }
 
@@ -136,4 +140,38 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    private void addActionBottomNavigationView() {
+        Intent intent;
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_map);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.action_recents:
+                        intent=new Intent(LocationMapsActivity.this, UserListTourActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case R.id.action_list_tour:
+                        Intent intentMap =new Intent(LocationMapsActivity.this,ListTourActivity.class);
+                        startActivity(intentMap);
+                        finish();
+                        break;
+                    case R.id.action_notifications:
+                        Toast.makeText(LocationMapsActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_setting:
+                        intent =new Intent(LocationMapsActivity.this,SettingActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
 }

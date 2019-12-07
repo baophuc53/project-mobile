@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:background="#ffff"
         android:iconifiedByDefault="false"
-        android:queryHint="@string/search_tour"></SearchView>
+        android:focusable="false"
+        android:queryHint="@string/search_tour"/>
     <TextView
         android:id="@+id/noStopPointTv"
         android:layout_width="match_parent"

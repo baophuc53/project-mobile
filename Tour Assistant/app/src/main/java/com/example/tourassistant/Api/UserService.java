@@ -16,9 +16,12 @@ import com.example.tourassistant.model.RegisterResponse;
 import com.example.tourassistant.model.SendCmtRequest;
 import com.example.tourassistant.model.StopPointRequest;
 import com.example.tourassistant.model.StopPointResponse;
+import com.example.tourassistant.model.SuggestStopPointRequest;
+import com.example.tourassistant.model.SuggestStopPointResponse;
 import com.example.tourassistant.model.TourInfoResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
+import com.example.tourassistant.model.UserInfoResponse;
 
 import java.io.File;
 
@@ -76,5 +79,8 @@ public interface UserService {
     @POST("/tour/comment")
     void sendCmttoTour(@Body SendCmtRequest sendCmtRequest,
                        Callback<StopPointResponse> callback);
+
+    @GET("/user/info")
+    void getUserInfo(Callback<UserInfoResponse> callback);
 
 }

@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:background="#ffff"
             android:iconifiedByDefault="false"
-            android:queryHint="@string/search_tour"></SearchView>
+            android:queryHint="@string/search_tour"
+            android:focusable="false"/>
 
         <LinearLayout
             android:layout_width="match_parent"
