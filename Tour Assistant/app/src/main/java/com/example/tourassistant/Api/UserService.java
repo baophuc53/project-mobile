@@ -18,6 +18,7 @@ import com.example.tourassistant.model.StopPointRequest;
 import com.example.tourassistant.model.StopPointResponse;
 import com.example.tourassistant.model.SuggestStopPointRequest;
 import com.example.tourassistant.model.SuggestStopPointResponse;
+import com.example.tourassistant.model.TourInfoResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
 

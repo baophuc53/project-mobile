@@ -28,16 +28,16 @@ public class CreateTourRequest {
         private Long childs;
         @SerializedName("sourceLat")
         @Expose
-        private Long sourceLat;
+        private double sourceLat;
         @SerializedName("sourceLong")
         @Expose
-        private Long sourceLong;
+        private double sourceLong;
         @SerializedName("desLat")
         @Expose
-        private Long desLat;
+        private double desLat;
         @SerializedName("desLong")
         @Expose
-        private Long desLong;
+        private double desLong;
         @SerializedName("isPrivate")
         @Expose
         private Boolean isPrivate;
@@ -102,35 +102,35 @@ public class CreateTourRequest {
             this.childs = childs;
         }
 
-        public Long getSourceLat() {
+        public double getSourceLat() {
             return sourceLat;
         }
 
-        public void setSourceLat(Long sourceLat) {
+        public void setSourceLat(double sourceLat) {
             this.sourceLat = sourceLat;
         }
 
-        public Long getSourceLong() {
+        public double getSourceLong() {
             return sourceLong;
         }
 
-        public void setSourceLong(Long sourceLong) {
+        public void setSourceLong(double sourceLong) {
             this.sourceLong = sourceLong;
         }
 
-        public Long getDesLat() {
+        public double getDesLat() {
             return desLat;
         }
 
-        public void setDesLat(Long desLat) {
+        public void setDesLat(double desLat) {
             this.desLat = desLat;
         }
 
-        public Long getDesLong() {
+        public double getDesLong() {
             return desLong;
         }
 
-        public void setDesLong(Long desLong) {
+        public void setDesLong(double desLong) {
             this.desLong = desLong;
         }
 

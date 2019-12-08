@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:background="#ffff"
         android:iconifiedByDefault="false"
-        android:queryHint="@string/search_tour"></SearchView>
+        android:queryHint="@string/search_tour"/>
     <ListView
         android:id="@+id/list_member"
         android:layout_marginTop="10dp"

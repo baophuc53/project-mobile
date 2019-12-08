@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:focusable="false"
         android:layout_marginHorizontal="20dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -172,7 +173,6 @@
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:inputType="number"
-                        android:focusable="false"
                         android:background="@drawable/bg_radius_edittext" />
                 </LinearLayout>
 
@@ -196,7 +196,6 @@
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:inputType="number"
-                        android:focusable="false"
                         android:background="@drawable/bg_radius_edittext"/>
                 </LinearLayout>
             </LinearLayout>

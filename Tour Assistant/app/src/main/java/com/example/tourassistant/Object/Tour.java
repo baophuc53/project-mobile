@@ -31,16 +31,16 @@ public class Tour {
     private Long endDate;
     @SerializedName("sourceLat")
     @Expose
-    private Long sourceLat;
+    private double sourceLat = 0;
     @SerializedName("sourceLong")
     @Expose
-    private Long sourceLong;
+    private double sourceLong = 0;
     @SerializedName("desLat")
     @Expose
-    private Long desLat;
+    private double desLat = 0;
     @SerializedName("desLong")
     @Expose
-    private Long desLong;
+    private double desLong = 0;
     @SerializedName("adults")
     @Expose
     private Long adults;
@@ -118,35 +118,35 @@ public class Tour {
         this.endDate = endDate;
     }
 
-    public Long getSourceLat() {
+    public double getSourceLat() {
         return sourceLat;
     }
 
-    public void setSourceLat(Long sourceLat) {
+    public void setSourceLat(double sourceLat) {
         this.sourceLat = sourceLat;
     }
 
-    public Long getSourceLong() {
+    public double getSourceLong() {
         return sourceLong;
     }
 
-    public void setSourceLong(Long sourceLong) {
+    public void setSourceLong(double sourceLong) {
         this.sourceLong = sourceLong;
     }
 
-    public Long getDesLat() {
+    public double getDesLat() {
         return desLat;
     }
 
-    public void setDesLat(Long desLat) {
+    public void setDesLat(double desLat) {
         this.desLat = desLat;
     }
 
-    public Long getDesLong() {
+    public double getDesLong() {
         return desLong;
     }
 
-    public void setDesLong(Long desLong) {
+    public void setDesLong(double desLong) {
         this.desLong = desLong;
     }
 

@@ -41,6 +41,10 @@ import com.example.tourassistant.model.CreateTourResponse;
 import com.example.tourassistant.model.LoginResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -57,13 +61,17 @@ import retrofit.mime.TypedFile;
 
 public class CreateTourActivity extends AppCompatActivity {
 
+    private static final int SRC_PLACE_PICKER_REQUEST = 1;
+    private static final int DES_PLACE_PICKER_REQUEST = 2;
+    private static final int GALLERY_REQUEST_CODE = 10;
     EditText tourName, startDate, endDate, minCost, maxCost, Adults, Childrens, image;
+    EditText source, des;
+    LatLng sourceCoord, desCoord;
     String pathAvt, avataImageB64;
     CheckBox Isprivate;
     Button createTourbtn, add_image;
     LinearLayout startDateLayout, endDateLayout;
     Tour newTour = new Tour();
-    int GALLERY_REQUEST_CODE = 10;
     Calendar cEndDate = Calendar.getInstance();
     Calendar cStartDate = Calendar.getInstance();
     private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -87,6 +95,8 @@ public class CreateTourActivity extends AppCompatActivity {
         add_event_isPrivate();
         add_event_startDate();
         add_event_endDate();
+        add_event_startPlace();
+        add_event_endPlace();
         add_event_chooseImage();
         createTourbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +106,26 @@ public class CreateTourActivity extends AppCompatActivity {
         });
     }
 
+    private void add_event_startPlace() {
+        source.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CreateTourActivity.this, com.example.tourassistant.Activity.PlacePicker.class);
+                startActivityForResult(i, SRC_PLACE_PICKER_REQUEST);
+            }
+        });
+    }
+
+
+    private void add_event_endPlace() {
+        des.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CreateTourActivity.this, com.example.tourassistant.Activity.PlacePicker.class);
+                startActivityForResult(i, DES_PLACE_PICKER_REQUEST);
+            }
+        });
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -121,10 +151,10 @@ public class CreateTourActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == CreateTourActivity.RESULT_OK)
-            if (requestCode == GALLERY_REQUEST_CODE){
+        if (requestCode == GALLERY_REQUEST_CODE) {
+            if (resultCode == CreateTourActivity.RESULT_OK) {
                 Uri selectedIMG = data.getData();
-                String [] filePathColumn = {MediaStore.Images.Media.DATA};
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedIMG, filePathColumn, null, null, null);
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
@@ -139,9 +169,24 @@ public class CreateTourActivity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] imageBytes = baos.toByteArray();
                     avataImageB64 = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                } catch (Exception e) {
                 }
-                catch (Exception e){}
             }
+        }
+        else if (requestCode == SRC_PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                source.setText("Done");
+                sourceCoord = new LatLng(data.getDoubleExtra("Lat", 0),
+                                        data.getDoubleExtra("Lng", 0));
+            }
+        }
+        else if (requestCode == DES_PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                des.setText("Done");
+                desCoord = new LatLng(data.getDoubleExtra("Lat", 1),
+                        data.getDoubleExtra("Lng", 1));
+            }
+        }
     }
 
     private void add_event_chooseImage() {
@@ -237,6 +282,8 @@ public class CreateTourActivity extends AppCompatActivity {
         add_image = (Button) findViewById(R.id.create_tour_btn_add_image);
         Isprivate = (CheckBox) findViewById(R.id.Is_private_btn);
         createTourbtn = (Button) findViewById(R.id.create_tour_btn);
+        source = (EditText) findViewById(R.id.create_tour_source_edt);
+        des = (EditText) findViewById(R.id.create_tour_des_edt);
     }
 
     public boolean checkTourInfo(){
@@ -261,10 +308,10 @@ public class CreateTourActivity extends AppCompatActivity {
         boolean correct = checkTourInfo();
         if (correct == true) {
             newTour.setName(tourName.getText().toString());
-            newTour.setSourceLong(Long.parseLong("0"));
-            newTour.setSourceLat(Long.parseLong("0"));
-            newTour.setDesLat(Long.parseLong("1"));
-            newTour.setDesLong(Long.parseLong("1"));
+            newTour.setSourceLat(sourceCoord.latitude);
+            newTour.setSourceLong(sourceCoord.longitude);
+            newTour.setDesLat(desCoord.latitude);
+            newTour.setDesLong(desCoord.longitude);
             if (!TextUtils.isEmpty(Adults.getText().toString())){
                 newTour.setAdults(Long.parseLong(Adults.getText().toString()));
             }
