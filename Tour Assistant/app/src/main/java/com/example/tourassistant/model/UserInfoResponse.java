@@ -3,7 +3,10 @@ package com.example.tourassistant.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserInfoResponse {
+import java.io.Serializable;
+import java.util.Date;
+
+public class UserInfoResponse implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -37,6 +40,9 @@ public class UserInfoResponse {
     @SerializedName("avatar")
     @Expose
     private String avatar;
+    @SerializedName("typeLogin")
+    @Expose
+    private Integer typeLogin;
 
     public Integer getId() {
         return id;
@@ -124,5 +130,13 @@ public class UserInfoResponse {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getTypeLogin() {
+        return typeLogin;
+    }
+
+    public void setTypeLogin(Integer typeLogin) {
+        this.typeLogin = typeLogin;
     }
 }

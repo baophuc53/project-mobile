@@ -53,22 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                 userLogin();
             }
         });
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo(
-//                    "com.example.tourassistant.Activity",
-//                    PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        }
-//        catch (PackageManager.NameNotFoundException e) {
-//            Log.e("KeyHash:", "printHashKey()", e);
-//        }
-//        catch (NoSuchAlgorithmException e) {
-//            Log.e("KeyHash:", "printHashKey()", e);
-//        }
 
         loginButton = findViewById(R.id.login_button);
         addFbLoginEvent();

@@ -35,9 +35,11 @@
     <string name="number_people_tour_hints">No.Adults - No.Childs</string>
     <string name="price_tour_hints">Min.Price - Max.Price</string>
     <string name="name_user_hints">Name of User</string>
-    <string name="edit_profile_user">Edit Profile ></string>
-    <string name="change_language_user">Language</string>
-    <string name="user_sign_out">Sign out</string>
+    <string name="edit_profile_user">EDIT PROFILE ></string>
+    <string name="user_sign_out">SIGN OUT</string>
+    <string name="user_save_profile">SAVE</string>
+    <string name="user_change_password">CHANGE PASSWORD</string>
+    <string name="new_password">NEW PASSWORD</string>
     <string-array name="services">
         <item>Restaurant</item>
         <item>Hotel</item>

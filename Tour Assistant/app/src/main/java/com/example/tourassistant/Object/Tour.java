@@ -3,7 +3,9 @@ package com.example.tourassistant.Object;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Tour {
+import java.io.Serializable;
+
+public class Tour implements Serializable {
 
     @SerializedName("id")
     @Expose
