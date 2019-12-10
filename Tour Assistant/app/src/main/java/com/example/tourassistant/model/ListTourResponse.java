@@ -1,12 +1,13 @@
 package com.example.tourassistant.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.example.tourassistant.Object.Tour;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ListTourResponse {
+public class ListTourResponse implements Serializable {
 
     @SerializedName("total")
     @Expose

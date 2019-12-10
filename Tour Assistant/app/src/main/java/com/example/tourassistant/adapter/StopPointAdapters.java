@@ -103,11 +103,11 @@ public class StopPointAdapters extends ArrayAdapter<StopPoint> {
                 imageService = R.drawable.ic_hotel;
             }
             if (stopPoint.getServiceTypeId() == 3){
-                service.setText("Restaurant");
+                service.setText("Res Station");
                 imageService = R.drawable.ic_parking;
             }
             if (stopPoint.getServiceTypeId() == 4){
-                service.setText("Restaurant");
+                service.setText("Others");
                 imageService = R.drawable.ic_24_hours;
             }
             serviceType.setImageResource(imageService);

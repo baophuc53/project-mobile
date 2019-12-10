@@ -4,6 +4,8 @@ package com.example.tourassistant.Api;
 import android.telecom.Call;
 
 import com.example.tourassistant.Object.StopPoint;
+import com.example.tourassistant.model.ChangePasswordRequest;
+import com.example.tourassistant.model.ChangePasswordResponse;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
 import com.example.tourassistant.model.ListTourResponse;
@@ -21,6 +23,9 @@ import com.example.tourassistant.model.SuggestStopPointResponse;
 import com.example.tourassistant.model.TourInfoResponse;
 import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
+import com.example.tourassistant.model.UpdateUserInfoRequest;
+import com.example.tourassistant.model.UpdateUserInfoResponse;
+import com.example.tourassistant.model.UserInfoResponse;
 
 import java.io.File;
 
@@ -82,5 +87,16 @@ public interface UserService {
     @POST("/tour/comment")
     void sendCmttoTour(@Body SendCmtRequest sendCmtRequest,
                        Callback<StopPointResponse> callback);
+
+    @GET("/user/info")
+    void getUserInfo(Callback<UserInfoResponse> callback);
+
+    @POST("/user/edit-info")
+    void updateUserInfo(@Body UpdateUserInfoRequest userInfoRequest,
+                       Callback<UpdateUserInfoResponse> callback);
+
+    @POST("/user/update-password")
+    void changePassword(@Body ChangePasswordRequest changePasswordRequest,
+                        Callback<ChangePasswordResponse> callback);
 
 }

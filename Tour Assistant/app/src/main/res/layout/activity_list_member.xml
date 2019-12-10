@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:background="#ffff"
         android:iconifiedByDefault="false"
+        android:focusable="false"
         android:queryHint="@string/search_tour"/>
     <ListView
         android:id="@+id/list_member"
