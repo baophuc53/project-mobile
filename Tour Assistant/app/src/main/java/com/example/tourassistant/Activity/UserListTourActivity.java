@@ -2,6 +2,7 @@ package com.example.tourassistant.Activity;
 
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -84,10 +85,14 @@ public class UserListTourActivity extends AppCompatActivity {
                     case R.id.action_list_tour:
                         intent=new Intent(UserListTourActivity.this,ListTourActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
                         finish();
                         break;
                     case R.id.action_map:
-                        Toast.makeText(UserListTourActivity.this, "Map", Toast.LENGTH_SHORT).show();
+                        Intent intentMap =new Intent(UserListTourActivity.this,LocationMapsActivity.class);
+                        startActivity(intentMap);
+                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+                        finish();
                         break;
                     case R.id.action_notifications:
                         Toast.makeText(UserListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
@@ -95,6 +100,7 @@ public class UserListTourActivity extends AppCompatActivity {
                     case R.id.action_setting:
                         intent=new Intent(UserListTourActivity.this,SettingActivity.class);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
                         finish();
                         break;
                 }
@@ -114,6 +120,11 @@ public class UserListTourActivity extends AppCompatActivity {
         });
     }
     private void Show() {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
         tour = new Tour();
         ListTourRequest request=new ListTourRequest();
         request.setPageNum(1);
@@ -131,6 +142,7 @@ public class UserListTourActivity extends AppCompatActivity {
                 , new Callback<ListTourResponse>() {
                     @Override
                     public void success(ListTourResponse listTourResponse, Response response) {
+                        progress.dismiss();
                         if (listTourResponse.getTotal() == 1)
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
                         else
@@ -142,6 +154,7 @@ public class UserListTourActivity extends AppCompatActivity {
 
                     @Override
                     public void failure(RetrofitError error) {
+                        progress.dismiss();
                         switch (error.getKind()) {
                             case HTTP:
                                 if (error.getResponse().getStatus() == 500)

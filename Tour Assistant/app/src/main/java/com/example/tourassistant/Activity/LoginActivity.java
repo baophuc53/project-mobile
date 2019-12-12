@@ -2,16 +2,9 @@ package com.example.tourassistant.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,38 +12,26 @@ import android.widget.Toast;
 
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
-import com.example.tourassistant.model.CreateTourRequest;
-import com.example.tourassistant.model.CreateTourResponse;
-import com.example.tourassistant.model.ListTourResponse;
 import com.example.tourassistant.model.LoginByFaceRequest;
 import com.example.tourassistant.model.LoginByFaceResponse;
 import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
-import com.example.tourassistant.model.RegisterRequest;
-import com.example.tourassistant.model.RegisterResponse;
-import com.example.tourassistant.model.UpdateAvtResponse;
+import com.example.tourassistant.model.UserInfoResponse;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.google.gson.Gson;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.mime.TypedFile;
 
 public class LoginActivity extends AppCompatActivity {
     private Button signinButton;
@@ -72,26 +53,14 @@ public class LoginActivity extends AppCompatActivity {
                 userLogin();
             }
         });
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.tourassistant.Activity",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            Log.e("KeyHash:", "printHashKey()", e);
-        }
-        catch (NoSuchAlgorithmException e) {
-            Log.e("KeyHash:", "printHashKey()", e);
-        }
 
         loginButton = findViewById(R.id.login_button);
         addFbLoginEvent();
+
+
     }
+
+
 
     private void addFbLoginEvent() {
         loginButton.setReadPermissions("email");

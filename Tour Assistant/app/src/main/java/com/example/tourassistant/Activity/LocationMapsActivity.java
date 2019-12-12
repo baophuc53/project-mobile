@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,10 +23,12 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
@@ -45,6 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,6 +85,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         parking = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_parking);
         other = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_24_hours);
         initMap();
+        addActionBottomNavigationView();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
     }
 
@@ -127,6 +132,11 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
         mMap = googleMap;
         LatLng HCM = new LatLng(10.743702, 106.676026);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HCM, 15.0f));
@@ -153,6 +163,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             userService.suggestStopPoint(suggestStopPointRequest, new Callback<SuggestStopPointResponse>() {
                 @Override
                 public void success(SuggestStopPointResponse suggestStopPointResponse, Response response) {
+                    progress.dismiss();
                     for (SuggestStopPoint s : suggestStopPointResponse.getStopPoints()) {
                         LatLng p = new LatLng(Double.parseDouble(s.getLat()), Double.parseDouble(s.getLong()));
                         if (!suggestPoints.contains(p)) {
@@ -179,7 +190,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    progress.dismiss();
                 }
             });
         }
@@ -217,4 +228,41 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             }
         });
     }
+
+    private void addActionBottomNavigationView() {
+        Intent intent;
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_map);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.action_recents:
+                        intent=new Intent(LocationMapsActivity.this, UserListTourActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+                        finish();
+                        break;
+                    case R.id.action_list_tour:
+                        Intent intentMap =new Intent(LocationMapsActivity.this,ListTourActivity.class);
+                        startActivity(intentMap);
+                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+                        finish();
+                        break;
+                    case R.id.action_notifications:
+                        Toast.makeText(LocationMapsActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_setting:
+                        intent =new Intent(LocationMapsActivity.this,SettingActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
 }

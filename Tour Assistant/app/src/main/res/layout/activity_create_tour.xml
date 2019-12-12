@@ -322,33 +322,33 @@
             </LinearLayout>
 
             <FrameLayout
-                android:id="@+id/create_tour_choose_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp">
+            android:id="@+id/create_tour_choose_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp">
 
-                <EditText
-                    android:id="@+id/create_tour_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:inputType="none"
-                    android:hint="@string/create_tour_image"
-                    android:background="@drawable/bg_edittext" />
-                <Button
-                    android:id="@+id/create_tour_btn_add_image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/ic_add_24px"
-                    android:visibility="visible" />
-            </FrameLayout>
+            <EditText
+                android:id="@+id/create_tour_image"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="none"
+                android:hint="@string/create_tour_image"
+                android:background="@drawable/bg_edittext" />
+            <Button
+                android:id="@+id/create_tour_btn_add_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_add_24px"
+                android:visibility="visible" />
+        </FrameLayout>
             <CheckBox
                 android:id="@+id/Is_private_btn"
                 android:layout_width="match_parent"
