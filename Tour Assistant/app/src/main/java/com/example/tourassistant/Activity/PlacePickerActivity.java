@@ -25,9 +25,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PlacePicker extends FragmentActivity implements OnMapReadyCallback {
+public class PlacePickerActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
@@ -90,8 +91,8 @@ public class PlacePicker extends FragmentActivity implements OnMapReadyCallback 
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String location = searchView.getQuery().toString();
-                List<Address> addressList = null;
-                Geocoder geocoder = new Geocoder(PlacePicker.this);
+                List<Address> addressList = new ArrayList<>();
+                Geocoder geocoder = new Geocoder(PlacePickerActivity.this);
                 try {
                     addressList = geocoder.getFromLocationName(location, 1);
                 } catch (IOException e) {
@@ -100,14 +101,15 @@ public class PlacePicker extends FragmentActivity implements OnMapReadyCallback 
                 if (addressList.size()>0) {
                     address = addressList.get(0);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    mMap.addMarker(new MarkerOptions()
+                    mMap.clear();
+                    marker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(location)
                             .snippet(address.getAddressLine(0)));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
                 }
                 else {
-                    Toast.makeText(PlacePicker.this, "Fail", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PlacePickerActivity.this, "Fail", Toast.LENGTH_LONG).show();
                 }
                 return false;
             }

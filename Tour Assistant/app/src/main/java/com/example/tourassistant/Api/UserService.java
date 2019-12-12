@@ -6,11 +6,14 @@ import android.telecom.Call;
 import com.example.tourassistant.Object.StopPoint;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
+import com.example.tourassistant.model.DetailServiceResponse;
+import com.example.tourassistant.model.FeedbackServiceRequest;
 import com.example.tourassistant.model.ListTourResponse;
 import com.example.tourassistant.model.LoginByFaceRequest;
 import com.example.tourassistant.model.LoginByFaceResponse;
 import com.example.tourassistant.model.LoginRequest;
 import com.example.tourassistant.model.LoginResponse;
+import com.example.tourassistant.model.PointServiceResponse;
 import com.example.tourassistant.model.RegisterRequest;
 import com.example.tourassistant.model.RegisterResponse;
 import com.example.tourassistant.model.SendCmtRequest;
@@ -82,5 +85,14 @@ public interface UserService {
     @POST("/tour/comment")
     void sendCmttoTour(@Body SendCmtRequest sendCmtRequest,
                        Callback<StopPointResponse> callback);
+
+    @GET("/tour/get/service-detail")
+    void getDetailService(@Query("serviceId") int id, Callback<DetailServiceResponse> callback);
+
+    @GET("/tour/get/feedback-point-stats")
+    void getFeedbackPoint(@Query("serviceId") int id, Callback<PointServiceResponse> callback);
+
+    @POST("/tour/add/feedback-service")
+    void sendFeedbackService(@Body FeedbackServiceRequest feedbackServiceRequest, Callback<StopPointResponse> callback);
 
 }

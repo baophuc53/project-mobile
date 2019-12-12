@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.GeneralFragment"
+    >
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/point_info_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="Name"/>
+
+            <TextView
+                android:id="@+id/point_info_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="20dp"
+                android:text="Address"
+                android:textSize="17dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_price_tag_usd" />
+
+                <TextView
+                    android:id="@+id/point_info_pricetour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:hint="@string/price_tour_hints"
+
+                    />
+
+                <TextView
+                    android:id="@+id/point_info_priceLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:textAlignment="textEnd"
+                    android:textStyle="bold"
+                    android:hint="Normal"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/point_info_service_type_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_cutlery"
+                    />
+
+                <TextView
+                    android:id="@+id/point_info_service_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:text="Restaurant"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp">
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@android:color/darker_gray"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:text="Rate this point"/>
+
+            <RatingBar
+                android:id="@+id/point_info_user_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:numStars="5"
+                android:stepSize="1.0"
+                android:minHeight="10dp"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:rating="0"/>
+            <EditText
+                android:id="@+id/point_info_user_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="45dp"
+                android:paddingHorizontal="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:hint="Your thinking..."
+                android:inputType="textCapSentences"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_radius_edittext"/>
+            <Button
+                android:id="@+id/point_info_send_review"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="10dp"
+                android:text="Send"
+                android:textColor="#ffff"
+                android:background="@drawable/bg_button"
+                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp">
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="@android:color/darker_gray"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:text="Rating reviews"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.taufiqrahman.reviewratings.RatingReviews xmlns:bar="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/point_info_rating_reviews"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="42dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/point_info_textView"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.499"
+                    bar:animation="true"
+                    bar:max_value="100"
+                    bar:show_label="true"
+                    bar:show_raters="false"
+                    bar:spaces="7dp"
+                    bar:rounded="true"
+                    bar:text_color="#333333"
+                    bar:text_size="10sp"
+                    bar:width="12dp" />
+                <TextView
+                    android:id="@+id/point_info_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?android:selectableItemBackground"
+                    android:text="0.0"
+                    android:textColor="#333333"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/point_info_ratingBar"
+                    app:layout_constraintHorizontal_bias="0.36"
+                    app:layout_constraintStart_toStartOf="@id/point_info_ratingBar"
+                    app:layout_constraintTop_toTopOf="@id/point_info_rating_reviews" />
+
+                <RatingBar
+                    android:id="@+id/point_info_ratingBar"
+                    style="@android:style/Widget.Material.Light.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:numStars="5"
+                    android:progressTint="#0f9d58"
+                    android:backgroundTint="#0f9d58"
+                    android:rating="4"
+                    android:stepSize="1"
+                    app:layout_constraintBottom_toBottomOf="@id/point_info_rating_reviews"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/point_info_textView"
+                    app:layout_constraintVertical_bias="0.07999998"
+                    android:layout_marginLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/point_info_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:text="756, 800"
+                    android:textColor="#333333"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@id/point_info_ratingBar"
+                    app:layout_constraintTop_toBottomOf="@id/point_info_ratingBar"
+                    android:layout_marginLeft="8dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

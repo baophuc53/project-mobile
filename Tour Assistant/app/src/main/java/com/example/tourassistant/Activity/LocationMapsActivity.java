@@ -1,16 +1,23 @@
 package com.example.tourassistant.Activity;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,11 +40,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +66,8 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
     private boolean mLocationPermissionsGranted = false;
     final List<LatLng> suggestPoints = new ArrayList<>();
     final List<Marker> markerList = new ArrayList<>();
+    private Marker recentMarker;
+    private BitmapDescriptor cultery = null, hotel = null, parking = null, other = null;
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
 
@@ -65,8 +76,21 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_maps);
         getLocationPermission();
+        cultery = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_cutlery);
+        hotel = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_hotel);
+        parking = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_parking);
+        other = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_24_hours);
         initMap();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Activity context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     public void onBackPressed() {
@@ -138,6 +162,15 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                     .title(s.getName())
                                     .snippet(s.getAddress()));
+
+                            if (s.getServiceTypeId() == 1)
+                                marker.setIcon(cultery);
+                            else if(s.getServiceTypeId() == 2)
+                                marker.setIcon(hotel);
+                            else if(s.getServiceTypeId() == 3)
+                                marker.setIcon(parking);
+                            else if(s.getServiceTypeId() == 4)
+                                marker.setIcon(other);
                             marker.setTag(s);
                             markerList.add(marker);
                         }
@@ -150,5 +183,38 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
                 }
             });
         }
+
+        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+                final SuggestStopPoint s = (SuggestStopPoint) marker.getTag();
+                Intent intent = new Intent(LocationMapsActivity.this, PointInfoActivity.class);
+                int id;
+                id = s.getId();
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        });
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (recentMarker != null)
+                    recentMarker.remove();
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng);
+                List<Address> addresses = new ArrayList<>();
+                Geocoder geocoder = new Geocoder(LocationMapsActivity.this);
+                try {
+                    addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (addresses.size()>0){
+                    markerOptions.title(addresses.get(0).getAddressLine(0))
+                                .snippet(addresses.get(0).getAddressLine(1));
+                }
+                recentMarker = mMap.addMarker(markerOptions);
+            }
+        });
     }
 }

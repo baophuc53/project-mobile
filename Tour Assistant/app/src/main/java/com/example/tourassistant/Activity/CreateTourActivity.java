@@ -6,18 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.util.Freezable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
-import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -26,38 +22,24 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.tourassistant.Object.Tour;
 import com.example.tourassistant.Api.MyAPIClient;
 import com.example.tourassistant.Api.UserService;
-import com.example.tourassistant.Object.Tour;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
-import com.example.tourassistant.model.LoginResponse;
-import com.example.tourassistant.model.UpdateAvtRequest;
-import com.example.tourassistant.model.UpdateAvtResponse;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import pub.devrel.easypermissions.EasyPermissions;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.mime.TypedFile;
 
 public class CreateTourActivity extends AppCompatActivity {
 
@@ -110,7 +92,7 @@ public class CreateTourActivity extends AppCompatActivity {
         source.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateTourActivity.this, com.example.tourassistant.Activity.PlacePicker.class);
+                Intent i = new Intent(CreateTourActivity.this, PlacePickerActivity.class);
                 startActivityForResult(i, SRC_PLACE_PICKER_REQUEST);
             }
         });
@@ -121,7 +103,7 @@ public class CreateTourActivity extends AppCompatActivity {
         des.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateTourActivity.this, com.example.tourassistant.Activity.PlacePicker.class);
+                Intent i = new Intent(CreateTourActivity.this, PlacePickerActivity.class);
                 startActivityForResult(i, DES_PLACE_PICKER_REQUEST);
             }
         });
