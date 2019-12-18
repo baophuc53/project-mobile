@@ -3,13 +3,14 @@ package com.example.tourassistant.Api;
 
 import android.telecom.Call;
 
-import com.example.tourassistant.Object.StopPoint;
 import com.example.tourassistant.model.ChangePasswordRequest;
 import com.example.tourassistant.model.ChangePasswordResponse;
 import com.example.tourassistant.model.CreateTourRequest;
 import com.example.tourassistant.model.CreateTourResponse;
 import com.example.tourassistant.model.DetailServiceResponse;
 import com.example.tourassistant.model.FeedbackServiceRequest;
+import com.example.tourassistant.model.InviteRequest;
+import com.example.tourassistant.model.InviteResponse;
 import com.example.tourassistant.model.ListTourResponse;
 import com.example.tourassistant.model.LoginByFaceRequest;
 import com.example.tourassistant.model.LoginByFaceResponse;
@@ -18,19 +19,17 @@ import com.example.tourassistant.model.LoginResponse;
 import com.example.tourassistant.model.PointServiceResponse;
 import com.example.tourassistant.model.RegisterRequest;
 import com.example.tourassistant.model.RegisterResponse;
+import com.example.tourassistant.model.SearchUserResponse;
 import com.example.tourassistant.model.SendCmtRequest;
 import com.example.tourassistant.model.StopPointRequest;
 import com.example.tourassistant.model.StopPointResponse;
 import com.example.tourassistant.model.SuggestStopPointRequest;
 import com.example.tourassistant.model.SuggestStopPointResponse;
 import com.example.tourassistant.model.TourInfoResponse;
-import com.example.tourassistant.model.UpdateAvtRequest;
 import com.example.tourassistant.model.UpdateAvtResponse;
 import com.example.tourassistant.model.UpdateUserInfoRequest;
 import com.example.tourassistant.model.UpdateUserInfoResponse;
 import com.example.tourassistant.model.UserInfoResponse;
-
-import java.io.File;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -111,4 +110,12 @@ public interface UserService {
     void changePassword(@Body ChangePasswordRequest changePasswordRequest,
                         Callback<ChangePasswordResponse> callback);
 
+    @POST("/tour/add/member")
+    void inviteMember(@Body InviteRequest inviteRequest, Callback<InviteResponse> callback);
+
+    @GET("/user/search")
+    void searchUser(@Query("searchKey") String searchKey,
+                    @Query("pageIndex") int pageIndex,
+                    @Query("pageSize") String pageSize,
+                    Callback<SearchUserResponse> callback);
 }

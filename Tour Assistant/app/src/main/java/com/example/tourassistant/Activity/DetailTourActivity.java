@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -67,6 +69,29 @@ public class DetailTourActivity extends AppCompatActivity {
         addEventAddCmt();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Intent intent=getIntent();
+        if(intent.getBooleanExtra("isMyListTour",false))
+            getMenuInflater().inflate(R.menu.detail_tour_actionbar_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.invite:
+                Intent thisIntent=getIntent();
+                Intent intent=new Intent(DetailTourActivity.this,InviteMemberActivity.class);
+                intent.putExtra("Tour",thisIntent.getLongExtra("tourId",0));
+                intent.putExtra("isPrivate",privateTour.getText()=="Private");
+                startActivity(intent);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     private void addEventAddCmt() {
         addCMT.setOnClickListener(new View.OnClickListener() {
             @Override

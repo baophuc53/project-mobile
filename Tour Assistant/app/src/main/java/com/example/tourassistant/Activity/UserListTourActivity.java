@@ -115,6 +115,7 @@ public class UserListTourActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(UserListTourActivity.this, DetailTourActivity.class);
                 intent.putExtra("tourId", tourAdapters.getItem(position).getId());
+                intent.putExtra("isMyListTour",true);
                 startActivity(intent);
             }
         });

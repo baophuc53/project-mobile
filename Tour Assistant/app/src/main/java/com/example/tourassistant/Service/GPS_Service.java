@@ -1,4 +1,4 @@
-package com.example.tourassistant.Activity;
+package com.example.tourassistant.Service;
 
 import android.annotation.SuppressLint;
 import android.app.Service;

@@ -32,10 +32,10 @@ public class ListMemberActivity extends AppCompatActivity {
         title.setText("List Members of Tour");
         addControl();
         Show();
-        addSeach();
+        addSearch();
     }
 
-    private void addSeach() {
+    protected void addSearch() {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -51,7 +51,7 @@ public class ListMemberActivity extends AppCompatActivity {
         });
     }
 
-    private void Show() {
+    protected void Show() {
         Intent intent = getIntent();
         List<Member> listMember = (List<Member>)intent.getSerializableExtra("MemberList");
         memberAdapters = new MemberAdapters(ListMemberActivity.this, R.layout.items_list_members,
@@ -59,7 +59,7 @@ public class ListMemberActivity extends AppCompatActivity {
         lvMembers.setAdapter(memberAdapters);
     }
 
-    private void addControl() {
+    protected void addControl() {
         lvMembers = findViewById(R.id.list_member);
         search = findViewById(R.id.search_Member);
     }

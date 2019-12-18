@@ -37,6 +37,9 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.example.tourassistant.Activity.Constants.PAGE_NUM;
+import static com.example.tourassistant.Activity.Constants.ROW_PER_PAGE;
+
 public class ListTourActivity extends AppCompatActivity {
 
     Tour tour;
@@ -166,8 +169,8 @@ public class ListTourActivity extends AppCompatActivity {
 
         tour = new Tour();
         ListTourRequest request = new ListTourRequest();
-        request.setPageNum(1);
-        request.setRowPerPage(10000);
+        request.setPageNum(PAGE_NUM);
+        request.setRowPerPage(ROW_PER_PAGE);
         UserService userService;
 
         SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
