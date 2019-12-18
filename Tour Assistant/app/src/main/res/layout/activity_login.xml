@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginHorizontal="20dp"
-    tools:context="com.example.tourassistant.Activity.LoginActivity">
+    tools:context="com.ygaps.travelapp.Activity.LoginActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

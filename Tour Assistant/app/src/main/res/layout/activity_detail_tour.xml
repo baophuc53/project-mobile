@@ -227,7 +227,7 @@
                             android:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
-            <com.example.tourassistant.adapter.ExpandableHeightListView
+            <com.ygaps.travelapp.adapter.ExpandableHeightListView
                 android:id="@+id/list_cmt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -235,7 +235,7 @@
                 android:fadingEdge="none"
                 android:scrollbars="none"
                 android:focusable="false">
-            </com.example.tourassistant.adapter.ExpandableHeightListView>
+            </com.ygaps.travelapp.adapter.ExpandableHeightListView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

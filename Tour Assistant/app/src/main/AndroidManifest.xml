@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tourassistant.Activity">
+    package="com.ygaps.travelapp.Activity">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".App"
@@ -26,9 +27,7 @@
         <activity android:name=".InviteMemberActivity" />
 
         <service
-            android:name="com.example.tourassistant.Service.MyFirebaseService"
-            android:enabled="true"
-            android:exported="true">
+            android:name=".Service.MyFirebaseService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -93,7 +92,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.example.tourassistant.Service.GPS_Service" />
     </application>
 
 </manifest>
