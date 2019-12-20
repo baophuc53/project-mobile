@@ -5,6 +5,7 @@ import com.ygaps.travelapp.model.ChangePasswordRequest;
 import com.ygaps.travelapp.model.ChangePasswordResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
 import com.ygaps.travelapp.model.CreateTourResponse;
+import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.DetailServiceResponse;
 import com.ygaps.travelapp.model.FeedbackServiceRequest;
 import com.ygaps.travelapp.model.InviteRequest;
@@ -118,5 +119,5 @@ public interface UserService {
                     Callback<SearchUserResponse> callback);
 
     @POST("/user/notification/put-token")
-    void RegisterToken(@Body TokenRequest tokenRequest, Callback<String> callback);
+    void RegisterToken(@Body TokenRequest tokenRequest, Callback<DefaultResponse> callback);
 }

@@ -7,14 +7,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Tour;
-import com.ygaps.travelapp.Activity.R;
-import com.ygaps.travelapp.Activity.Service.MyFirebaseService;
 import com.ygaps.travelapp.model.ListTourRequest;
 import com.ygaps.travelapp.model.ListTourResponse;
-import com.google.gson.Gson;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -30,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         getSupportActionBar().hide();
-
-        Intent serviceIntent=new Intent(MainActivity.this, MyFirebaseService.class);
-        startService(serviceIntent);
         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
         String token=sharedPreferences.getString("token","");
         if(token.isEmpty()) {

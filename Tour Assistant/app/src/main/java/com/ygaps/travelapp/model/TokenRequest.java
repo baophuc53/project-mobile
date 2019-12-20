@@ -1,22 +1,44 @@
 package com.ygaps.travelapp.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class TokenRequest {
+
     @SerializedName("fcmToken")
+    @Expose
     private String fcmToken;
     @SerializedName("deviceId")
-    private String devideId;
+    @Expose
+    private String deviceId;
     @SerializedName("platform")
-    private int platform=1;
+    @Expose
+    private Integer platform;
     @SerializedName("appVersion")
-    private String appVersion="1.0.0";
+    @Expose
+    private String appVersion;
 
-    public int getPlatform() {
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public Integer getPlatform() {
         return platform;
     }
 
-    public void setPlatform(int platform) {
+    public void setPlatform(Integer platform) {
         this.platform = platform;
     }
 
@@ -28,19 +50,4 @@ public class TokenRequest {
         this.appVersion = appVersion;
     }
 
-    public String getDevideId() {
-        return devideId;
-    }
-
-    public void setDevideId(String devideId) {
-        this.devideId = devideId;
-    }
-
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
 }

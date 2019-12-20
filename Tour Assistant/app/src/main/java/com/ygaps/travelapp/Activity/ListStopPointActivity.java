@@ -1,8 +1,5 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +7,10 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ygaps.travelapp.Object.StopPoint;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.adapter.StopPointAdapters;
 
 import java.util.ArrayList;

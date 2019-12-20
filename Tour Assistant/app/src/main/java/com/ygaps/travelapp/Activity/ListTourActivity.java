@@ -2,9 +2,12 @@ package com.ygaps.travelapp.Activity;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,15 +22,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Tour;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.adapter.TourAdapters;
+import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.ListTourRequest;
 import com.ygaps.travelapp.model.ListTourResponse;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
+import com.ygaps.travelapp.model.TokenRequest;
 
 import java.util.ArrayList;
 
@@ -41,7 +46,6 @@ import static com.ygaps.travelapp.Activity.Constants.ROW_PER_PAGE;
 public class ListTourActivity extends AppCompatActivity {
 
     Tour tour;
-    ArrayList<Tour> toursList = new ArrayList<Tour>();
     TourAdapters tourAdapters;
     ListView lvTours;
     TextView totalTour;
@@ -59,12 +63,22 @@ public class ListTourActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.actionbar_textview);
         title.setText("Tour Assistant");
 
+        Authorize();
         addControls();
         addEvent();
         addResfreshEvent();
         addActionBottomNavigationView();
         addEventSearch();
         addEventClickTour();
+        sendRegistrationToServer();
+    }
+
+    private void Authorize() {
+        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+        String Token = sharedPreferences.getString("token", "");
+
+
+        MyAPIClient.getInstance().setAccessToken(Token);
     }
 
     private void addEvent() {
@@ -122,7 +136,6 @@ public class ListTourActivity extends AppCompatActivity {
     }
 
     private void addActionBottomNavigationView() {
-        Intent intent;
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -172,11 +185,6 @@ public class ListTourActivity extends AppCompatActivity {
         request.setRowPerPage(ROW_PER_PAGE);
         UserService userService;
 
-        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
-        String Token = sharedPreferences.getString("token", "");
-
-
-        MyAPIClient.getInstance().setAccessToken(Token);
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         userService.getListTour(request.getRowPerPage(),
                 request.getPageNum(),
@@ -239,5 +247,37 @@ public class ListTourActivity extends AppCompatActivity {
         addTourbtn = (Button) findViewById(R.id.button_add_tour);
         search = (SearchView) findViewById(R.id.search_tour);
         pullToRefresh = findViewById(R.id.pullToRefresh);
+    }
+
+    private void sendRegistrationToServer() {
+        String token = FirebaseInstanceId.getInstance().getToken();
+        TokenRequest tokenRequest = new TokenRequest();
+        tokenRequest.setFcmToken(token);
+        tokenRequest.setPlatform(1);
+        tokenRequest.setAppVersion("1.0");
+
+        String deviceId;
+        deviceId = getDeviceId(ListTourActivity.this);
+        tokenRequest.setDeviceId(deviceId);
+
+        UserService userService= MyAPIClient.getInstance().getAdapter().create(UserService.class);
+        userService.RegisterToken(tokenRequest, new Callback<DefaultResponse>() {
+            @Override
+            public void success(DefaultResponse defaultResponse, Response response) {
+                Log.i("register firebase", "success");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("register firebase", "failure");
+            }
+        });
+    }
+
+    private String getDeviceId(Context context) {
+        String androidId = Settings.Secure.getString(
+                context.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        return androidId;
     }
 }

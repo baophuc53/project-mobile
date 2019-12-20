@@ -1,33 +1,23 @@
 package com.ygaps.travelapp.Activity.Service;
 
-import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.ygaps.travelapp.Activity.MainActivity;
-import com.ygaps.travelapp.Api.MyAPIClient;
-import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Activity.R;
-import com.ygaps.travelapp.model.TokenRequest;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.ygaps.travelapp.Activity.MainActivity;
+import com.ygaps.travelapp.Activity.R;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseService";
@@ -45,35 +35,9 @@ public class MyFirebaseService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
-
-        sendRegistrationToServer(token);
     }
 
-    private void sendRegistrationToServer(String token) {
-        TokenRequest tokenRequest = new TokenRequest();
-        tokenRequest.setFcmToken(token);
 
-        TelephonyManager telephonyManager;
-        telephonyManager = (TelephonyManager) getSystemService(Context.
-                TELEPHONY_SERVICE);
-        if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            String deviceId = telephonyManager.getDeviceId();
-            tokenRequest.setDevideId(deviceId);
-        }
-
-        UserService userService= MyAPIClient.getInstance().getAdapter().create(UserService.class);
-        userService.RegisterToken(tokenRequest, new Callback<String>() {
-            @Override
-            public void success(String s, Response response) {
-                Log.i(TAG, "success");
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(TAG, "failure");
-            }
-        });
-    }
 
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
