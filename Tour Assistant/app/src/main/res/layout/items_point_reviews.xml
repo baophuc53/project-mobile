@@ -10,7 +10,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_marginRight="50dp">
+            android:layout_marginEnd="10dp">
             <ImageView
                 android:id="@+id/avtUsersmall_point"
                 android:layout_width="40dp"
@@ -43,6 +43,7 @@
                     android:orientation="horizontal">
 
                     <RatingBar
+                        android:id="@+id/rating_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
@@ -51,6 +52,7 @@
                         style="?android:attr/ratingBarStyleSmall"
                         />
                     <TextView
+                        android:id="@+id/create_on_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13dp"

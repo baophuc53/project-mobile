@@ -3,8 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.ReviewsFragment">
-
+    tools:context=".Fragments.ReviewsFragment"
+    android:background="#D6D6D6">
+    <TextView
+        android:id="@+id/noFeedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:visibility="gone"/>
+    <ListView
+        android:id="@+id/feedback_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 

@@ -35,13 +35,18 @@
 
             <TextView
                 android:id="@+id/nameTour"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textStyle="bold"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
-                android:hint="@string/name_tour_hints"
-                />
+                android:layout_weight="1"
+                android:hint="@string/name_tour_hints"/>
+<!--            <ImageButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_insert_drive_file_24px"-->
+<!--                android:background="#ffff"/>-->
         </LinearLayout>
 
         <LinearLayout

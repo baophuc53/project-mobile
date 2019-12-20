@@ -7,6 +7,7 @@ import com.ygaps.travelapp.model.CreateTourRequest;
 import com.ygaps.travelapp.model.CreateTourResponse;
 import com.ygaps.travelapp.model.DetailServiceResponse;
 import com.ygaps.travelapp.model.FeedbackServiceRequest;
+import com.ygaps.travelapp.model.GetListFeedbackServiceResponse;
 import com.ygaps.travelapp.model.InviteRequest;
 import com.ygaps.travelapp.model.InviteResponse;
 import com.ygaps.travelapp.model.ListTourResponse;
@@ -97,6 +98,12 @@ public interface UserService {
     @POST("/tour/add/feedback-service")
     void sendFeedbackService(@Body FeedbackServiceRequest feedbackServiceRequest, Callback<StopPointResponse> callback);
 
+    @GET("/tour/get/feedback-service")
+    void getFeedbackService(@Query("serviceId") int id,
+                            @Query("pageIndex") int index,
+                            @Query("pageSize") int size,
+                            Callback<GetListFeedbackServiceResponse> callback);
+
     @GET("/user/info")
     void getUserInfo(Callback<UserInfoResponse> callback);
 
@@ -119,4 +126,8 @@ public interface UserService {
 
     @POST("/user/notification/put-token")
     void RegisterToken(@Body TokenRequest tokenRequest, Callback<String> callback);
+
+    @GET("/tour/remove-stop-point")
+    void RemoveStopPoint(@Query("stopPointId") int id,
+                         Callback<StopPointResponse> callback);
 }

@@ -129,7 +129,7 @@ public class DetailTourActivity extends AppCompatActivity {
 
     private void addEvent() {
         Intent intent = getIntent();
-        long tourId = intent.getLongExtra("tourId", 0);
+        final long tourId = intent.getLongExtra("tourId", 0);
 
         TourInfoRequest request=new TourInfoRequest();
         UserService userService;
@@ -201,15 +201,19 @@ public class DetailTourActivity extends AppCompatActivity {
                 stopPointTour.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Intent thisIntent = getIntent();
                         Intent intent = new Intent(DetailTourActivity.this, ListStopPointActivity.class);
+                        intent.putExtra("isMyListTour", thisIntent.getBooleanExtra("isMyListTour",false));
+                        intent.putExtra("tourId", tourId);
                         if (tourInfoResponse.getStopPoints().size() == 0){
                             intent.putExtra("isNull", true);
                             startActivity(intent);
                         }
                         else{
                             intent.putExtra("isNull", false);
-                        intent.putExtra("StopPointList", (Serializable) tourInfoResponse.getStopPoints());
-                        startActivity(intent);}
+                            intent.putExtra("StopPointList", (Serializable) tourInfoResponse.getStopPoints());
+                            startActivity(intent);
+                        }
                     }
                 });
             }

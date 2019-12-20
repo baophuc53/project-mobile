@@ -60,6 +60,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
     private boolean mLocationPermissionsGranted = false;
     final List<LatLng> suggestPoints = new ArrayList<>();
     final List<Marker> markerList = new ArrayList<>();
+    private static List<SuggestStopPoint> suggestStopPoints = new ArrayList<>();
     private Marker recentMarker;
     private BitmapDescriptor cultery = null, hotel = null, parking = null, other = null;
     private GoogleMap mMap;
@@ -74,9 +75,11 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         hotel = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_hotel);
         parking = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_parking);
         other = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_24_hours);
-        initMap();
-        addActionBottomNavigationView();
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        if (mLocationPermissionsGranted) {
+            initMap();
+            addActionBottomNavigationView();
+            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        }
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Activity context, int vectorResId) {
@@ -153,8 +156,8 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             userService.suggestStopPoint(suggestStopPointRequest, new Callback<SuggestStopPointResponse>() {
                 @Override
                 public void success(SuggestStopPointResponse suggestStopPointResponse, Response response) {
-                    progress.dismiss();
-                    for (SuggestStopPoint s : suggestStopPointResponse.getStopPoints()) {
+                    suggestStopPoints = suggestStopPointResponse.getStopPoints();
+                    for (SuggestStopPoint s : suggestStopPoints) {
                         LatLng p = new LatLng(Double.parseDouble(s.getLat()), Double.parseDouble(s.getLong()));
                         if (!suggestPoints.contains(p)) {
                             suggestPoints.add(p);
@@ -166,16 +169,17 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
 
                             if (s.getServiceTypeId() == 1)
                                 marker.setIcon(cultery);
-                            else if(s.getServiceTypeId() == 2)
+                            else if (s.getServiceTypeId() == 2)
                                 marker.setIcon(hotel);
-                            else if(s.getServiceTypeId() == 3)
+                            else if (s.getServiceTypeId() == 3)
                                 marker.setIcon(parking);
-                            else if(s.getServiceTypeId() == 4)
+                            else if (s.getServiceTypeId() == 4)
                                 marker.setIcon(other);
                             marker.setTag(s);
                             markerList.add(marker);
                         }
                     }
+                    progress.dismiss();
                 }
 
                 @Override
@@ -183,8 +187,8 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
                     progress.dismiss();
                 }
             });
-        }
 
+        }
         mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
             @Override
             public void onInfoWindowLongClick(Marker marker) {
@@ -197,30 +201,10 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             }
         });
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                if (recentMarker != null)
-                    recentMarker.remove();
-                MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-                List<Address> addresses = new ArrayList<>();
-                Geocoder geocoder = new Geocoder(LocationMapsActivity.this);
-                try {
-                    addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (addresses.size()>0){
-                    markerOptions.title(addresses.get(0).getAddressLine(0))
-                                .snippet(addresses.get(0).getAddressLine(1));
-                }
-                recentMarker = mMap.addMarker(markerOptions);
-            }
-        });
+        
     }
 
     private void addActionBottomNavigationView() {
-        Intent intent;
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_map);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
