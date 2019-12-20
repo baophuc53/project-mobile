@@ -1,8 +1,5 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.model.ChangePasswordRequest;
 import com.ygaps.travelapp.model.ChangePasswordResponse;
 

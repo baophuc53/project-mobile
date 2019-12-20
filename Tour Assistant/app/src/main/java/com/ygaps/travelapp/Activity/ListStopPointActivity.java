@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.StopPoint;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.adapter.StopPointAdapters;
 import com.ygaps.travelapp.model.StopPointResponse;
 
