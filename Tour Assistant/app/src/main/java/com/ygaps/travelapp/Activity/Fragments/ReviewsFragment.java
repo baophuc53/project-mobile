@@ -9,8 +9,24 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.ygaps.travelapp.Activity.ListMemberActivity;
 import com.ygaps.travelapp.Activity.R;
+import com.ygaps.travelapp.Api.MyAPIClient;
+import com.ygaps.travelapp.Api.UserService;
+import com.ygaps.travelapp.Object.FeedbackList;
+import com.ygaps.travelapp.adapter.FeedbackAdapter;
+import com.ygaps.travelapp.adapter.MemberAdapters;
+import com.ygaps.travelapp.model.GetListFeedbackServiceResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 /**
@@ -26,7 +42,9 @@ public class ReviewsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private static int id;
+    private List<FeedbackList> feedbackLists = new ArrayList<>();
+    private FeedbackAdapter feedbackAdapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -61,6 +79,7 @@ public class ReviewsFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            id = getArguments().getInt("id", 0);
         }
     }
 
@@ -69,7 +88,29 @@ public class ReviewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_reviews, container, false);
+        final TextView noFeedback = v.findViewById(R.id.noFeedback);
+        final ListView listView = v.findViewById(R.id.feedback_list);
+        final UserService userService;
+        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+        userService.getFeedbackService(id, 1, 10000, new Callback<GetListFeedbackServiceResponse>() {
+            @Override
+            public void success(GetListFeedbackServiceResponse getListFeedbackServiceResponse, Response response) {
+                feedbackLists = getListFeedbackServiceResponse.getFeedbackList();
+                if (feedbackLists.size() > 0) {
+                    feedbackAdapter = new FeedbackAdapter(getActivity(), R.layout.items_point_reviews, feedbackLists);
+                    listView.setAdapter(feedbackAdapter);
+                }
+                else {
+                    noFeedback.setText("No feedback");
+                    noFeedback.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
         return v;
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -174,7 +175,6 @@
                 android:text="Rating reviews"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -236,14 +236,23 @@
                     android:id="@+id/point_info_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
-                    android:text="756, 800"
+                    android:layout_marginLeft="8dp"
+                    android:text="0"
                     android:textColor="#333333"
                     android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/point_info_ratingBar"
+                    app:layout_constraintHorizontal_bias="0.356"
                     app:layout_constraintStart_toStartOf="@id/point_info_ratingBar"
-                    app:layout_constraintTop_toBottomOf="@id/point_info_ratingBar"
-                    android:layout_marginLeft="8dp" />
+                    app:layout_constraintTop_toBottomOf="@id/point_info_ratingBar" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_multiple_users_silhouette"
+                    app:layout_constraintStart_toEndOf="@id/point_info_total"
+                    app:layout_constraintBottom_toBottomOf="@id/point_info_total"
+                    app:layout_constraintTop_toBottomOf="@id/point_info_ratingBar"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

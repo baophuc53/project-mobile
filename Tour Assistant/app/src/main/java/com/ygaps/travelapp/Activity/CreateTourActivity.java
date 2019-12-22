@@ -284,12 +284,20 @@ public class CreateTourActivity extends AppCompatActivity {
             correct = false;
             endDate.setError("Vui lòng chọn ngày về");
         }
+        if (TextUtils.isEmpty(source.getText().toString())){
+            correct = false;
+            source.setError("Vui lòng chọn điểm xuất phát");
+        }
+        if (TextUtils.isEmpty(des.getText().toString())){
+            correct = false;
+            des.setError("Vui lòng chọn điểm đến");
+        }
         return correct;
     }
 
     public void createTour(){
         boolean correct = checkTourInfo();
-        if (correct == true) {
+        if (correct) {
             newTour.setName(tourName.getText().toString());
             newTour.setSourceLat(sourceCoord.latitude);
             newTour.setSourceLong(sourceCoord.longitude);

@@ -9,6 +9,18 @@ public class StopPoint implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("serviceId")
+    @Expose
+    private Integer serviceId;
+
+    public Integer getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
+    }
+
     @SerializedName("arrivalAt")
     @Expose
     private Long arrivalAt;

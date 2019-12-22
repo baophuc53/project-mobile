@@ -6,13 +6,19 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -27,6 +33,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.CoordinateSet;
@@ -46,6 +53,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -72,6 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     final List<LatLng> suggestPoints = new ArrayList<>();
     final List<Marker> markerList = new ArrayList<>();
     final List<StopPoint> stopPoints = new ArrayList<>();
+    private BitmapDescriptor cultery = null, hotel = null, parking = null, other = null;
     private StopPoint stopPoint = null;
     SupportMapFragment mapFragment;
 
@@ -82,7 +91,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
         getLocationPermission();
-        initMap();
+        cultery = bitmapDescriptorFromVector(MapsActivity.this , R.drawable.ic_cutlery);
+        hotel = bitmapDescriptorFromVector(MapsActivity.this , R.drawable.ic_hotel);
+        parking = bitmapDescriptorFromVector(MapsActivity.this , R.drawable.ic_parking);
+        other = bitmapDescriptorFromVector(MapsActivity.this , R.drawable.ic_24_hours);
+        if (mLocationPermissionsGranted) {
+            initMap();
+        }
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Activity context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Override
@@ -167,6 +191,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                     .title(s.getName())
                                     .snippet(s.getAddress()));
+
+                            if (s.getServiceTypeId() == 1)
+                                marker.setIcon(cultery);
+                            else if(s.getServiceTypeId() == 2)
+                                marker.setIcon(hotel);
+                            else if(s.getServiceTypeId() == 3)
+                                marker.setIcon(parking);
+                            else if(s.getServiceTypeId() == 4)
+                                marker.setIcon(other);
                             marker.setTag(s);
                             markerList.add(marker);
                         }
@@ -182,12 +215,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-
+                List<Address> addresses = new ArrayList<>();
+                Geocoder geocoder = new Geocoder(MapsActivity.this);
+                MarkerOptions markerOptions = new MarkerOptions().position(point);
+                try {
+                    addresses = geocoder.getFromLocation(point.latitude, point.longitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (addresses.size()>0){
+                    markerOptions.title(addresses.get(0).getAddressLine(0))
+                            .snippet(addresses.get(0).getAddressLine(1));
+                }
                 Point = point;
-                Marker marker = mMap.addMarker(new MarkerOptions().position(point));
+                Marker marker = mMap.addMarker(markerOptions);
+                marker.showInfoWindow();
                 addStopPoints(marker);
             }
         });
+
         ImageButton list = findViewById(R.id.list_stop_point_btn);
         list.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,8 +260,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void success(StopPointResponse stopPointResponse, Response response) {
                             Toast.makeText(MapsActivity.this, "ok", Toast.LENGTH_SHORT).show();
-                            Intent intent1 = new Intent(MapsActivity.this, ListTourActivity.class);
-                            startActivity(intent1);
+//                            Intent intent1 = new Intent(MapsActivity.this, ListTourActivity.class);
+//                            startActivity(intent1);
                             finish();
                         }
                         @Override
@@ -241,9 +287,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
-            public void onInfoWindowLongClick(final Marker marker) {
+            public void onInfoWindowClick(final Marker marker) {
                 final SuggestStopPoint s = (SuggestStopPoint) marker.getTag();
                 final Dialog dialog = new Dialog(MapsActivity.this);
                 dialog.setContentView(R.layout.layout_suggest_stop_point);
@@ -419,6 +465,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final EditText maxCost = dialog.findViewById(R.id.edit_max_cost);
         final EditText minCost = dialog.findViewById(R.id.edit_min_cost);
 
+        address.setText(marker.getTitle());
         ArrayAdapter<String> serviceAdapter = new ArrayAdapter<String>(MapsActivity.this,
                 android.R.layout.simple_list_item_1,
                 getResources().getStringArray(R.array.services));

@@ -142,10 +142,6 @@ public class GeneralFragment extends Fragment {
                         serviceType.setText("Other");
                         imgType.setImageResource(R.drawable.ic_24_hours);
                     }
-                    if (detailServiceResponse.getSelfStarRatings() != null) {
-                        selfPoint.setText(String.valueOf(detailServiceResponse.getSelfStarRatings()));
-                        selfRatingBar.setRating(detailServiceResponse.getSelfStarRatings());
-                    }
                 }
 
                 @Override
@@ -160,14 +156,23 @@ public class GeneralFragment extends Fragment {
                     List<PointStat> list = pointServiceResponse.getPointStats();
                     int[] raters = new int[5];
                     for (int j = 0; j<5; j++) {
-                        raters[j] = list.get(j).getTotal();
+                        raters[4-j] = list.get(j).getTotal();
                     }
                     int s = 0;
                     for (int i:raters) {
                         s+=i;
                     }
-                    total.setText(String.valueOf(s));
-                    ratingReviews.createRatingBars(100, BarLabels.STYPE3, Color.parseColor("#0f9d58"), raters);
+                    float avg = 0;
+                    for (int i = 0; i<5; i++){
+                        avg+=(5-i)*raters[i];
+                    }
+                    if (s>0) {
+                        avg /= s;
+                        selfPoint.setText(String.valueOf(avg));
+                        selfRatingBar.setRating(avg);
+                        total.setText(String.valueOf(s));
+                    }
+                    ratingReviews.createRatingBars(50, BarLabels.STYPE3, Color.parseColor("#0f9d58"), raters);
                 }
 
                 @Override
