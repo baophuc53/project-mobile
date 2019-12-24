@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ygaps.travelapp.Activity.Fragments.ListTourFragment;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.model.LoginByFaceRequest;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("userId", loginByFaceResponse.getUserId());
                         editor.putBoolean("LoginByFB", true);
                         editor.commit();
-                        Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);
+                        Intent intent=new Intent(LoginActivity.this, ListTourFragment.class);
                         startActivity(intent);
                         finish();
                     }
@@ -148,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("userId", loginResponse.getUserId());
                 editor.putBoolean("LoginByFB", false);
                 editor.commit();
-                Intent intent=new Intent(LoginActivity.this,ListTourActivity.class);
+                Intent intent=new Intent(LoginActivity.this, ListTourFragment.class);
                 startActivity(intent);
                 finish();
             }

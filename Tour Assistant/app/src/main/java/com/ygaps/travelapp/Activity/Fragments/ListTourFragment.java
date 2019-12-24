@@ -1,6 +1,7 @@
-package com.ygaps.travelapp.Activity;
+package com.ygaps.travelapp.Activity.Fragments;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +9,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,11 +23,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
+import com.ygaps.travelapp.Activity.CreateTourActivity;
+import com.ygaps.travelapp.Activity.DetailTourActivity;
+import com.ygaps.travelapp.Activity.LocationMapsActivity;
+import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Tour;
@@ -43,7 +51,7 @@ import retrofit.client.Response;
 import static com.ygaps.travelapp.Activity.Constants.PAGE_NUM;
 import static com.ygaps.travelapp.Activity.Constants.ROW_PER_PAGE;
 
-public class ListTourActivity extends AppCompatActivity {
+public class ListTourFragment extends Fragment {
 
     Tour tour;
     TourAdapters tourAdapters;
@@ -52,42 +60,28 @@ public class ListTourActivity extends AppCompatActivity {
     Button addTourbtn;
     SearchView search;
     SwipeRefreshLayout pullToRefresh;
+    Activity currentActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_tour);
-        //title vao giua
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_layout);
-        TextView title = findViewById(R.id.actionbar_textview);
-        title.setText("Tour Assistant");
-
-        Authorize();
-        addControls();
-        addEvent();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.activity_list_tour, container, false);
+        addControls(view);
+        GetData();
         addResfreshEvent();
-        addActionBottomNavigationView();
         addEventSearch();
         addEventClickTour();
-        sendRegistrationToServer();
+        return view;
     }
 
-    private void Authorize() {
-        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
-        String Token = sharedPreferences.getString("token", "");
 
-
-        MyAPIClient.getInstance().setAccessToken(Token);
-    }
-
-    private void addEvent() {
-        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+    private void GetData() {
+        SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
         String json = sharedPreferences.getString("listTour", "");
-        if (!json.equals("")) {
+        if (!json.isEmpty()) {
             Gson gson = new Gson();
             ListTourResponse listTour = gson.fromJson(json, ListTourResponse.class);
-            tourAdapters = new TourAdapters(ListTourActivity.this,
+            tourAdapters = new TourAdapters(currentActivity,
                     R.layout.items_listtour_layout, (ArrayList<Tour>) listTour.getTours());
             lvTours.setAdapter(tourAdapters);
             if (listTour.getTotal() == 1)
@@ -95,6 +89,8 @@ public class ListTourActivity extends AppCompatActivity {
             else
                 totalTour.setText(listTour.getTotal().toString().concat(" trips"));
         }
+        else
+            Show();
     }
 
 
@@ -112,7 +108,7 @@ public class ListTourActivity extends AppCompatActivity {
         lvTours.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ListTourActivity.this, DetailTourActivity.class);
+                Intent intent = new Intent(currentActivity, DetailTourActivity.class);
                 intent.putExtra("tourId", tourAdapters.getItem(position).getId());
                 startActivity(intent);
             }
@@ -135,47 +131,10 @@ public class ListTourActivity extends AppCompatActivity {
         });
     }
 
-    private void addActionBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.action_recents:
-                        intent = new Intent(ListTourActivity.this, UserListTourActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                    case R.id.action_map:
-                        Intent intentMap = new Intent(ListTourActivity.this, LocationMapsActivity.class);
-                        startActivity(intentMap);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                    case R.id.action_notifications:
-                        intent = new Intent(ListTourActivity.this, Notification.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                    case R.id.action_setting:
-                        intent = new Intent(ListTourActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
 
     private void Show() {
 
-        final ProgressDialog progress = new ProgressDialog(this);
+        final ProgressDialog progress = new ProgressDialog(currentActivity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
@@ -198,7 +157,7 @@ public class ListTourActivity extends AppCompatActivity {
                     public void success(ListTourResponse listTourResponse, Response response) {  // To dismiss the dialog
                         progress.dismiss();
 
-                        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+                        SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         Gson gson = new Gson();
                         String json = gson.toJson(listTourResponse);
@@ -209,7 +168,7 @@ public class ListTourActivity extends AppCompatActivity {
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
                         else
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
-                        tourAdapters = new TourAdapters(ListTourActivity.this,
+                        tourAdapters = new TourAdapters(currentActivity,
                                 R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
                         lvTours.setAdapter(tourAdapters);
                     }
@@ -220,67 +179,35 @@ public class ListTourActivity extends AppCompatActivity {
                         switch (error.getKind()) {
                             case HTTP:
                                 if (error.getResponse().getStatus() == 500)
-                                    Toast.makeText(ListTourActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(currentActivity, "Lỗi server", Toast.LENGTH_LONG).show();
                                 break;
                             case NETWORK:
                             case UNEXPECTED:
-                                Toast.makeText(ListTourActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
+                                Toast.makeText(currentActivity, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
                                 break;
                             default:
-                                Toast.makeText(ListTourActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                                Toast.makeText(currentActivity, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
         addTourbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenCreateTourActivity();
+                Intent intent = new Intent(currentActivity, CreateTourActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void OpenCreateTourActivity() {
-        Intent intent = new Intent(ListTourActivity.this, CreateTourActivity.class);
-        startActivity(intent);
+
+    private void addControls(View view) {
+        currentActivity=getActivity();
+        lvTours = view.findViewById(R.id.listTour);
+        totalTour = view.findViewById(R.id.total_tour);
+        addTourbtn = view.findViewById(R.id.button_add_tour);
+        search = view.findViewById(R.id.search_tour);
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
     }
 
-    private void addControls() {
-        lvTours = (ListView) findViewById(R.id.listTour);
-        totalTour = (TextView) findViewById(R.id.total_tour);
-        addTourbtn = (Button) findViewById(R.id.button_add_tour);
-        search = (SearchView) findViewById(R.id.search_tour);
-        pullToRefresh = findViewById(R.id.pullToRefresh);
-    }
 
-    private void sendRegistrationToServer() {
-        String token = FirebaseInstanceId.getInstance().getToken();
-        TokenRequest tokenRequest = new TokenRequest();
-        tokenRequest.setFcmToken(token);
-        tokenRequest.setPlatform(1);
-        tokenRequest.setAppVersion("1.0");
-
-        String deviceId;
-        deviceId = getDeviceId(ListTourActivity.this);
-        tokenRequest.setDeviceId(deviceId);
-
-        UserService userService= MyAPIClient.getInstance().getAdapter().create(UserService.class);
-        userService.RegisterToken(tokenRequest, new Callback<DefaultResponse>() {
-            @Override
-            public void success(DefaultResponse defaultResponse, Response response) {
-                Log.i("register firebase", "success");
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.i("register firebase", "failure");
-            }
-        });
-    }
-
-    private String getDeviceId(Context context) {
-        String androidId = Settings.Secure.getString(
-                context.getContentResolver(), Settings.Secure.ANDROID_ID);
-
-        return androidId;
-    }
 }

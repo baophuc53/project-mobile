@@ -27,7 +27,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.model.UpdateUserInfoRequest;
 import com.ygaps.travelapp.model.UpdateUserInfoResponse;
 import com.ygaps.travelapp.model.UserInfoResponse;

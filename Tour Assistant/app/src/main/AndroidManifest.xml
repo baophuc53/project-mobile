@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".App"
@@ -24,10 +24,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".InviteMemberActivity" />
 
-        <service
-            android:name=".Service.MyFirebaseService">
+        <service android:name=".Service.MyFirebaseService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -54,12 +54,9 @@
         <activity android:name=".ListMemberActivity" />
         <activity android:name=".LocationMapsActivity" />
         <activity android:name=".DetailTourActivity" />
-        <activity android:name=".SettingActivity" />
         <activity android:name=".MapsActivity" />
         <activity android:name=".CreateTourActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".UserListTourActivity" />
-        <activity android:name=".Notification"/>
         <activity android:name=".LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,9 +65,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity
-            android:name=".ListTourActivity"
-            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -92,7 +86,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

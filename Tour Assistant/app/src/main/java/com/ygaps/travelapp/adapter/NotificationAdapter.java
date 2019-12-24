@@ -1,21 +1,16 @@
 package com.ygaps.travelapp.adapter;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.ygaps.travelapp.Activity.Notification;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
@@ -24,8 +19,6 @@ import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.ProcessInvitationRequest;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

@@ -18,7 +18,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
-import com.ygaps.travelapp.Activity.Notification;
+import com.ygaps.travelapp.Activity.Fragments.NotificationFragment;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
@@ -37,13 +37,13 @@ public class MyFirebaseService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         NotificationObj notification=new Gson().fromJson(remoteMessage.getData().toString(),NotificationObj.class);
         // handle a notification payload.
-        Log.d(TAG, "Message Notification Body: " + notification);
+        Log.d(TAG, "Message NotificationFragment Body: " + notification);
 
-        SharedPreferences sharedPreferences=getSharedPreferences("Notification",0);
+        SharedPreferences sharedPreferences=getSharedPreferences("NotificationFragment",0);
 
         SharedPreferences.Editor editor=sharedPreferences.edit();
         int length= sharedPreferences.getInt("length",0);
-        editor.putString("Notification"+length, new Gson().toJson(notification));
+        editor.putString("NotificationFragment"+length, new Gson().toJson(notification));
         editor.putInt("length",length+1);
         editor.commit();
         sendNotification(notification);
@@ -88,7 +88,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
         String channelId = getString(R.string.app_name);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,channelId);
 
-        Intent intent = new Intent(this,  Notification.class);
+        Intent intent = new Intent(this,  NotificationFragment.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 

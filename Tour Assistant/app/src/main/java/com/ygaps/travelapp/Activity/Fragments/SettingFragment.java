@@ -1,17 +1,21 @@
-package com.ygaps.travelapp.Activity;
+package com.ygaps.travelapp.Activity.Fragments;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +24,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.ygaps.travelapp.Activity.ChangePasswordActivity;
+import com.ygaps.travelapp.Activity.EditProfileActivity;
+import com.ygaps.travelapp.Activity.LocationMapsActivity;
+import com.ygaps.travelapp.Activity.LoginActivity;
+import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.model.UserInfoResponse;
@@ -36,49 +45,39 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingFragment extends Fragment {
 
     ImageView avtUser;
     TextView nameUser, editProfile;
     Button signout, nextChangePass;
     FrameLayout changePass;
     UserInfoResponse userInfo = new UserInfoResponse();
+    Activity currentActivity;
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        getUserInfor();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting_account);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_layout);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        TextView title = findViewById(R.id.actionbar_textview);
-        title.setText("Setting");
-        addControl();
-        addActionBottomNavigationView();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        currentActivity=getActivity();
+        View view = inflater.inflate(R.layout.activity_setting_account, container, false);
+        addControl(view);
         getUserInfor();
         addSignOutEvent();
         addEditProfileEvent();
         addChangePasswordEvent();
+        return view;
     }
 
     private void addChangePasswordEvent() {
        changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
+                Intent intent = new Intent(currentActivity, ChangePasswordActivity.class);
                 startActivity(intent);
             }
         });
        nextChangePass.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               Intent intent = new Intent(SettingActivity.this, ChangePasswordActivity.class);
+               Intent intent = new Intent(currentActivity, ChangePasswordActivity.class);
                startActivity(intent);
            }
        });
@@ -88,7 +87,7 @@ public class SettingActivity extends AppCompatActivity {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, EditProfileActivity.class);
+                Intent intent = new Intent(currentActivity, EditProfileActivity.class);
                 intent.putExtra("userInfo", (Serializable) userInfo);
                 startActivity(intent);
             }
@@ -96,12 +95,12 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void getUserInfor() {
-        final ProgressDialog progress = new ProgressDialog(this);
+        final ProgressDialog progress = new ProgressDialog(currentActivity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         progress.show();
-        final SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+        final SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
         String Token = sharedPreferences.getString("token", "");
 
         UserService userService;
@@ -125,22 +124,22 @@ public class SettingActivity extends AppCompatActivity {
                 switch (error.getKind()) {
                     case HTTP:
                         if (error.getResponse().getStatus() == 401)
-                            Toast.makeText(SettingActivity.this, "Không tìm thấy access token", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(currentActivity, "Không tìm thấy access token", Toast.LENGTH_SHORT).show();
                         if (error.getResponse().getStatus() == 503)
-                            Toast.makeText(SettingActivity.this, "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(currentActivity, "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                        Toast.makeText(SettingActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                        Toast.makeText(currentActivity, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     private void addUserInfo(UserInfoResponse user) {
-        final SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+        final SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
         boolean loginByFB = sharedPreferences.getBoolean("LoginByFB", false);
         try {
-            Glide.with(SettingActivity.this)
+            Glide.with(currentActivity)
                     .load(user.getAvatar())
                     .apply(new RequestOptions()
                             .centerCrop()
@@ -154,52 +153,18 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    private void addActionBottomNavigationView() {
-        Intent intent;
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_setting);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.action_list_tour:
-                        intent = new Intent(SettingActivity.this, ListTourActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-                        finish();
-                        break;
-                    case R.id.action_recents:
-                        intent = new Intent(SettingActivity.this, UserListTourActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-                        finish();
-                        break;
-                    case R.id.action_map:
-                        Intent intentMap = new Intent(SettingActivity.this, LocationMapsActivity.class);
-                        startActivity(intentMap);
-                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-                        finish();
-                        break;
-                    case R.id.action_notifications:
-                        Toast.makeText(SettingActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
+
 
     private void addSignOutEvent() {
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SettingActivity.this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(currentActivity);
                 alertDialogBuilder.setMessage("Do you want to sign out?");
                 alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+                        SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         boolean loginByFB = sharedPreferences.getBoolean("LoginByFB", false);
                         editor.clear();
@@ -213,9 +178,9 @@ public class SettingActivity extends AppCompatActivity {
                                 }
                             }).executeAsync();
                         }
-                        Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(currentActivity, LoginActivity.class);
                         startActivity(intent);
-                        finish();
+                        currentActivity.finish();
                     }
                 });
                 alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -229,12 +194,12 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    private void addControl() {
-        avtUser = findViewById(R.id.avtUser);
-        nameUser = findViewById(R.id.nameUser);
-        editProfile = findViewById(R.id.editProfile);
-        signout = findViewById(R.id.SignOutButton);
-        changePass = findViewById(R.id.change_password);
-        nextChangePass = findViewById(R.id.change_password_btn);
+    private void addControl(View view) {
+        avtUser = view.findViewById(R.id.avtUser);
+        nameUser = view.findViewById(R.id.nameUser);
+        editProfile = view.findViewById(R.id.editProfile);
+        signout = view.findViewById(R.id.SignOutButton);
+        changePass = view.findViewById(R.id.change_password);
+        nextChangePass = view.findViewById(R.id.change_password_btn);
     }
 }

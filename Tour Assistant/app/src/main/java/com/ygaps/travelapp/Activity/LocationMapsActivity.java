@@ -14,20 +14,20 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.ygaps.travelapp.Activity.Fragments.ListTourFragment;
+import com.ygaps.travelapp.Activity.Fragments.SettingFragment;
+import com.ygaps.travelapp.Activity.Fragments.UserListTourFragment;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Coord;
 import com.ygaps.travelapp.Object.CoordinateSet;
 import com.ygaps.travelapp.Object.SuggestStopPoint;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.model.SuggestStopPointRequest;
 import com.ygaps.travelapp.model.SuggestStopPointResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,7 +41,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +76,6 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         other = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_24_hours);
         if (mLocationPermissionsGranted) {
             initMap();
-            addActionBottomNavigationView();
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         }
     }
@@ -201,42 +199,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             }
         });
 
-        
-    }
 
-    private void addActionBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_map);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.action_recents:
-                        intent=new Intent(LocationMapsActivity.this, UserListTourActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-                        finish();
-                        break;
-                    case R.id.action_list_tour:
-                        Intent intentMap =new Intent(LocationMapsActivity.this,ListTourActivity.class);
-                        startActivity(intentMap);
-                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-                        finish();
-                        break;
-                    case R.id.action_notifications:
-                        Toast.makeText(LocationMapsActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action_setting:
-                        intent =new Intent(LocationMapsActivity.this,SettingActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                }
-                return true;
-            }
-        });
     }
 
 }

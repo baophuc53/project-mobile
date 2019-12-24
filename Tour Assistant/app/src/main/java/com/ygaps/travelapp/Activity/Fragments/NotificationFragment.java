@@ -1,41 +1,41 @@
-package com.ygaps.travelapp.Activity;
+package com.ygaps.travelapp.Activity.Fragments;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Object.NotificationObj;
 import com.ygaps.travelapp.adapter.NotificationAdapter;
 
 import java.util.ArrayList;
 
-public class Notification extends AppCompatActivity {
+public class NotificationFragment extends Fragment {
 
     NotificationAdapter adapter;
     ArrayList<NotificationObj>  objArrayList;
     ListView listNotification;
+    Activity currentActivity;
     SharedPreferences sharedPreferences;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
-        //title vao giua
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_layout);
-        TextView title = findViewById(R.id.actionbar_textview);
-        title.setText("Notification");
-
-        Init();
-        Authorize();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View view = inflater.inflate(R.layout.activity_notification, container, false);
+        Init(view);
         addEvent();
+        return view;
     }
-
     private void addEvent() {
         sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -46,11 +46,12 @@ public class Notification extends AppCompatActivity {
     }
 
 
-    private void Init() {
+    private void Init(View view) {
+        currentActivity=getActivity();
         objArrayList=new ArrayList<>();
-        adapter=new NotificationAdapter(this, R.layout.items_notification,objArrayList);
-        listNotification=findViewById(R.id.listNotification);
-        sharedPreferences=getSharedPreferences("Notification",0);
+        adapter=new NotificationAdapter(currentActivity, R.layout.items_notification,objArrayList);
+        listNotification=view.findViewById(R.id.listNotification);
+        sharedPreferences=currentActivity.getSharedPreferences("NotificationFragment",0);
         GetData();
     }
 
@@ -59,18 +60,10 @@ public class Notification extends AppCompatActivity {
         int length=sharedPreferences.getInt("length",0);
         for(int i=length-1;i>=0;i--)
         {
-            String json=sharedPreferences.getString("Notification"+i,"");
+            String json=sharedPreferences.getString("NotificationFragment"+i,"");
             NotificationObj notificationObj=new Gson().fromJson(json,NotificationObj.class);
             adapter.add(notificationObj);
         }
         listNotification.setAdapter(adapter);
-    }
-
-    private void Authorize() {
-        SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
-        String Token = sharedPreferences.getString("token", "");
-
-
-        MyAPIClient.getInstance().setAccessToken(Token);
     }
 }

@@ -1,13 +1,16 @@
-package com.ygaps.travelapp.Activity;
+package com.ygaps.travelapp.Activity.Fragments;
 
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -18,7 +21,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.ygaps.travelapp.Activity.CreateTourActivity;
+import com.ygaps.travelapp.Activity.DetailTourActivity;
+import com.ygaps.travelapp.Activity.LocationMapsActivity;
+import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Tour;
@@ -33,31 +41,28 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UserListTourActivity extends AppCompatActivity {
+public class UserListTourFragment extends Fragment {
 
     Tour tour;
-    ArrayList<Tour> toursList = new ArrayList<Tour>();
     TourAdapters tourAdapters;
     ListView lvTours;
     TextView totalTour;
     Button addTourbtn;
     SearchView search;
+    Activity currentActivity;
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_tour);
-        //title vao giua
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_layout);
-        TextView title = findViewById(R.id.actionbar_textview);
-        title.setText("My Tour");
-        addControls();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.activity_list_tour, container, false);
+        addControls(view);
         Show();
-        addActionBottomNavigationView();
         addEventSearch();
         addEventClickTour();
+        return view;
     }
-
     private void addEventSearch() {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -67,53 +72,19 @@ public class UserListTourActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                String text = newText;
-                tourAdapters.filterTag(text);
+                tourAdapters.filterTag(newText);
                 return false;
             }
         });
     }
 
-    private void addActionBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_recents);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.action_list_tour:
-                        intent=new Intent(UserListTourActivity.this,ListTourActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-                        finish();
-                        break;
-                    case R.id.action_map:
-                        Intent intentMap =new Intent(UserListTourActivity.this,LocationMapsActivity.class);
-                        startActivity(intentMap);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                    case R.id.action_notifications:
-                        Toast.makeText(UserListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action_setting:
-                        intent=new Intent(UserListTourActivity.this,SettingActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-                        finish();
-                        break;
-                }
-                return true;
-            }
-        });
-    }
+
 
     private void addEventClickTour() {
         lvTours.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(UserListTourActivity.this, DetailTourActivity.class);
+                Intent intent = new Intent(currentActivity, DetailTourActivity.class);
                 intent.putExtra("tourId", tourAdapters.getItem(position).getId());
                 intent.putExtra("isMyListTour",true);
                 startActivity(intent);
@@ -121,7 +92,8 @@ public class UserListTourActivity extends AppCompatActivity {
         });
     }
     private void Show() {
-        final ProgressDialog progress = new ProgressDialog(this);
+        currentActivity=getActivity();
+        final ProgressDialog progress = new ProgressDialog(currentActivity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
@@ -132,7 +104,7 @@ public class UserListTourActivity extends AppCompatActivity {
         request.setRowPerPage(10000);
         UserService userService;
 
-        SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
+        SharedPreferences sharedPreferences=currentActivity.getSharedPreferences("Data",0);
         String Token =sharedPreferences.getString("token","");
 
 
@@ -148,7 +120,7 @@ public class UserListTourActivity extends AppCompatActivity {
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trip"));
                         else
                             totalTour.setText(listTourResponse.getTotal().toString().concat(" trips"));
-                        tourAdapters = new TourAdapters(UserListTourActivity.this,
+                        tourAdapters = new TourAdapters(currentActivity,
                                 R.layout.items_listtour_layout, (ArrayList<Tour>) listTourResponse.getTours());
                         lvTours.setAdapter(tourAdapters);
                     }
@@ -159,34 +131,32 @@ public class UserListTourActivity extends AppCompatActivity {
                         switch (error.getKind()) {
                             case HTTP:
                                 if (error.getResponse().getStatus() == 500)
-                                    Toast.makeText(UserListTourActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(currentActivity, "Lỗi server", Toast.LENGTH_LONG).show();
                                 break;
                             case NETWORK:
                             case UNEXPECTED:
-                                Toast.makeText(UserListTourActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
+                                Toast.makeText(currentActivity, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
                                 break;
                             default:
-                                Toast.makeText(UserListTourActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                                Toast.makeText(currentActivity, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
         addTourbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OpenCreateTourActivity();
+                Intent intent = new Intent(currentActivity, CreateTourActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void OpenCreateTourActivity() {
-        Intent intent = new Intent(UserListTourActivity.this, CreateTourActivity.class);
-        startActivity(intent);
-    }
 
-    private void addControls() {
-        lvTours = (ListView) findViewById(R.id.listTour);
-        totalTour = (TextView) findViewById(R.id.total_tour);
-        addTourbtn = (Button) findViewById(R.id.button_add_tour);
-        search = (SearchView) findViewById(R.id.search_tour);
+
+    private void addControls(View view) {
+        lvTours = view.findViewById(R.id.listTour);
+        totalTour =  view.findViewById(R.id.total_tour);
+        addTourbtn = view.findViewById(R.id.button_add_tour);
+        search = view.findViewById(R.id.search_tour);
     }
 }

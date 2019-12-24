@@ -260,7 +260,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void success(StopPointResponse stopPointResponse, Response response) {
                             Toast.makeText(MapsActivity.this, "ok", Toast.LENGTH_SHORT).show();
-//                            Intent intent1 = new Intent(MapsActivity.this, ListTourActivity.class);
+//                            Intent intent1 = new Intent(MapsActivity.this, ListTourFragment.class);
 //                            startActivity(intent1);
                             finish();
                         }
