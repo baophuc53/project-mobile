@@ -156,7 +156,10 @@ public class ListTourActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.action_notifications:
-                        Toast.makeText(ListTourActivity.this, "Notifications", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(ListTourActivity.this, Notification.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+                        finish();
                         break;
                     case R.id.action_setting:
                         intent = new Intent(ListTourActivity.this, SettingActivity.class);

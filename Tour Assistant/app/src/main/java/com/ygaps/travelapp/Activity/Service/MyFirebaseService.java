@@ -1,11 +1,11 @@
 package com.ygaps.travelapp.Activity.Service;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -15,18 +15,16 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.ygaps.travelapp.Activity.ListTourActivity;
-import com.ygaps.travelapp.Activity.MainActivity;
+import com.google.gson.Gson;
+import com.ygaps.travelapp.Activity.Notification;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
+import com.ygaps.travelapp.Object.NotificationObj;
 import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.TokenRequest;
-
-import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -37,13 +35,18 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        RemoteMessage.Notification notification=remoteMessage.getNotification();
+        NotificationObj notification=new Gson().fromJson(remoteMessage.getData().toString(),NotificationObj.class);
         // handle a notification payload.
-        if (notification != null) {
-            Log.d(TAG, "Message Notification Body: " + notification.getBody());
+        Log.d(TAG, "Message Notification Body: " + notification);
 
-            sendNotification(notification.getBody());
-        }
+        SharedPreferences sharedPreferences=getSharedPreferences("Notification",0);
+
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        int length= sharedPreferences.getInt("length",0);
+        editor.putString("Notification"+length, new Gson().toJson(notification));
+        editor.putInt("length",length+1);
+        editor.commit();
+        sendNotification(notification);
     }
 
     @Override
@@ -81,35 +84,31 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void sendNotification(NotificationObj messageBody) {
+        String channelId = getString(R.string.app_name);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,channelId);
+
+        Intent intent = new Intent(this,  Notification.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = getString(R.string.project_id);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this,channelId)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
+        switch(messageBody.getType())
+        {
+            case "6":
+
+                Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+                notificationBuilder.setSmallIcon(R.drawable.ic_launcher_background)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
-                        .setContentTitle(getString(R.string.project_id))
-                        .setContentText(messageBody)
+                        .setContentTitle(channelId)
+                        .setContentText("Bạn đươc mời tham gia tour" +messageBody.getName())
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent)
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setPriority(NotificationManager.IMPORTANCE_HIGH)
-                        .addAction(new NotificationCompat.Action(
-                                android.R.drawable.sym_call_missed,
-                                "Cancel",
-                                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)))
-                        .addAction(new NotificationCompat.Action(
-                                android.R.drawable.sym_call_outgoing,
-                                "OK",
-                                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)));
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        .setContentIntent(pendingIntent);
+                        }
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -122,5 +121,4 @@ public class MyFirebaseService extends FirebaseMessagingService {
         }
 
         notificationManager.notify(0, notificationBuilder.build());
-    }
-}
+    }}

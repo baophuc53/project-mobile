@@ -17,6 +17,7 @@ import com.ygaps.travelapp.model.LoginByFaceResponse;
 import com.ygaps.travelapp.model.LoginRequest;
 import com.ygaps.travelapp.model.LoginResponse;
 import com.ygaps.travelapp.model.PointServiceResponse;
+import com.ygaps.travelapp.model.ProcessInvitationRequest;
 import com.ygaps.travelapp.model.RegisterRequest;
 import com.ygaps.travelapp.model.RegisterResponse;
 import com.ygaps.travelapp.model.SearchUserResponse;
@@ -133,5 +134,6 @@ public interface UserService {
     void RemoveStopPoint(@Query("stopPointId") int id,
                          Callback<StopPointResponse> callback);
 
-
+    @POST("/tour/response/invitation")
+    void ResponseInvitation(@Body ProcessInvitationRequest processInvitationRequest,Callback<DefaultResponse> callback);
 }

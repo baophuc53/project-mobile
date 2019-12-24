@@ -59,7 +59,8 @@
         <activity android:name=".CreateTourActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".UserListTourActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Notification"/>
+        <activity android:name=".LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

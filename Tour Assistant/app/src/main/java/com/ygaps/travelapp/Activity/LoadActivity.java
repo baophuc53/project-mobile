@@ -19,19 +19,19 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoadActivity extends AppCompatActivity {
 
     Tour tour;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.load_activity);
 
         getSupportActionBar().hide();
         SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
         String token=sharedPreferences.getString("token","");
         if(token.isEmpty()) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(LoadActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         String json = gson.toJson(listTourResponse);
                         editor.putString("listTour", json);
                         editor.commit();
-                        Intent intent = new Intent(MainActivity.this, ListTourActivity.class);
+                        Intent intent = new Intent(LoadActivity.this, ListTourActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -77,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
                         switch (error.getKind()) {
                             case HTTP:
                                 if (error.getResponse().getStatus() == 500)
-                                    Toast.makeText(MainActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoadActivity.this, "Lỗi server", Toast.LENGTH_LONG).show();
                                 break;
                             case NETWORK:
                             case UNEXPECTED:
-                                Toast.makeText(MainActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoadActivity.this, "Có vấn đề về mạng", Toast.LENGTH_LONG).show();
                                 break;
                             default:
-                                Toast.makeText(MainActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoadActivity.this, "Lỗi không xác định", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
