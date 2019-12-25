@@ -1,11 +1,14 @@
 package com.ygaps.travelapp.Activity;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +24,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Comment;
-import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.adapter.CommentAdapters;
 import com.ygaps.travelapp.adapter.ExpandableHeightListView;
+import com.ygaps.travelapp.model.DefaultResponse;
+import com.ygaps.travelapp.model.InviteRequest;
+import com.ygaps.travelapp.model.JoinRequest;
 import com.ygaps.travelapp.model.SendCmtRequest;
 import com.ygaps.travelapp.model.StopPointResponse;
 import com.ygaps.travelapp.model.TourInfoRequest;
@@ -47,6 +52,7 @@ public class DetailTourActivity extends AppCompatActivity {
     EditText leaveCmtTour;
     CommentAdapters commentAdapters;
     ExpandableHeightListView lvComments;
+    long tourId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +72,10 @@ public class DetailTourActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Intent intent=getIntent();
-        if(intent.getBooleanExtra("isMyListTour",false))
+        if(intent.getBooleanExtra("isMyTour",false))
             getMenuInflater().inflate(R.menu.detail_tour_actionbar_menu, menu);
+        else
+            getMenuInflater().inflate(R.menu.join_tour_actionbar_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -82,6 +90,48 @@ public class DetailTourActivity extends AppCompatActivity {
                 intent.putExtra("isPrivate",privateTour.getText()=="Private");
                 startActivity(intent);
                 return true;
+            case R.id.join:
+                if(privateTour.getText()=="Private")
+                    Toast.makeText(DetailTourActivity.this,"Không thể tham gia tour riêng tư",Toast.LENGTH_LONG).show();
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailTourActivity.this);
+                    builder.setTitle("Join");
+                    builder.setMessage("Bạn có muốn tham gia tour này không?");
+                    builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            JoinRequest joinRequest = new JoinRequest();
+                            joinRequest.setTourId("" + tourId);
+                            joinRequest.isInvited=(privateTour.getText()=="Private");
+                            UserService userService;
+                            userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+                            userService.joinTour(joinRequest, new Callback<DefaultResponse>() {
+                                @Override
+                                public void success(DefaultResponse joinResponse, Response response) {
+                                    Toast.makeText(DetailTourActivity.this, "Tham gia thành công", Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Toast.makeText(DetailTourActivity.this, "Thất bại", Toast.LENGTH_LONG).show();
+                                    Log.e("Error:", error.toString());
+                                }
+                            });
+                        }
+                    });
+                    builder.setNegativeButton("Huỷ", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    return true;
+                }
+                case R.id.home:
+                    onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
@@ -98,7 +148,6 @@ public class DetailTourActivity extends AppCompatActivity {
                     SendCmtRequest sendCmtRequest = new SendCmtRequest();
                     sendCmtRequest.setUserId(userId);
                     Intent intent = getIntent();
-                    long tourId = intent.getLongExtra("tourId", 0);
                     sendCmtRequest.setTourId(String.valueOf(tourId));
                     sendCmtRequest.setComment(leaveCmtTour.getText().toString());
 
@@ -129,7 +178,7 @@ public class DetailTourActivity extends AppCompatActivity {
 
     private void addEvent() {
         Intent intent = getIntent();
-        final long tourId = intent.getLongExtra("tourId", 0);
+        tourId = intent.getLongExtra("tourId", 0);
 
         TourInfoRequest request=new TourInfoRequest();
         UserService userService;
@@ -145,6 +194,7 @@ public class DetailTourActivity extends AppCompatActivity {
                                     .centerCrop()
                                     .placeholder(R.drawable.bg_avatar_tour))
                             .into(avtTour);
+
                     nameTour.setText(tourInfoResponse.getName());
                     if (tourInfoResponse.getStatus() == 0) {
                         statusTour.setText("Available");

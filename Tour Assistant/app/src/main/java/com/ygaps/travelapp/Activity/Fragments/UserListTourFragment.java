@@ -86,7 +86,7 @@ public class UserListTourFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(currentActivity, DetailTourActivity.class);
                 intent.putExtra("tourId", tourAdapters.getItem(position).getId());
-                intent.putExtra("isMyListTour",true);
+                intent.putExtra("isMyTour",true);
                 startActivity(intent);
             }
         });

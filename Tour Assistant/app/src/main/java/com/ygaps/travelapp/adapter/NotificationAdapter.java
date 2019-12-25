@@ -112,7 +112,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
                     }
                 });
                 notification.setText("Bạn được mời tham gia tour "+notificationObj.getName());
-                leftBtn.setText("");
+                leftBtn.setVisibility(View.INVISIBLE);
                 break;
         }
 

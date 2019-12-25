@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,6 +28,9 @@ import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.TokenRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     Fragment fragment,listTour,userListTour,notification,setting;
     TextView title;
+    BottomNavigationView bottomNavigationView;
+    ArrayList<Integer> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,30 +55,42 @@ public class MainActivity extends AppCompatActivity {
         userListTour=new UserListTourFragment();
         notification=new NotificationFragment();
         setting=new SettingFragment();
-        Intent intent=getIntent();
-        String flag=intent.getStringExtra("fragment");
-        if(flag!=null)
-        switch (flag)
-        {
-            case "UserListTour":
-                fragment=userListTour;
-                break;
-            case "Notification":
-                fragment=notification;
-                break;
-            case "Setting":
-                fragment=setting;
-                break;
-                default :
-                    fragment=listTour;
-        }
-        else fragment=listTour;
-        loadFragment(fragment);
+        init();
         Authorize();
         sendRegistrationToServer();
         addActionBottomNavigationView();
     }
 
+    private void init() {
+        Intent intent=getIntent();
+        String flag=intent.getStringExtra("fragment");
+        if(flag!=null)
+            switch (flag)
+            {
+                case "UserListTour":
+                    fragment=userListTour;
+                    break;
+                case "Notification":
+                    fragment=notification;
+                    break;
+                case "Setting":
+                    fragment=setting;
+                    break;
+                default :
+                    fragment=listTour;
+            }
+        else fragment=listTour;
+        loadFragment(fragment);
+    }
+
+    @Override
+    public  void onBackPressed(){
+        if(list.size()>1) {
+            bottomNavigationView.setSelectedItemId(list.get(list.size() - 2));
+            list.remove(list.size() - 1);
+        }else
+        finish();
+    }
 
     private void Authorize() {
         SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
@@ -84,12 +102,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void addActionBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        list=new ArrayList<>();
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
+        list.add(R.id.action_list_tour);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+                list.add(R.id.action_list_tour);
                 switch (item.getItemId()) {
                     case R.id.action_list_tour:
                         fragment=listTour;

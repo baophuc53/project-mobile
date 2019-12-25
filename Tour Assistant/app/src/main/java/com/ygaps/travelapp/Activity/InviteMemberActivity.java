@@ -14,14 +14,13 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.ygaps.travelapp.Activity.R;
 
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Member;
 import com.ygaps.travelapp.adapter.MemberAdapters;
+import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.InviteRequest;
-import com.ygaps.travelapp.model.InviteResponse;
 import com.ygaps.travelapp.model.SearchUserResponse;
 
 import java.util.ArrayList;
@@ -71,9 +70,9 @@ public class InviteMemberActivity extends AppCompatActivity {
 
                         UserService userService;
                         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-                        userService.inviteMember(inviteRequest, new Callback<InviteResponse>() {
+                        userService.inviteMember(inviteRequest, new Callback<DefaultResponse>() {
                             @Override
-                            public void success(InviteResponse inviteResponse, Response response) {
+                            public void success(DefaultResponse defaultResponse, Response response) {
                                 Toast.makeText(InviteMemberActivity.this, "Mời thành công", Toast.LENGTH_LONG).show();
                             }
 

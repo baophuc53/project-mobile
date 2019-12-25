@@ -3,14 +3,14 @@ package com.ygaps.travelapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class InviteRequest {
+public class JoinRequest {
 
     @SerializedName("tourId")
     @Expose
     private String tourId;
     @SerializedName("invitedUserId")
     @Expose
-    private String invitedUserId="";
+    private String invitedUserId="1";
     @SerializedName("isInvited")
     @Expose
     public Boolean isInvited;

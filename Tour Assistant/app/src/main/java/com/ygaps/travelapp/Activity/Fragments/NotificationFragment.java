@@ -49,21 +49,22 @@ public class NotificationFragment extends Fragment {
     private void Init(View view) {
         currentActivity=getActivity();
         objArrayList=new ArrayList<>();
-        adapter=new NotificationAdapter(currentActivity, R.layout.items_notification,objArrayList);
         listNotification=view.findViewById(R.id.listNotification);
-        sharedPreferences=currentActivity.getSharedPreferences("NotificationFragment",0);
+        sharedPreferences=currentActivity.getSharedPreferences("Notification",0);
         GetData();
     }
 
     private void GetData() {
-        adapter.clear();
+        objArrayList.clear();
         int length=sharedPreferences.getInt("length",0);
         for(int i=length-1;i>=0;i--)
         {
-            String json=sharedPreferences.getString("NotificationFragment"+i,"");
+            String json=sharedPreferences.getString("Notification"+i,"");
             NotificationObj notificationObj=new Gson().fromJson(json,NotificationObj.class);
-            adapter.add(notificationObj);
+            objArrayList.add(notificationObj);
         }
+        adapter=new NotificationAdapter(currentActivity, R.layout.items_notification,objArrayList);
         listNotification.setAdapter(adapter);
     }
+
 }

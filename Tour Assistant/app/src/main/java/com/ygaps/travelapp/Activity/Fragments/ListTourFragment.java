@@ -74,7 +74,6 @@ public class ListTourFragment extends Fragment {
         return view;
     }
 
-
     private void GetData() {
         SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
         String json = sharedPreferences.getString("listTour", "");
@@ -102,6 +101,14 @@ public class ListTourFragment extends Fragment {
                 pullToRefresh.setRefreshing(false);
             }
         });
+
+        addTourbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(currentActivity, CreateTourActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void addEventClickTour() {
@@ -110,6 +117,12 @@ public class ListTourFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(currentActivity, DetailTourActivity.class);
                 intent.putExtra("tourId", tourAdapters.getItem(position).getId());
+
+                SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
+                String userId = sharedPreferences.getString("userId", "");
+                String hostID=""+tourAdapters.getItem(position).getId();
+                if(userId==hostID)
+                    intent.putExtra("isMyTour",true);
                 startActivity(intent);
             }
         });
@@ -190,13 +203,6 @@ public class ListTourFragment extends Fragment {
                         }
                     }
                 });
-        addTourbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(currentActivity, CreateTourActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
 
@@ -208,6 +214,5 @@ public class ListTourFragment extends Fragment {
         search = view.findViewById(R.id.search_tour);
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
     }
-
 
 }

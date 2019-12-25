@@ -10,7 +10,7 @@ import com.ygaps.travelapp.model.DetailServiceResponse;
 import com.ygaps.travelapp.model.FeedbackServiceRequest;
 import com.ygaps.travelapp.model.GetListFeedbackServiceResponse;
 import com.ygaps.travelapp.model.InviteRequest;
-import com.ygaps.travelapp.model.InviteResponse;
+import com.ygaps.travelapp.model.JoinRequest;
 import com.ygaps.travelapp.model.ListTourResponse;
 import com.ygaps.travelapp.model.LoginByFaceRequest;
 import com.ygaps.travelapp.model.LoginByFaceResponse;
@@ -118,7 +118,10 @@ public interface UserService {
                         Callback<ChangePasswordResponse> callback);
 
     @POST("/tour/add/member")
-    void inviteMember(@Body InviteRequest inviteRequest, Callback<InviteResponse> callback);
+    void inviteMember(@Body InviteRequest inviteRequest, Callback<DefaultResponse> callback);
+
+    @POST("/tour/add/member")
+    void joinTour(@Body JoinRequest joinRequest, Callback<DefaultResponse> callback);
 
     @GET("/user/search")
     void searchUser(@Query("searchKey") String searchKey,
