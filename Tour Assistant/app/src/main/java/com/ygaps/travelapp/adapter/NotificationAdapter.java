@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,7 +59,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = this.context.getLayoutInflater();
-        View customView = inflater.inflate(this.resource, null);
+        final View customView = inflater.inflate(this.resource, null);
         TextView notification=customView.findViewById(R.id.notification);
         TextView rightBtn=customView.findViewById(R.id.rightBtn);
         TextView leftBtn=customView.findViewById(R.id.leftBtn);
@@ -80,7 +81,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
                         userService.ResponseInvitation(processInvitationRequest, new Callback<DefaultResponse>() {
                             @Override
                             public void success(DefaultResponse defaultResponse, Response response) {
-                                Log.d("inviteResponse", "success");
+                                Toast.makeText(customView.getContext(),"Thành công",Toast.LENGTH_LONG ).show();
                             }
 
                             @Override
@@ -101,7 +102,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
                         userService.ResponseInvitation(processInvitationRequest, new Callback<DefaultResponse>() {
                             @Override
                             public void success(DefaultResponse defaultResponse, Response response) {
-                                Log.d("inviteResponse", "success");
+                                Toast.makeText(customView.getContext(),"Thành công",Toast.LENGTH_LONG ).show();
                             }
 
                             @Override
