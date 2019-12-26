@@ -37,6 +37,8 @@ import com.ygaps.travelapp.model.SuggestStopPointResponse;
 import com.ygaps.travelapp.model.TokenRequest;
 import com.ygaps.travelapp.model.TourInfoResponse;
 import com.ygaps.travelapp.model.UpdateAvtResponse;
+import com.ygaps.travelapp.model.UpdateTourResponse;
+import com.ygaps.travelapp.model.UpdateTourResquest;
 import com.ygaps.travelapp.model.UpdateUserInfoRequest;
 import com.ygaps.travelapp.model.UpdateUserInfoResponse;
 import com.ygaps.travelapp.model.UserInfoResponse;
@@ -170,4 +172,8 @@ public interface UserService {
     @POST("/tour/add/review")
     void sendReview(@Body SendReviewTourRequest sendReviewTourRequest,
                    Callback<SendReviewTourResponse> callback);
+
+    @POST("/tour/update-tour")
+    void updateTourInfo(@Body UpdateTourResquest updateTourResquest,
+                    Callback<UpdateTourResponse> callback);
 }

@@ -33,23 +33,42 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_avatar_tour" />
 
-                <TextView
-                    android:id="@+id/nameTour"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:hint="@string/name_tour_hints"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/statusTour"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_horizontal"
-                    android:hint="Status of Tour"
-                    android:textColor="@color/colorPrimary" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nameTour"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/name_tour_hints"
+                            android:textSize="25dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/statusTour"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:hint="Status of Tour"
+                            android:textColor="@color/colorPrimary" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/editTour"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/ic_edit"
+                        android:visibility="gone"/>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
