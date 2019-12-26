@@ -2,12 +2,16 @@ package com.ygaps.travelapp.adapter;
 
 import android.app.Activity;
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,13 +19,25 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.taufiqrahman.reviewratings.BarLabels;
+import com.taufiqrahman.reviewratings.RatingReviews;
 import com.ygaps.travelapp.Activity.R;
+import com.ygaps.travelapp.Api.MyAPIClient;
+import com.ygaps.travelapp.Api.UserService;
+import com.ygaps.travelapp.Object.PointStat;
 import com.ygaps.travelapp.Object.Tour;
+import com.ygaps.travelapp.model.PointOfReviewTourResponse;
 
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 import static java.lang.Long.parseLong;
 
 public class TourAdapters extends ArrayAdapter<Tour> {
@@ -71,6 +87,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         TextView timeTour = customView.findViewById(R.id.timeTour);
         TextView numPeopletour = customView.findViewById(R.id.numPeopletour);
         TextView priceTour = customView.findViewById(R.id.pricetour);
+        final RatingBar rating_tour = customView.findViewById(R.id.tour_info_ratingBar);
 
         Tour tour = getItem(position);
         Glide.with(customView)
@@ -93,11 +110,6 @@ public class TourAdapters extends ArrayAdapter<Tour> {
                     .concat(String.valueOf(endDate.get(Calendar.DAY_OF_MONTH))).concat("/")
                     .concat(String.valueOf(endDate.get(Calendar.MONTH) + 1)).concat("/")
                     .concat(String.valueOf(endDate.get(Calendar.YEAR))));
-            ;
-            //Đừng xóa
-//            byte[] imageBytes = Base64.decode(tour.getAvatar(), Base64.DEFAULT);
-//            Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-//            avtTour.setImageBitmap(decodedImage);
         }
         catch (Exception e){};
 
@@ -115,6 +127,39 @@ public class TourAdapters extends ArrayAdapter<Tour> {
             priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(" VND"));
         else
             priceTour.setText(tour.getMinCost().toString().concat(" VND - ").concat(tour.getMaxCost().toString()).concat(" VND"));
+
+        UserService userService;
+        final SharedPreferences sharedPreferences = context.getSharedPreferences("Data", 0);
+        String Token = sharedPreferences.getString("token", "");
+        MyAPIClient.getInstance().setAccessToken(Token);
+        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+        userService.getTourReviewPoint(tour.getId(), new Callback<PointOfReviewTourResponse>() {
+            @Override
+            public void success(PointOfReviewTourResponse pointOfReviewTourResponse, Response response) {
+                List<PointStat> list = pointOfReviewTourResponse.getPointStats();
+                int[] raters = new int[5];
+                for (int j = 0; j<5; j++) {
+                    raters[4-j] = list.get(j).getTotal();
+                }
+                int s = 0;
+                for (int i:raters) {
+                    s+=i;
+                }
+                float avg = 0;
+                for (int i = 0; i<5; i++){
+                    avg+=(5-i)*raters[i];
+                }
+                if (s>0) {
+                    avg /= s;
+                    rating_tour.setRating(avg);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(context, "that bai", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return customView;
     }

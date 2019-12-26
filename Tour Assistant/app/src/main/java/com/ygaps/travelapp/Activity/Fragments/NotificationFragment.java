@@ -24,18 +24,20 @@ import java.util.ArrayList;
 public class NotificationFragment extends Fragment {
 
     NotificationAdapter adapter;
-    ArrayList<NotificationObj>  objArrayList;
+    ArrayList<NotificationObj> objArrayList;
     ListView listNotification;
     Activity currentActivity;
     SharedPreferences sharedPreferences;
+    TextView noNotification;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_notification, container, false);
         Init(view);
         addEvent();
         return view;
     }
+
     private void addEvent() {
         sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -47,24 +49,28 @@ public class NotificationFragment extends Fragment {
 
 
     private void Init(View view) {
-        currentActivity=getActivity();
-        objArrayList=new ArrayList<>();
-        listNotification=view.findViewById(R.id.listNotification);
-        sharedPreferences=currentActivity.getSharedPreferences("Notification",0);
+        currentActivity = getActivity();
+        objArrayList = new ArrayList<>();
+        listNotification = view.findViewById(R.id.listNotification);
+        noNotification = view.findViewById(R.id.noNotificationTv);
+        sharedPreferences = currentActivity.getSharedPreferences("Notification", 0);
         GetData();
     }
 
     private void GetData() {
         objArrayList.clear();
-        int length=sharedPreferences.getInt("length",0);
-        for(int i=length-1;i>=0;i--)
-        {
-            String json=sharedPreferences.getString("Notification"+i,"");
-            NotificationObj notificationObj=new Gson().fromJson(json,NotificationObj.class);
-            objArrayList.add(notificationObj);
+        int length = sharedPreferences.getInt("length", 0);
+        if (length == 0)
+            noNotification.setVisibility(View.VISIBLE);
+        else {
+            for (int i = length - 1; i >= 0; i--) {
+                String json = sharedPreferences.getString("Notification" + i, "");
+                NotificationObj notificationObj = new Gson().fromJson(json, NotificationObj.class);
+                objArrayList.add(notificationObj);
+            }
+            adapter = new NotificationAdapter(currentActivity, R.layout.items_notification, objArrayList);
+            listNotification.setAdapter(adapter);
         }
-        adapter=new NotificationAdapter(currentActivity, R.layout.items_notification,objArrayList);
-        listNotification.setAdapter(adapter);
     }
 
 }

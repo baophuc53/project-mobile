@@ -1,19 +1,9 @@
 package com.ygaps.travelapp.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.ygaps.travelapp.Object.Comment;
-import com.ygaps.travelapp.Object.Member;
-import com.ygaps.travelapp.Object.StopPoint;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TourInfoResponse implements Serializable {
-
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+public class UpdateTourResponse {
     @SerializedName("hostId")
     @Expose
     private String hostId;
@@ -25,42 +15,31 @@ public class TourInfoResponse implements Serializable {
     private String name;
     @SerializedName("minCost")
     @Expose
-    private Long minCost;
+    private Integer minCost;
     @SerializedName("maxCost")
     @Expose
-    private Long maxCost;
+    private Integer maxCost;
     @SerializedName("startDate")
     @Expose
-    private Long startDate;
+    private Integer startDate;
     @SerializedName("endDate")
     @Expose
-    private Long endDate;
+    private Integer endDate;
     @SerializedName("adults")
     @Expose
     private Integer adults;
     @SerializedName("childs")
     @Expose
     private Integer childs;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("isPrivate")
     @Expose
     private Boolean isPrivate;
-    @SerializedName("stopPoints")
+    @SerializedName("avatar")
     @Expose
-    private List<StopPoint> stopPoints = null;
-    @SerializedName("comments")
-    @Expose
-    private List<Comment> comments = null;
-    @SerializedName("members")
-    @Expose
-    private List<Member> members = null;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private String avatar;
 
     public String getHostId() {
         return hostId;
@@ -86,35 +65,35 @@ public class TourInfoResponse implements Serializable {
         this.name = name;
     }
 
-    public Long getMinCost() {
+    public Integer getMinCost() {
         return minCost;
     }
 
-    public void setMinCost(Long minCost) {
+    public void setMinCost(Integer minCost) {
         this.minCost = minCost;
     }
 
-    public Long getMaxCost() {
+    public Integer getMaxCost() {
         return maxCost;
     }
 
-    public void setMaxCost(Long maxCost) {
+    public void setMaxCost(Integer maxCost) {
         this.maxCost = maxCost;
     }
 
-    public Long getStartDate() {
+    public Integer getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(Integer startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public Integer getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Integer endDate) {
         this.endDate = endDate;
     }
 
@@ -134,6 +113,14 @@ public class TourInfoResponse implements Serializable {
         this.childs = childs;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Boolean getIsPrivate() {
         return isPrivate;
     }
@@ -142,27 +129,11 @@ public class TourInfoResponse implements Serializable {
         this.isPrivate = isPrivate;
     }
 
-    public List<StopPoint> getStopPoints() {
-        return stopPoints;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setStopPoints(List<StopPoint> stopPoints) {
-        this.stopPoints = stopPoints;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

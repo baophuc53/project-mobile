@@ -29,7 +29,7 @@ public class ListMemberActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         TextView title = findViewById(R.id.actionbar_textview);
-        title.setText("List Members of Tour");
+        title.setText("Members");
         addControl();
         Show();
         addSearch();
