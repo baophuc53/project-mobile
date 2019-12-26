@@ -48,7 +48,7 @@ public class DetailTourActivity extends AppCompatActivity {
 
     ImageView avtTour, avtUser, privateIMG;
     TextView nameTour, statusTour, priceTour, levelTour, dateTour, numDateTour, numPeopleTour, privateTour;
-    Button stopPointTour, MemberTour, addCMT;
+    Button stopPointTour, MemberTour, addCMT, reviewTour;
     EditText leaveCmtTour;
     CommentAdapters commentAdapters;
     ExpandableHeightListView lvComments;
@@ -266,6 +266,14 @@ public class DetailTourActivity extends AppCompatActivity {
                         }
                     }
                 });
+                reviewTour.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DetailTourActivity.this, ReviewListActivity.class);
+                        intent.putExtra("tourId", tourId);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -301,5 +309,6 @@ public class DetailTourActivity extends AppCompatActivity {
         leaveCmtTour = findViewById(R.id.addCmtEdt);
         addCMT = findViewById(R.id.addCmtBtn);
         lvComments = findViewById(R.id.list_cmt);
+        reviewTour = findViewById(R.id.review);
     }
 }

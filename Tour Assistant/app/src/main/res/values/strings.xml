@@ -40,6 +40,7 @@
     <string name="user_save_profile">SAVE</string>
     <string name="user_change_password">CHANGE PASSWORD</string>
     <string name="new_password">NEW PASSWORD</string>
+    <string name="send_an_otp">SEND OTP</string>
     <string-array name="services">
         <item>Restaurant</item>
         <item>Hotel</item>

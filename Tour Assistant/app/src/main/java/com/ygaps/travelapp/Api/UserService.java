@@ -1,6 +1,8 @@
 package com.ygaps.travelapp.Api;
 
 
+import android.text.style.TtsSpan;
+
 import com.ygaps.travelapp.model.ChangePasswordRequest;
 import com.ygaps.travelapp.model.ChangePasswordResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
@@ -11,17 +13,23 @@ import com.ygaps.travelapp.model.FeedbackServiceRequest;
 import com.ygaps.travelapp.model.GetListFeedbackServiceResponse;
 import com.ygaps.travelapp.model.InviteRequest;
 import com.ygaps.travelapp.model.JoinRequest;
+import com.ygaps.travelapp.model.ListReviewOfTourResponse;
 import com.ygaps.travelapp.model.ListTourResponse;
 import com.ygaps.travelapp.model.LoginByFaceRequest;
 import com.ygaps.travelapp.model.LoginByFaceResponse;
 import com.ygaps.travelapp.model.LoginRequest;
 import com.ygaps.travelapp.model.LoginResponse;
+import com.ygaps.travelapp.model.PointOfReviewTourResponse;
 import com.ygaps.travelapp.model.PointServiceResponse;
 import com.ygaps.travelapp.model.ProcessInvitationRequest;
 import com.ygaps.travelapp.model.RegisterRequest;
 import com.ygaps.travelapp.model.RegisterResponse;
 import com.ygaps.travelapp.model.SearchUserResponse;
 import com.ygaps.travelapp.model.SendCmtRequest;
+import com.ygaps.travelapp.model.SendOTPRequest;
+import com.ygaps.travelapp.model.SendOTPResponse;
+import com.ygaps.travelapp.model.SendReviewTourRequest;
+import com.ygaps.travelapp.model.SendReviewTourResponse;
 import com.ygaps.travelapp.model.StopPointRequest;
 import com.ygaps.travelapp.model.StopPointResponse;
 import com.ygaps.travelapp.model.SuggestStopPointRequest;
@@ -32,6 +40,8 @@ import com.ygaps.travelapp.model.UpdateAvtResponse;
 import com.ygaps.travelapp.model.UpdateUserInfoRequest;
 import com.ygaps.travelapp.model.UpdateUserInfoResponse;
 import com.ygaps.travelapp.model.UserInfoResponse;
+import com.ygaps.travelapp.model.VerifyOTPtoChangePassRequest;
+import com.ygaps.travelapp.model.VerifyOTPtoChangePassResponse;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -139,4 +149,25 @@ public interface UserService {
 
     @POST("/tour/response/invitation")
     void ResponseInvitation(@Body ProcessInvitationRequest processInvitationRequest,Callback<DefaultResponse> callback);
+
+    @POST("/user/request-otp-recovery")
+    void sendOTP(@Body SendOTPRequest sendOTPRequest,
+                       Callback<SendOTPResponse> callback);
+
+    @POST("/user//user/verify-otp-recovery")
+    void verifyOTP(@Body VerifyOTPtoChangePassRequest verifyOTPtoChangePassRequest,
+                 Callback<VerifyOTPtoChangePassResponse> callback);
+
+    @GET("/tour/get/review-point-stats")
+    void getTourReviewPoint(@Query("tourId") Long id, Callback<PointOfReviewTourResponse> callback);
+
+    @GET("/tour/get/review-list")
+    void getListReviews(@Query("tourId") Number tourId,
+                        @Query("pageIndex") Number pageIndex,
+                        @Query("pageSize") Number pageSize,
+                        Callback<ListReviewOfTourResponse> callback);
+
+    @POST("/tour/add/review")
+    void sendReview(@Body SendReviewTourRequest sendReviewTourRequest,
+                   Callback<SendReviewTourResponse> callback);
 }

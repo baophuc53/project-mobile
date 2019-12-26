@@ -20,6 +20,16 @@
             android:layout_height="150dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/bg_avatar_tour"/>
+        <RatingBar
+            android:id="@+id/tour_info_ratingBar"
+            style="@android:style/Widget.Material.Light.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:numStars="5"
+            android:progressTint="#0f9d58"
+            android:backgroundTint="#0f9d58"
+            android:layout_gravity="center_horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"

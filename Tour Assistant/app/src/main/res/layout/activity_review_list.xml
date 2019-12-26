@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/list_background"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_rectangle"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.taufiqrahman.reviewratings.RatingReviews xmlns:bar="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/point_info_rating_reviews_tour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="42dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/point_info_textView_tour"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.499"
+                        bar:animation="true"
+                        bar:max_value="100"
+                        bar:rounded="true"
+                        bar:show_label="true"
+                        bar:show_raters="false"
+                        bar:spaces="7dp"
+                        bar:text_color="#333333"
+                        bar:text_size="10sp"
+                        bar:width="12dp" />
+
+                    <TextView
+                        android:id="@+id/point_info_textView_tour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="?android:selectableItemBackground"
+                        android:text="0.0"
+                        android:textColor="#333333"
+                        android:textSize="36sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@id/point_info_ratingBar_tour"
+                        app:layout_constraintHorizontal_bias="0.36"
+                        app:layout_constraintStart_toStartOf="@id/point_info_ratingBar_tour"
+                        app:layout_constraintTop_toTopOf="@id/point_info_rating_reviews_tour" />
+
+                    <RatingBar
+                        android:id="@+id/point_info_ratingBar_tour"
+                        style="@android:style/Widget.Material.Light.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:backgroundTint="#0f9d58"
+                        android:numStars="5"
+                        android:progressTint="#0f9d58"
+                        android:rating="4"
+                        android:stepSize="1"
+                        app:layout_constraintBottom_toBottomOf="@id/point_info_rating_reviews_tour"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/point_info_textView_tour"
+                        app:layout_constraintVertical_bias="0.07999998" />
+
+                    <TextView
+                        android:id="@+id/point_info_total_tour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="0"
+                        android:textColor="#333333"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="@id/point_info_ratingBar_tour"
+                        app:layout_constraintHorizontal_bias="0.356"
+                        app:layout_constraintStart_toStartOf="@id/point_info_ratingBar_tour"
+                        app:layout_constraintTop_toBottomOf="@id/point_info_ratingBar_tour" />
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/ic_multiple_users_silhouette"
+                        app:layout_constraintBottom_toBottomOf="@id/point_info_total_tour"
+                        app:layout_constraintStart_toEndOf="@id/point_info_total_tour"
+                        app:layout_constraintTop_toBottomOf="@id/point_info_ratingBar_tour" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Rate this tour"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/user_rating_tour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:minHeight="10dp"
+                android:progressTint="#0f9d58"
+                android:numStars="5"
+                android:rating="0"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:stepSize="1.0" />
+
+            <EditText
+                android:id="@+id/user_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_radius_edittext"
+                android:hint="Your thinking..."
+                android:inputType="textCapSentences"
+                android:minHeight="45dp"
+                android:paddingHorizontal="10dp" />
+
+            <Button
+                android:id="@+id/send_review"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_button"
+                android:text="Send"
+                android:textColor="#ffff" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/noReviewTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+
+                <com.ygaps.travelapp.adapter.ExpandableHeightListView
+                    android:id="@+id/list_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rectangle"
+                    android:fadingEdge="none"
+                    android:focusable="false"
+                    android:scrollbars="none" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

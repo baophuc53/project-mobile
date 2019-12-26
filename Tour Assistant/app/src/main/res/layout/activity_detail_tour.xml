@@ -1,55 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/list_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:ignore="NamespaceTypo">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp">
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_list_items">
+                android:background="@drawable/bg_list_items"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/avtTour"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/bg_avatar_tour"/>
+                    android:background="@drawable/bg_avatar_tour" />
+
                 <TextView
                     android:id="@+id/nameTour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:hint="@string/name_tour_hints"
                     android:textSize="25dp"
-                    android:textStyle="bold"
-                    android:hint="@string/name_tour_hints"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/statusTour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
                     android:layout_marginBottom="5dp"
+                    android:gravity="center_horizontal"
                     android:hint="Status of Tour"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorPrimary" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
-                    >
+                    android:layout_marginBottom="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -60,10 +68,10 @@
                         android:id="@+id/pricetour"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:textStyle="bold"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
                         android:hint="@string/price_tour_hints"
+                        android:textStyle="bold"
 
                         />
 
@@ -72,19 +80,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
+                        android:hint="Normal"
                         android:textAlignment="textEnd"
                         android:textStyle="bold"
-                        android:hint="Normal"
 
                         />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp">
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -95,27 +104,26 @@
                         android:id="@+id/dateTour"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
                         android:layout_gravity="center"
-                        android:hint="@string/date_tour_hints"
-                        />
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/date_tour_hints" />
+
                     <TextView
                         android:id="@+id/numDate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
-                        android:textAlignment="textEnd"
                         android:hint="Numbers of date"
-                        />
+                        android:textAlignment="textEnd" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
-                    >
+                    android:layout_marginBottom="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -126,19 +134,18 @@
                         android:id="@+id/numPeopletour"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
                         android:layout_gravity="center"
-                        android:hint="@string/number_people_tour_hints"
-                        />
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/number_people_tour_hints" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
-                    >
+                    android:layout_marginBottom="10dp">
 
                     <ImageView
                         android:id="@+id/privateTourIMG"
@@ -149,19 +156,16 @@
                         android:id="@+id/privateTour"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
                         android:layout_gravity="center"
-                        android:hint="Private"
-                        />
+                        android:layout_marginLeft="10dp"
+                        android:hint="Private" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp"
-                    >
+                    android:layout_marginRight="20dp">
 
                     <Button
                         android:id="@+id/stopPoint"
@@ -169,73 +173,87 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:text="Stop Point"
-                        android:background="@drawable/bg_radius_edittext"
-                        />
+                        android:background="@null"
+                        android:text="Stop Point" />
+
                     <Button
                         android:id="@+id/member"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
                         android:layout_gravity="center"
-                        android:text="Members"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_radius_edittext"
-                        />
+                        android:background="@null"
+                        android:text="Members" />
+
+                    <Button
+                        android:id="@+id/review"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:text="Review" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_list_items">
+                android:background="@drawable/bg_list_items"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <ImageView
                         android:id="@+id/avtUsersmall"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="5dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/bg_avatar_user" />
-                        <EditText
-                            android:id="@+id/addCmtEdt"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/bg_radius_edittext"
-                            android:layout_weight="7"
-                            android:hint="Leave a comment..." />
-                        <Button
-                            android:id="@+id/addCmtBtn"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/ic_done_all_24px"
-                            android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/addCmtEdt"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="7"
+                        android:background="@drawable/bg_radius_edittext"
+                        android:hint="Leave a comment..."
+                        android:paddingStart="10dp" />
+
+                    <Button
+                        android:id="@+id/addCmtBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/ic_done_all_24px"
+                        android:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
+
             <com.ygaps.travelapp.adapter.ExpandableHeightListView
                 android:id="@+id/list_cmt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fadingEdge="none"
-                android:scrollbars="none"
-                android:focusable="false">
-            </com.ygaps.travelapp.adapter.ExpandableHeightListView>
+                android:focusable="false"
+                android:scrollbars="none"></com.ygaps.travelapp.adapter.ExpandableHeightListView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

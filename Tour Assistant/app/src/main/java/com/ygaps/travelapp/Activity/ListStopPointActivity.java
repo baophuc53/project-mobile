@@ -44,7 +44,7 @@ public class ListStopPointActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         TextView  title = findViewById(R.id.actionbar_textview);
-        title.setText("List Stop Point of Tour");
+        title.setText("Stop Points");
         addControl();
         Show();
         addSeach();
