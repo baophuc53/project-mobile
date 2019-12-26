@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class UpdateTourResquest {
     @SerializedName("id")
     @Expose
-    private Number id;
+    private String id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -43,6 +43,9 @@ public class UpdateTourResquest {
     @SerializedName("isPrivate")
     @Expose
     private Boolean isPrivate;
+    @SerializedName("status")
+    @Expose
+    private Number status;
 
     public String getName() {
         return name;
@@ -140,11 +143,19 @@ public class UpdateTourResquest {
         isPrivate = aPrivate;
     }
 
-    public Number getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Number id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public Number getStatus() {
+        return status;
+    }
+
+    public void setStatus(Number status) {
+        this.status = status;
     }
 }

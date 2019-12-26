@@ -73,16 +73,15 @@ public class UpdateTourActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.actionbar_textview);
         title.setText("Edit Tour");
         addControll();
-        addEvent();
         setCurrentInfo();
-
+        addEvent();
     }
 
     private void setCurrentInfo() {
         Intent intent = getIntent();
         TourInfoResponse currentTourInfo = (TourInfoResponse) intent.getSerializableExtra("CurrentTourInfo");
         try {
-            updateTourResquest.setId(currentTourInfo.getId());
+            updateTourResquest.setId(currentTourInfo.getId().toString());
             tourName.setText(currentTourInfo.getName().toString());
             minCost.setText(currentTourInfo.getMinCost().toString());
             maxCost.setText(currentTourInfo.getMaxCost().toString());
@@ -109,26 +108,26 @@ public class UpdateTourActivity extends AppCompatActivity {
         add_event_endDate();
         add_event_startPlace();
         add_event_endPlace();
-        updateTourResquest.setName(tourName.getText().toString());
-        if (!TextUtils.isEmpty(minCost.getText().toString()))
-            updateTourResquest.setMinCost(Long.parseLong(minCost.getText().toString()));
-        else
-            updateTourResquest.setMinCost(Long.parseLong("0"));
-        if (!TextUtils.isEmpty(maxCost.getText().toString()))
-            updateTourResquest.setMaxCost(Long.parseLong(maxCost.getText().toString()));
-        else
-            updateTourResquest.setMaxCost(Long.parseLong("0"));
-        if (!TextUtils.isEmpty(Adults.getText().toString()))
-            updateTourResquest.setAdults(Long.parseLong(Adults.getText().toString()));
-        else
-            updateTourResquest.setAdults(Long.parseLong("0"));
-        if (!TextUtils.isEmpty(Childrens.getText().toString()))
-            updateTourResquest.setChilds(Long.parseLong(Childrens.getText().toString()));
-        else
-            updateTourResquest.setChilds(Long.parseLong("0"));
         updateTourbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateTourResquest.setName(tourName.getText().toString());
+                if (!TextUtils.isEmpty(minCost.getText().toString()))
+                    updateTourResquest.setMinCost(Long.parseLong(minCost.getText().toString()));
+                else
+                    updateTourResquest.setMinCost(Long.parseLong("0"));
+                if (!TextUtils.isEmpty(maxCost.getText().toString()))
+                    updateTourResquest.setMaxCost(Long.parseLong(maxCost.getText().toString()));
+                else
+                    updateTourResquest.setMaxCost(Long.parseLong("0"));
+                if (!TextUtils.isEmpty(Adults.getText().toString()))
+                    updateTourResquest.setAdults(Long.parseLong(Adults.getText().toString()));
+                else
+                    updateTourResquest.setAdults(Long.parseLong("0"));
+                if (!TextUtils.isEmpty(Childrens.getText().toString()))
+                    updateTourResquest.setChilds(Long.parseLong(Childrens.getText().toString()));
+                else
+                    updateTourResquest.setChilds(Long.parseLong("0"));
                 updateTour();
             }
         });
@@ -143,14 +142,22 @@ public class UpdateTourActivity extends AppCompatActivity {
         userService.updateTourInfo(updateTourResquest, new Callback<UpdateTourResponse>() {
             @Override
             public void success(UpdateTourResponse updateTourResponse, Response response) {
-                Intent intent = new Intent(UpdateTourActivity.this, DetailTourActivity.class);
-                startActivity(intent);
                 finish();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(UpdateTourActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
+                switch (error.getKind()) {
+                    case HTTP:
+                        if (error.getResponse().getStatus() == 400)
+                            Toast.makeText(UpdateTourActivity.this, "Bad request", Toast.LENGTH_SHORT).show();
+                        if (error.getResponse().getStatus() == 403)
+                            Toast.makeText(UpdateTourActivity.this, "Not permission to update tour info", Toast.LENGTH_SHORT).show();
+                        if (error.getResponse().getStatus() == 404)
+                            Toast.makeText(UpdateTourActivity.this, "Tour is not found", Toast.LENGTH_SHORT).show();
+                        if (error.getResponse().getStatus() == 500)
+                            Toast.makeText(UpdateTourActivity.this, "Server error on updating tour info", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

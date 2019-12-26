@@ -15,22 +15,22 @@ public class UpdateTourResponse {
     private String name;
     @SerializedName("minCost")
     @Expose
-    private Integer minCost;
+    private Long minCost;
     @SerializedName("maxCost")
     @Expose
-    private Integer maxCost;
+    private Long maxCost;
     @SerializedName("startDate")
     @Expose
-    private Integer startDate;
+    private Long startDate;
     @SerializedName("endDate")
     @Expose
-    private Integer endDate;
+    private Long endDate;
     @SerializedName("adults")
     @Expose
-    private Integer adults;
+    private Long adults;
     @SerializedName("childs")
     @Expose
-    private Integer childs;
+    private Long childs;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -65,52 +65,60 @@ public class UpdateTourResponse {
         this.name = name;
     }
 
-    public Integer getMinCost() {
+    public Long getMinCost() {
         return minCost;
     }
 
-    public void setMinCost(Integer minCost) {
+    public void setMinCost(Long minCost) {
         this.minCost = minCost;
     }
 
-    public Integer getMaxCost() {
+    public Long getMaxCost() {
         return maxCost;
     }
 
-    public void setMaxCost(Integer maxCost) {
+    public void setMaxCost(Long maxCost) {
         this.maxCost = maxCost;
     }
 
-    public Integer getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Integer startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Integer getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Integer endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
-    public Integer getAdults() {
+    public Long getAdults() {
         return adults;
     }
 
-    public void setAdults(Integer adults) {
+    public void setAdults(Long adults) {
         this.adults = adults;
     }
 
-    public Integer getChilds() {
+    public Long getChilds() {
         return childs;
     }
 
-    public void setChilds(Integer childs) {
+    public void setChilds(Long childs) {
         this.childs = childs;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 
     public Integer getId() {
