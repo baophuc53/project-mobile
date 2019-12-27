@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:layout_marginTop="10dp"
-android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StartTour">
     <fragment
-        android:id="@+id/gps_map"
+        android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Fragments.LocationMapsFragment">
-    </fragment>
+        tools:context=".StartTour" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,17 +34,5 @@ android:orientation="vertical">
             android:layout_weight="5"/>
     </LinearLayout>
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/gps_btn"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:layout_marginBottom="70dp"-->
-<!--        android:background="@drawable/btn_round"-->
-<!--        android:src="@drawable/ic_my_location_24px"-->
-<!--        android:backgroundTint="#fff"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-
+    <include layout="@layout/bottom_sheet_start_tour" />
 </androidx.constraintlayout.widget.ConstraintLayout>

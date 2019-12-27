@@ -1,9 +1,6 @@
 package com.ygaps.travelapp.Activity.Fragments;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
@@ -13,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ygaps.travelapp.Activity.ChangePasswordActivity;
 import com.ygaps.travelapp.Activity.EditProfileActivity;
-import com.ygaps.travelapp.Activity.LocationMapsActivity;
 import com.ygaps.travelapp.Activity.LoginActivity;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
@@ -37,7 +32,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.Serializable;
 
@@ -57,7 +51,7 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         currentActivity=getActivity();
-        View view = inflater.inflate(R.layout.activity_setting_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_setting_account, container, false);
         addControl(view);
         getUserInfor();
         addSignOutEvent();

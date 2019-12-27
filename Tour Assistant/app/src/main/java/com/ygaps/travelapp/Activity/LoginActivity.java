@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("userId", loginResponse.getUserId());
                 editor.putBoolean("LoginByFB", false);
                 editor.commit();
-                Intent intent=new Intent(LoginActivity.this, ListTourFragment.class);
+                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }

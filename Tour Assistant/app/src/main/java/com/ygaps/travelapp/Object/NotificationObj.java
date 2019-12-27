@@ -46,7 +46,10 @@ public class NotificationObj implements Serializable {
     @SerializedName("minCost")
     @Expose
     private String minCost;
-
+    @SerializedName("isRead")
+    @Expose
+    public boolean isRead=false;
+    
     public String getStartDate() {
         return startDate;
     }

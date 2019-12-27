@@ -1,7 +1,5 @@
 package com.ygaps.travelapp.Activity.Fragments;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
@@ -11,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.ygaps.travelapp.Activity.R;
-import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Object.NotificationObj;
 import com.ygaps.travelapp.adapter.NotificationAdapter;
 
@@ -31,7 +27,7 @@ public class NotificationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.activity_notification, container, false);
+        View view = inflater.inflate(R.layout.fragment_notification, container, false);
         Init(view);
         addEvent();
         return view;

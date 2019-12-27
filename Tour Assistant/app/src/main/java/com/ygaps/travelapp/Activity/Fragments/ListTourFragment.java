@@ -3,14 +3,10 @@ package com.ygaps.travelapp.Activity.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,27 +16,19 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.ygaps.travelapp.Activity.CreateTourActivity;
 import com.ygaps.travelapp.Activity.DetailTourActivity;
-import com.ygaps.travelapp.Activity.LocationMapsActivity;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Tour;
 import com.ygaps.travelapp.adapter.TourAdapters;
-import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.ListTourRequest;
 import com.ygaps.travelapp.model.ListTourResponse;
-import com.ygaps.travelapp.model.TokenRequest;
 
 import java.util.ArrayList;
 
@@ -65,7 +53,7 @@ public class ListTourFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.activity_list_tour, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_tour, container, false);
         addControls(view);
         GetData();
         addResfreshEvent();

@@ -84,15 +84,15 @@ public class DetailTourActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.invite:
-                Intent thisIntent=getIntent();
-                Intent intent=new Intent(DetailTourActivity.this,InviteMemberActivity.class);
-                intent.putExtra("Tour",thisIntent.getLongExtra("tourId",0));
-                intent.putExtra("isPrivate",privateTour.getText()=="Private");
+                Intent thisIntent = getIntent();
+                Intent intent = new Intent(DetailTourActivity.this, InviteMemberActivity.class);
+                intent.putExtra("Tour", thisIntent.getLongExtra("tourId", 0));
+                intent.putExtra("isPrivate", privateTour.getText() == "Private");
                 startActivity(intent);
                 return true;
             case R.id.join:
-                if(privateTour.getText()=="Private")
-                    Toast.makeText(DetailTourActivity.this,"Không thể tham gia tour riêng tư",Toast.LENGTH_LONG).show();
+                if (privateTour.getText() == "Private")
+                    Toast.makeText(DetailTourActivity.this, "Không thể tham gia tour riêng tư", Toast.LENGTH_LONG).show();
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(DetailTourActivity.this);
                     builder.setTitle("Join");
@@ -103,7 +103,7 @@ public class DetailTourActivity extends AppCompatActivity {
 
                             JoinRequest joinRequest = new JoinRequest();
                             joinRequest.setTourId("" + tourId);
-                            joinRequest.isInvited=(privateTour.getText()=="Private");
+                            joinRequest.isInvited = (privateTour.getText() == "Private");
                             UserService userService;
                             userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
                             userService.joinTour(joinRequest, new Callback<DefaultResponse>() {
@@ -128,10 +128,14 @@ public class DetailTourActivity extends AppCompatActivity {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                    return true;
                 }
-                case R.id.home:
-                    onBackPressed();
+                return true;
+            case R.id.startTour:
+                
+                return true;
+            case R.id.home:
+                finish();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

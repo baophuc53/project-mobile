@@ -1,35 +1,26 @@
-package com.ygaps.travelapp.Activity;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+package com.ygaps.travelapp.Activity.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.ygaps.travelapp.Activity.Fragments.ListTourFragment;
-import com.ygaps.travelapp.Activity.Fragments.SettingFragment;
-import com.ygaps.travelapp.Activity.Fragments.UserListTourFragment;
-import com.ygaps.travelapp.Api.MyAPIClient;
-import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Object.Coord;
-import com.ygaps.travelapp.Object.CoordinateSet;
-import com.ygaps.travelapp.Object.SuggestStopPoint;
-import com.ygaps.travelapp.model.SuggestStopPointRequest;
-import com.ygaps.travelapp.model.SuggestStopPointResponse;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,8 +30,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ygaps.travelapp.Activity.PointInfoActivity;
+import com.ygaps.travelapp.Activity.R;
+import com.ygaps.travelapp.Api.MyAPIClient;
+import com.ygaps.travelapp.Api.UserService;
+import com.ygaps.travelapp.Object.Coord;
+import com.ygaps.travelapp.Object.CoordinateSet;
+import com.ygaps.travelapp.Object.SuggestStopPoint;
+import com.ygaps.travelapp.model.SuggestStopPointRequest;
+import com.ygaps.travelapp.model.SuggestStopPointResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,38 +48,39 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class LocationMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class LocationMapsFragment extends Fragment implements OnMapReadyCallback {
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
-    private Button btn_start, btn_stop;
-    private ImageButton btn_gps;
-    private BroadcastReceiver broadcastReceiver;
     private boolean mLocationPermissionsGranted = false;
     final List<LatLng> suggestPoints = new ArrayList<>();
     final List<Marker> markerList = new ArrayList<>();
     private static List<SuggestStopPoint> suggestStopPoints = new ArrayList<>();
-    private Marker recentMarker;
     private BitmapDescriptor cultery = null, hotel = null, parking = null, other = null;
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
+    Activity currentActivity;
+    SearchView searchView;
+    Address address;
+    Marker marker;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_maps);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.activity_location_maps, container, false);
+        currentActivity=getActivity();
         getLocationPermission();
-        cultery = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_cutlery);
-        hotel = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_hotel);
-        parking = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_parking);
-        other = bitmapDescriptorFromVector(LocationMapsActivity.this , R.drawable.ic_24_hours);
+        cultery = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_cutlery);
+        hotel = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_hotel);
+        parking = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_parking);
+        other = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_24_hours);
         if (mLocationPermissionsGranted) {
             initMap();
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         }
+        return view;
     }
-
     private BitmapDescriptor bitmapDescriptorFromVector(Activity context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
@@ -89,14 +90,10 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    public void onBackPressed() {
-        finish();
-        super.onBackPressed();
-    }
 
 
     private void initMap() {
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.gps_map);
         mapFragment.getMapAsync(this);
     }
@@ -104,18 +101,18 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
     private void getLocationPermission() {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+        if (ContextCompat.checkSelfPermission(currentActivity.getApplicationContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+            if (ContextCompat.checkSelfPermission(currentActivity.getApplicationContext(),
                     COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionsGranted = true;
             } else {
-                ActivityCompat.requestPermissions(this,
+                ActivityCompat.requestPermissions(currentActivity,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
         } else {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(currentActivity,
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
@@ -123,7 +120,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        final ProgressDialog progress = new ProgressDialog(this);
+        final ProgressDialog progress = new ProgressDialog(currentActivity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
@@ -191,7 +188,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onInfoWindowLongClick(Marker marker) {
                 final SuggestStopPoint s = (SuggestStopPoint) marker.getTag();
-                Intent intent = new Intent(LocationMapsActivity.this, PointInfoActivity.class);
+                Intent intent = new Intent(currentActivity, PointInfoActivity.class);
                 int id;
                 id = s.getId();
                 intent.putExtra("id", id);
@@ -199,7 +196,39 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             }
         });
 
+        searchView = currentActivity.findViewById(R.id.search_location);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = new ArrayList<>();
+                Geocoder geocoder = new Geocoder(currentActivity);
+                try {
+                    addressList = geocoder.getFromLocationName(location, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (addressList.size()>0) {
+                    address = addressList.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    mMap.clear();
+                    marker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(location)
+                            .snippet(address.getAddressLine(0)));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+                }
+                else {
+                    Toast.makeText(currentActivity, "Fail", Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
 }

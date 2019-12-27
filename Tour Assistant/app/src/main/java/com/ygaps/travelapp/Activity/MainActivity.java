@@ -1,25 +1,24 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.ArraySet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.ygaps.travelapp.Activity.Fragments.ListTourFragment;
+import com.ygaps.travelapp.Activity.Fragments.LocationMapsFragment;
 import com.ygaps.travelapp.Activity.Fragments.NotificationFragment;
 import com.ygaps.travelapp.Activity.Fragments.SettingFragment;
 import com.ygaps.travelapp.Activity.Fragments.UserListTourFragment;
@@ -29,7 +28,6 @@ import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.TokenRequest;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -37,7 +35,7 @@ import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    Fragment fragment,listTour,userListTour,notification,setting;
+    Fragment fragment,listTour,userListTour,notification,setting,mapFragment;
     TextView title;
     BottomNavigationView bottomNavigationView;
     ArrayList<Integer> list;
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         userListTour=new UserListTourFragment();
         notification=new NotificationFragment();
         setting=new SettingFragment();
+        mapFragment=new LocationMapsFragment();
         init();
         Authorize();
         sendRegistrationToServer();
@@ -75,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case "Setting":
                     fragment=setting;
+                    break;
+                case "Map":
+                    fragment=mapFragment;
                     break;
                 default :
                     fragment=listTour;
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 list.add(R.id.action_list_tour);
+                getSupportActionBar().show();
                 switch (item.getItemId()) {
                     case R.id.action_list_tour:
                         fragment=listTour;
@@ -120,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                         title.setText("My Tour");
                         break;
                     case R.id.action_map:
-                        Intent intent =new Intent(MainActivity.this, LocationMapsActivity.class);
-                        startActivity(intent);
+                        fragment=mapFragment;
+                        getSupportActionBar().hide();
                         break;
                     case R.id.action_notifications:
                         fragment=notification;

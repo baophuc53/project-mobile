@@ -119,5 +119,6 @@
     <string name="title_activity_place_picker">Map</string>
     <string name="invite">Invite</string>
     <string name="join">JOIN</string>
+    <string name="start_tour">Start Tour</string>
 
 </resources>

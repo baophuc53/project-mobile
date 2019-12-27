@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <item
+        android:id="@+id/startTour"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_start_tour"
+        android:title="@string/start_tour"/>
     <item
         android:id="@+id/invite"
         app:showAsAction="always"
+        android:icon="@drawable/ic_invite"
         android:title="@string/invite"/>
 </menu>
