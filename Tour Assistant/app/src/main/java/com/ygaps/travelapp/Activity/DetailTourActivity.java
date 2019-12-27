@@ -27,7 +27,6 @@ import com.ygaps.travelapp.Object.Comment;
 import com.ygaps.travelapp.adapter.CommentAdapters;
 import com.ygaps.travelapp.adapter.ExpandableHeightListView;
 import com.ygaps.travelapp.model.DefaultResponse;
-import com.ygaps.travelapp.model.InviteRequest;
 import com.ygaps.travelapp.model.JoinRequest;
 import com.ygaps.travelapp.model.SendCmtRequest;
 import com.ygaps.travelapp.model.StopPointResponse;
@@ -46,13 +45,21 @@ import java.util.Calendar;
 
 public class DetailTourActivity extends AppCompatActivity {
 
-    ImageView avtTour, avtUser, privateIMG;
+    ImageView avtTour, avtUser, privateIMG, editTour;
     TextView nameTour, statusTour, priceTour, levelTour, dateTour, numDateTour, numPeopleTour, privateTour;
-    Button stopPointTour, MemberTour, addCMT;
+    Button stopPointTour, MemberTour, addCMT, reviewTour;
     EditText leaveCmtTour;
     CommentAdapters commentAdapters;
     ExpandableHeightListView lvComments;
     long tourId;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class DetailTourActivity extends AppCompatActivity {
         addEvent();
         addEventAddCmt();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,7 +191,9 @@ public class DetailTourActivity extends AppCompatActivity {
     private void addEvent() {
         Intent intent = getIntent();
         tourId = intent.getLongExtra("tourId", 0);
-
+        boolean isMytour = intent.getBooleanExtra("isMyTour", false);
+        if (isMytour)
+            editTour.setVisibility(View.VISIBLE);
         TourInfoRequest request=new TourInfoRequest();
         UserService userService;
 
@@ -191,6 +201,14 @@ public class DetailTourActivity extends AppCompatActivity {
         userService.getTourInfo(tourId, new Callback<TourInfoResponse>() {
             @Override
             public void success(final TourInfoResponse tourInfoResponse, Response response) {
+                editTour.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent thisintent = new Intent(DetailTourActivity.this, UpdateTourActivity.class);
+                        thisintent.putExtra("CurrentTourInfo", (Serializable) tourInfoResponse);
+                        startActivity(thisintent);
+                    }
+                });
                 try {
                     Glide.with(DetailTourActivity.this)
                             .load("https://english4u.com.vn/Uploads/images/bi%E1%BB%83n%202.jpg")
@@ -270,6 +288,14 @@ public class DetailTourActivity extends AppCompatActivity {
                         }
                     }
                 });
+                reviewTour.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DetailTourActivity.this, ReviewListActivity.class);
+                        intent.putExtra("tourId", tourId);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -305,5 +331,7 @@ public class DetailTourActivity extends AppCompatActivity {
         leaveCmtTour = findViewById(R.id.addCmtEdt);
         addCMT = findViewById(R.id.addCmtBtn);
         lvComments = findViewById(R.id.list_cmt);
+        reviewTour = findViewById(R.id.review);
+        editTour = findViewById(R.id.editTour);
     }
 }

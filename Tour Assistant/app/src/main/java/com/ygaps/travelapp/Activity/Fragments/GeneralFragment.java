@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,7 +169,7 @@ public class GeneralFragment extends Fragment {
                     }
                     if (s>0) {
                         avg /= s;
-                        selfPoint.setText(String.valueOf(avg));
+                        selfPoint.setText(String.valueOf((double)Math.round(avg * 10)/10));
                         selfRatingBar.setRating(avg);
                         total.setText(String.valueOf(s));
                     }

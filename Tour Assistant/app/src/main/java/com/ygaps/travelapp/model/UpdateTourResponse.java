@@ -1,19 +1,9 @@
 package com.ygaps.travelapp.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import com.ygaps.travelapp.Object.Comment;
-import com.ygaps.travelapp.Object.Member;
-import com.ygaps.travelapp.Object.StopPoint;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TourInfoResponse implements Serializable {
-
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+public class UpdateTourResponse {
     @SerializedName("hostId")
     @Expose
     private String hostId;
@@ -37,30 +27,19 @@ public class TourInfoResponse implements Serializable {
     private Long endDate;
     @SerializedName("adults")
     @Expose
-    private Integer adults;
+    private Long adults;
     @SerializedName("childs")
     @Expose
-    private Integer childs;
+    private Long childs;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("isPrivate")
     @Expose
     private Boolean isPrivate;
-    @SerializedName("stopPoints")
+    @SerializedName("avatar")
     @Expose
-    private List<StopPoint> stopPoints = null;
-    @SerializedName("comments")
-    @Expose
-    private List<Comment> comments = null;
-    @SerializedName("members")
-    @Expose
-    private List<Member> members = null;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private String avatar;
 
     public String getHostId() {
         return hostId;
@@ -118,20 +97,36 @@ public class TourInfoResponse implements Serializable {
         this.endDate = endDate;
     }
 
-    public Integer getAdults() {
+    public Long getAdults() {
         return adults;
     }
 
-    public void setAdults(Integer adults) {
+    public void setAdults(Long adults) {
         this.adults = adults;
     }
 
-    public Integer getChilds() {
+    public Long getChilds() {
         return childs;
     }
 
-    public void setChilds(Integer childs) {
+    public void setChilds(Long childs) {
         this.childs = childs;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Boolean getIsPrivate() {
@@ -142,27 +137,11 @@ public class TourInfoResponse implements Serializable {
         this.isPrivate = isPrivate;
     }
 
-    public List<StopPoint> getStopPoints() {
-        return stopPoints;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setStopPoints(List<StopPoint> stopPoints) {
-        this.stopPoints = stopPoints;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

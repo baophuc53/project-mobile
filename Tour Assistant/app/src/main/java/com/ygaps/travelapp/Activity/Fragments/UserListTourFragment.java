@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.ygaps.travelapp.Activity.CreateTourActivity;
 import com.ygaps.travelapp.Activity.DetailTourActivity;
@@ -44,6 +45,7 @@ public class UserListTourFragment extends Fragment {
     Button addTourbtn;
     SearchView search;
     Activity currentActivity;
+    SwipeRefreshLayout pullToRefresh;
 
 
 
@@ -53,9 +55,27 @@ public class UserListTourFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_tour, container, false);
         addControls(view);
         Show();
+        addResfreshEvent();
         addEventSearch();
         addEventClickTour();
         return view;
+    }
+    private void addResfreshEvent() {
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Show();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        addTourbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(currentActivity, CreateTourActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private void addEventSearch() {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -152,5 +172,6 @@ public class UserListTourFragment extends Fragment {
         totalTour =  view.findViewById(R.id.total_tour);
         addTourbtn = view.findViewById(R.id.button_add_tour);
         search = view.findViewById(R.id.search_tour);
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
     }
 }

@@ -147,7 +147,6 @@ public class ListTourFragment extends Fragment {
         request.setPageNum(PAGE_NUM);
         request.setRowPerPage(ROW_PER_PAGE);
         UserService userService;
-
         userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         userService.getListTour(request.getRowPerPage(),
                 request.getPageNum(),
