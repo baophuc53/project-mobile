@@ -53,7 +53,7 @@ public class ListStopPointActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Intent intent=getIntent();
-        if (intent.getBooleanExtra("isMyListTour", false))
+        if (intent.getBooleanExtra("isMyTour", false))
             getMenuInflater().inflate(R.menu.add, menu);
 
         return super.onCreateOptionsMenu(menu);
@@ -144,7 +144,7 @@ public class ListStopPointActivity extends AppCompatActivity {
                         //Setting the title manually
                         alert.setTitle("Warning");
                         alert.show();
-                        return false;
+                        return true;
                     }
                 });
 
