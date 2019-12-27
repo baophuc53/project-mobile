@@ -65,28 +65,29 @@ public class EditProfileActivity extends AppCompatActivity {
         title.setText("Edit Profile");
         addControl();
         getCurrentUserInfo();
-        addBirthdayEvent();
         addEvent();
     }
 
     private void addEvent() {
-        updateUser.setFullName(nameUser.getText().toString());
-        updateUser.setPhone(phone.getText().toString());
-        updateUser.setEmail(email.getText().toString());
-        @SuppressLint("SimpleDateFormat") DateFormat dateFormatEdt = new SimpleDateFormat("dd-MM-yyyy");
-        @SuppressLint("SimpleDateFormat") DateFormat updateDobFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        try {
-            Date dateTemp = dateFormatEdt.parse(birthday.getText().toString());
-            String dateTemnString = updateDobFormat.format(dateTemp);
-            Date updateDob = updateDobFormat.parse(dateTemnString);
-            updateUser.setDob(updateDob);
-        } catch (Exception e) {
-        }
+        addBirthdayEvent();
         addChooseGenderEvent();
 
-            save.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    updateUser.setFullName(nameUser.getText().toString());
+                    updateUser.setPhone(phone.getText().toString());
+                    updateUser.setEmail(email.getText().toString());
+                    @SuppressLint("SimpleDateFormat") DateFormat dateFormatEdt = new SimpleDateFormat("dd-MM-yyyy");
+                    @SuppressLint("SimpleDateFormat") DateFormat updateDobFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                    try {
+                        Date dateTemp = dateFormatEdt.parse(birthday.getText().toString());
+                        String dateTemnString = updateDobFormat.format(dateTemp);
+                        Date updateDob = updateDobFormat.parse(dateTemnString);
+                        updateUser.setDob(updateDob);
+                    } catch (Exception e) {
+                    }
+                    updateUser.setGender(genderspinner.getSelectedItemPosition());
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(EditProfileActivity.this);
                     alertDialogBuilder.setMessage("Do you want to save infomation?");
                     alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -172,8 +173,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void getCurrentUserInfo() {
-        final SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
-        boolean loginByFB = sharedPreferences.getBoolean("LoginByFB", false);
         Intent intent = getIntent();
         user = (UserInfoResponse) intent.getSerializableExtra("userInfo");
         try {
@@ -183,10 +182,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             .centerCrop()
                             .placeholder(R.drawable.bg_avatar_user))
                     .into(avatar);
-            if (loginByFB == true)
-                updateUser.setFullName(user.getFullNameFB());
-            else
-                updateUser.setFullName(user.getFullName());
+            updateUser.setFullName(user.getFullName());
             nameUser.setText(updateUser.getFullName());
             updateUser.setEmail(user.getEmail());
             email.setText(updateUser.getEmail());
