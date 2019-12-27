@@ -211,7 +211,6 @@ public class LocationMapsFragment extends Fragment implements OnMapReadyCallback
                 if (addressList.size()>0) {
                     address = addressList.get(0);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    mMap.clear();
                     marker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(location)

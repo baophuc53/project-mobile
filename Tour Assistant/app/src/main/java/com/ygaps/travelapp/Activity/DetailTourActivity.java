@@ -275,7 +275,7 @@ public class DetailTourActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent thisIntent = getIntent();
                         Intent intent = new Intent(DetailTourActivity.this, ListStopPointActivity.class);
-                        intent.putExtra("isMyListTour", thisIntent.getBooleanExtra("isMyListTour",false));
+                        intent.putExtra("isMyTour", thisIntent.getBooleanExtra("isMyTour",false));
                         intent.putExtra("tourId", tourId);
                         if (tourInfoResponse.getStopPoints().size() == 0){
                             intent.putExtra("isNull", true);
