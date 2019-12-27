@@ -1,12 +1,9 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -33,15 +34,13 @@ import com.ygaps.travelapp.model.StopPointResponse;
 import com.ygaps.travelapp.model.TourInfoRequest;
 import com.ygaps.travelapp.model.TourInfoResponse;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-import android.graphics.Color;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class DetailTourActivity extends AppCompatActivity {
 
@@ -139,9 +138,11 @@ public class DetailTourActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.startTour:
-                
+                intent=new Intent(DetailTourActivity.this,StartTour.class);
+                intent.putExtra("Tour", getIntent().getLongExtra("tourId", 0));
+                startActivity(intent);
                 return true;
-            case R.id.home:
+            case android.R.id.home:
                 finish();
                 return true;
         }

@@ -43,42 +43,6 @@
            android:foreground="?attr/selectableItemBackground"
            android:text="Limit speed sign"
            android:textColor="#fff" />
-       <TextView
-           android:id="@+id/keyNotification"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:textSize="14sp"
-           android:visibility="invisible"
-           android:layout_alignParentTop="true"/>
-       <EditText
-           android:id="@+id/LimitSpeed"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:textSize="14sp"
-           android:layout_below="@id/keyNotification"
-           android:visibility="invisible"
-           android:layout_alignParentTop="true"
-           android:inputType="number" />
-       <EditText
-           android:id="@+id/Problem"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="10dp"
-           android:layout_below="@id/keyNotification"
-           android:textSize="14sp"
-           android:visibility="invisible"
-           android:layout_alignParentTop="true"
-           android:inputType="textLongMessage" />
    </RelativeLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="#000"
-        android:foreground="?attr/selectableItemBackground"
-        android:text="SEND NOTIFICATION"
-        android:textColor="#fff" />
 
 </LinearLayout>

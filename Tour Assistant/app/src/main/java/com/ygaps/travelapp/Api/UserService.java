@@ -1,8 +1,6 @@
 package com.ygaps.travelapp.Api;
 
 
-import android.text.style.TtsSpan;
-
 import com.ygaps.travelapp.model.ChangePasswordRequest;
 import com.ygaps.travelapp.model.ChangePasswordResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
@@ -19,6 +17,7 @@ import com.ygaps.travelapp.model.LoginByFaceRequest;
 import com.ygaps.travelapp.model.LoginByFaceResponse;
 import com.ygaps.travelapp.model.LoginRequest;
 import com.ygaps.travelapp.model.LoginResponse;
+import com.ygaps.travelapp.model.OnRoadNotification;
 import com.ygaps.travelapp.model.PointOfReviewTourResponse;
 import com.ygaps.travelapp.model.PointServiceResponse;
 import com.ygaps.travelapp.model.ProcessInvitationRequest;
@@ -176,4 +175,7 @@ public interface UserService {
     @POST("/tour/update-tour")
     void updateTourInfo(@Body UpdateTourResquest updateTourResquest,
                     Callback<UpdateTourResponse> callback);
+
+    @POST("/tour/add/notification-on-road")
+    void notificationOnRoad(@Body OnRoadNotification onRoadNotification,Callback<DefaultResponse> callback);
 }
