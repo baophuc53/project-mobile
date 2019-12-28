@@ -49,6 +49,12 @@ public class SettingFragment extends Fragment {
     Activity currentActivity;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfor();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         currentActivity=getActivity();
         View view = inflater.inflate(R.layout.fragment_setting_account, container, false);
@@ -130,8 +136,6 @@ public class SettingFragment extends Fragment {
     }
 
     private void addUserInfo(UserInfoResponse user) {
-        final SharedPreferences sharedPreferences = currentActivity.getSharedPreferences("Data", 0);
-        boolean loginByFB = sharedPreferences.getBoolean("LoginByFB", false);
         try {
             Glide.with(currentActivity)
                     .load(user.getAvatar())
@@ -139,9 +143,6 @@ public class SettingFragment extends Fragment {
                             .centerCrop()
                             .placeholder(R.drawable.bg_avatar_user))
                     .into(avtUser);
-            if (loginByFB == true)
-                nameUser.setText(user.getFullNameFB());
-            else
                 nameUser.setText(user.getFullName());
         } catch (Exception e) {
         }

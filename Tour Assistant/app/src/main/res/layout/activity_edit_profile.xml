@@ -44,6 +44,8 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:hint="@string/name_user_hints"
+                    android:textAlignment="center"
+                    android:inputType="textShortMessage"
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </LinearLayout>

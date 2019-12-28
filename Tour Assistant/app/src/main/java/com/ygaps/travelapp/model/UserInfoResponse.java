@@ -11,9 +11,6 @@ public class UserInfoResponse implements Serializable {
     private Integer id;
     @SerializedName("fullName")
     @Expose
-    private String fullNameFB;
-    @SerializedName("full_name")
-    @Expose
     private String fullName;
     @SerializedName("email")
     @Expose
@@ -30,12 +27,6 @@ public class UserInfoResponse implements Serializable {
     @SerializedName("gender")
     @Expose
     private Integer gender;
-    @SerializedName("email_verified")
-    @Expose
-    private Boolean emailVerified;
-    @SerializedName("phone_verified")
-    @Expose
-    private Boolean phoneVerified;
     @SerializedName("avatar")
     @Expose
     private String avatar;
@@ -49,14 +40,6 @@ public class UserInfoResponse implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getFullNameFB() {
-        return fullNameFB;
-    }
-
-    public void setFullNameFB(String fullNameFB) {
-        this.fullNameFB = fullNameFB;
     }
 
     public String getFullName() {
@@ -105,22 +88,6 @@ public class UserInfoResponse implements Serializable {
 
     public void setGender(Integer gender) {
         this.gender = gender;
-    }
-
-    public Boolean getEmailVerified() {
-        return emailVerified;
-    }
-
-    public void setEmailVerified(Boolean emailVerified) {
-        this.emailVerified = emailVerified;
-    }
-
-    public Boolean getPhoneVerified() {
-        return phoneVerified;
-    }
-
-    public void setPhoneVerified(Boolean phoneVerified) {
-        this.phoneVerified = phoneVerified;
     }
 
     public String getAvatar() {
