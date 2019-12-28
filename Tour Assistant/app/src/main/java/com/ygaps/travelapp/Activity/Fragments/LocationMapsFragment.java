@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Coord;
 import com.ygaps.travelapp.Object.CoordinateSet;
 import com.ygaps.travelapp.Object.SuggestStopPoint;
+import com.ygaps.travelapp.model.SearchStopPointResponse;
 import com.ygaps.travelapp.model.SuggestStopPointRequest;
 import com.ygaps.travelapp.model.SuggestStopPointResponse;
 
@@ -64,6 +66,8 @@ public class LocationMapsFragment extends Fragment implements OnMapReadyCallback
     SearchView searchView;
     Address address;
     Marker marker;
+    UserService userService;
+    List<SuggestStopPoint> searchPoints = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -75,6 +79,7 @@ public class LocationMapsFragment extends Fragment implements OnMapReadyCallback
         hotel = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_hotel);
         parking = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_parking);
         other = bitmapDescriptorFromVector(currentActivity , R.drawable.ic_24_hours);
+        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
         if (mLocationPermissionsGranted) {
             initMap();
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -146,8 +151,6 @@ public class LocationMapsFragment extends Fragment implements OnMapReadyCallback
             coordList.add(coordinateSet);
             suggestStopPointRequest.setHasOneCoordinate(false);
             suggestStopPointRequest.setCoordList(coordList);
-            final UserService userService;
-            userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
             userService.suggestStopPoint(suggestStopPointRequest, new Callback<SuggestStopPointResponse>() {
                 @Override
                 public void success(SuggestStopPointResponse suggestStopPointResponse, Response response) {
@@ -196,30 +199,37 @@ public class LocationMapsFragment extends Fragment implements OnMapReadyCallback
             }
         });
 
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15.0f));
+            }
+        });
+
         searchView = currentActivity.findViewById(R.id.search_location);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String location = searchView.getQuery().toString();
-                List<Address> addressList = new ArrayList<>();
-                Geocoder geocoder = new Geocoder(currentActivity);
-                try {
-                    addressList = geocoder.getFromLocationName(location, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (addressList.size()>0) {
-                    address = addressList.get(0);
-                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    marker = mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(location)
-                            .snippet(address.getAddressLine(0)));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
-                }
-                else {
-                    Toast.makeText(currentActivity, "Fail", Toast.LENGTH_LONG).show();
-                }
+                userService.searchStopPoint(location, 1, 10, new Callback<SearchStopPointResponse>() {
+                    @Override
+                    public void success(SearchStopPointResponse searchStopPointResponse, Response response) {
+                        searchPoints = searchStopPointResponse.getStopPoints();
+                        for (SuggestStopPoint p : searchPoints) {
+                            for (Marker m : markerList) {
+                                if (p.getName().equals(m.getTitle())){
+                                    m.showInfoWindow();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d("searchPoint", "failure: fail");
+                    }
+                });
                 return false;
             }
 

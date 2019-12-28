@@ -26,6 +26,7 @@ import com.ygaps.travelapp.model.PointServiceResponse;
 import com.ygaps.travelapp.model.ProcessInvitationRequest;
 import com.ygaps.travelapp.model.RegisterRequest;
 import com.ygaps.travelapp.model.RegisterResponse;
+import com.ygaps.travelapp.model.SearchStopPointResponse;
 import com.ygaps.travelapp.model.SearchUserResponse;
 import com.ygaps.travelapp.model.SendCmtRequest;
 import com.ygaps.travelapp.model.SendOTPRequest;
@@ -193,4 +194,10 @@ public interface UserService {
     @POST("/tour/current-users-coordinate")
     void getUserCooord(@Body GPSServiceRequest gpsServiceRequest,
                        Callback<List<CoordMember>> callback);
+
+    @GET("/tour/search/service")
+    void searchStopPoint(@Query("searchKey") String key,
+                         @Query("pageIndex") Number pageIndex,
+                         @Query("pageSize") Number pageSize,
+                         Callback<SearchStopPointResponse> callback);
 }
