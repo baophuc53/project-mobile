@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.ygaps.travelapp.Activity.R;
-import com.ygaps.travelapp.Object.NotificationObj;
+import com.ygaps.travelapp.Object.InviteNotification;
 import com.ygaps.travelapp.adapter.NotificationAdapter;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class NotificationFragment extends Fragment {
 
     NotificationAdapter adapter;
-    ArrayList<NotificationObj> objArrayList;
+    ArrayList<InviteNotification> objArrayList;
     ListView listNotification;
     Activity currentActivity;
     SharedPreferences sharedPreferences;
@@ -62,8 +62,8 @@ public class NotificationFragment extends Fragment {
         else {
             for (int i = length - 1; i >= 0; i--) {
                 String json = sharedPreferences.getString("Notification" + i, "");
-                NotificationObj notificationObj = new Gson().fromJson(json, NotificationObj.class);
-                objArrayList.add(notificationObj);
+                InviteNotification inviteNotification = new Gson().fromJson(json, InviteNotification.class);
+                objArrayList.add(inviteNotification);
             }
             adapter = new NotificationAdapter(currentActivity, R.layout.items_notification, objArrayList);
             listNotification.setAdapter(adapter);

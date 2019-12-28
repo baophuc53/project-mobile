@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Object.NotificationObj;
+import com.ygaps.travelapp.Object.InviteNotification;
 import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.ProcessInvitationRequest;
 
@@ -27,26 +27,26 @@ import retrofit.client.Response;
 
 import static java.lang.Long.parseLong;
 
-public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
+public class NotificationAdapter extends ArrayAdapter<InviteNotification> {
     Activity context;
     int resource;
-    ArrayList<NotificationObj> notificationObjs;
+    ArrayList<InviteNotification> inviteNotifications;
 
-    public NotificationAdapter(@NonNull Activity context, int resource, ArrayList<NotificationObj> notificationObjs) {
+    public NotificationAdapter(@NonNull Activity context, int resource, ArrayList<InviteNotification> inviteNotifications) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
-        this.notificationObjs = notificationObjs;
+        this.inviteNotifications = inviteNotifications;
     }
 
     @Override
     public int getCount(){
-        return notificationObjs.size();
+        return inviteNotifications.size();
     }
 
     @Override
-    public NotificationObj getItem(int position){
-        return notificationObjs.get(position);
+    public InviteNotification getItem(int position){
+        return inviteNotifications.get(position);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
         TextView leftBtn=customView.findViewById(R.id.leftBtn);
         TextView centerBtn=customView.findViewById(R.id.centerBtn);
 
-        final NotificationObj notificationObj=getItem(position);
+        final InviteNotification inviteNotification =getItem(position);
 
-        switch(notificationObj.getType())
+        switch(inviteNotification.getType())
         {
             case "6":
                 rightBtn.setText("Chấp nhận");
@@ -75,7 +75,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
                     @Override
                     public void onClick(View v) {
                         ProcessInvitationRequest processInvitationRequest=new ProcessInvitationRequest();
-                        processInvitationRequest.setTourId(notificationObj.getId());
+                        processInvitationRequest.setTourId(inviteNotification.getId());
                         processInvitationRequest.isAccepted=true;
                         UserService userService= MyAPIClient.getInstance().getAdapter().create(UserService.class);
                         userService.ResponseInvitation(processInvitationRequest, new Callback<DefaultResponse>() {
@@ -96,7 +96,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
                     @Override
                     public void onClick(View v) {
                         ProcessInvitationRequest processInvitationRequest=new ProcessInvitationRequest();
-                        processInvitationRequest.setTourId(notificationObj.getId());
+                        processInvitationRequest.setTourId(inviteNotification.getId());
                         processInvitationRequest.isAccepted=false;
                         UserService userService= MyAPIClient.getInstance().getAdapter().create(UserService.class);
                         userService.ResponseInvitation(processInvitationRequest, new Callback<DefaultResponse>() {
@@ -112,7 +112,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationObj> {
                         });
                     }
                 });
-                notification.setText("Bạn được mời tham gia tour "+notificationObj.getName());
+                notification.setText("Bạn được mời tham gia tour "+ inviteNotification.getName());
                 leftBtn.setVisibility(View.INVISIBLE);
                 break;
         }

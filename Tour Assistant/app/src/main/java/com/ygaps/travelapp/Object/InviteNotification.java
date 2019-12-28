@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class NotificationObj implements Serializable {
+public class InviteNotification implements Serializable {
 
     @SerializedName("startDate")
     @Expose
