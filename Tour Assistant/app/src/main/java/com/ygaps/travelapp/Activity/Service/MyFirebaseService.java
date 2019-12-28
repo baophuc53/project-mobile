@@ -18,12 +18,11 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
-import com.ygaps.travelapp.Activity.Fragments.NotificationFragment;
 import com.ygaps.travelapp.Activity.MainActivity;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Object.NotificationObj;
+import com.ygaps.travelapp.Object.InviteNotification;
 import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.TokenRequest;
 
@@ -36,7 +35,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        NotificationObj notification=new Gson().fromJson(remoteMessage.getData().toString(),NotificationObj.class);
+        InviteNotification notification=new Gson().fromJson(remoteMessage.getData().toString(), InviteNotification.class);
         // handle a notification payload.
         Log.d(TAG, "Message Notification Body: " + notification);
 
@@ -85,7 +84,7 @@ public class MyFirebaseService extends FirebaseMessagingService {
     }
 
 
-    private void sendNotification(NotificationObj messageBody) {
+    private void sendNotification(InviteNotification messageBody) {
         String channelId = getString(R.string.app_name);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,channelId);
 

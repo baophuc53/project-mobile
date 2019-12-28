@@ -9,6 +9,7 @@ import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.DetailServiceResponse;
 import com.ygaps.travelapp.model.FeedbackServiceRequest;
 import com.ygaps.travelapp.model.GetListFeedbackServiceResponse;
+import com.ygaps.travelapp.model.GetNotiResponse;
 import com.ygaps.travelapp.model.InviteRequest;
 import com.ygaps.travelapp.model.JoinRequest;
 import com.ygaps.travelapp.model.ListReviewOfTourResponse;
@@ -178,4 +179,10 @@ public interface UserService {
 
     @POST("/tour/add/notification-on-road")
     void notificationOnRoad(@Body OnRoadNotification onRoadNotification,Callback<DefaultResponse> callback);
+
+    @GET("/tour/get/noti-on-road")
+    void getNotiByTourId(@Query("tourId") Number tourId,
+                         @Query("pageIndex") Number pageIndex,
+                         @Query("pageSize") Number pageSize,
+                         Callback<GetNotiResponse> callback);
 }

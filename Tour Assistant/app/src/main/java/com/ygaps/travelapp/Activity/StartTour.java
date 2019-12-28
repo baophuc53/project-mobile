@@ -1,6 +1,7 @@
 package com.ygaps.travelapp.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +20,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -29,16 +30,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
+import com.ygaps.travelapp.Object.Noti;
 import com.ygaps.travelapp.model.DefaultResponse;
+import com.ygaps.travelapp.model.GetNotiResponse;
+import com.ygaps.travelapp.model.ListReviewOfTourRequest;
 import com.ygaps.travelapp.model.OnRoadNotification;
 
 import java.io.IOException;
@@ -63,7 +66,9 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
     Address address;
     Marker marker;
     private FusedLocationProviderClient fusedLocationClient;
-
+    Handler handler;
+    Runnable getNoti;
+    long tourId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +81,80 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        Intent intent =getIntent();
+        tourId=intent.getLongExtra("Tour",0);
         addEvent();
+        runThread();
+    }
+
+    private void runThread() {
+        handler=new Handler();
+        getNoti=new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    final ListReviewOfTourRequest getNotiRequest=new ListReviewOfTourRequest();
+                    getNotiRequest.setPageIndex(Constants.ROW_PER_PAGE);
+                    getNotiRequest.setPageSize(Constants.PAGE_NUM);
+                    getNotiRequest.setTourId(tourId);
+                    UserService userService;
+                    userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+                    userService.getNotiByTourId(getNotiRequest.getTourId(),
+                            getNotiRequest.getPageIndex(),
+                            getNotiRequest.getPageSize(), new Callback<GetNotiResponse>() {
+                                @Override
+                                public void success(GetNotiResponse getNotiResponses, Response response) {
+                                    if(getNotiResponses.getNotifications()!=null)
+                                    for (Noti notification:getNotiResponses.getNotifications())
+                                    {
+                                        MarkerOptions markerOptions=new MarkerOptions()
+                                                .position(new LatLng(notification.getLat(),notification.getLong()))
+                                                .anchor(0.5f, 0.5f);
+                                        String title="",snippet="";
+                                        float icon=0;
+                                        switch(notification.getNotificationType())
+                                        {
+                                            case 1:
+                                                title="Police";
+                                                snippet="";
+                                                icon= BitmapDescriptorFactory.HUE_YELLOW;
+                                                break;
+                                            case 2:
+                                                title="Problem";
+                                                snippet=notification.getNote();
+                                                icon=BitmapDescriptorFactory.HUE_RED;
+                                                break;
+                                            case 3:
+                                                title="Limit Speed";
+                                                snippet=notification.getSpeed().toString();
+                                                icon=BitmapDescriptorFactory.HUE_BLUE;
+                                                break;
+                                        }
+
+                                        markerOptions.title(title);
+                                        markerOptions.snippet(snippet);
+                                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(icon));
+                                        mMap.addMarker(markerOptions);
+                                    }
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Toast.makeText(StartTour.this,"Có vấn đề khi lấy thông báo",Toast.LENGTH_LONG).show();
+                                }
+                            });
+                }
+                catch(Exception e)
+                {
+                    Log.e("", "run:",e );
+                }
+                finally {
+                    handler.postDelayed(getNoti,10000);
+                }
+            }
+        };
+
+        getNoti.run();
     }
 
     private void addEvent() {
@@ -92,20 +170,10 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 final OnRoadNotification onRoadNotification=new OnRoadNotification();
-                Intent intent = getIntent();
-                onRoadNotification.setTourId(intent.getLongExtra("Tour",0));
+                onRoadNotification.setTourId(tourId);
                 SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
                 onRoadNotification.setUserId(parseLong(sharedPreferences.getString("userId","")));
-                Task task=fusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(StartTour.this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                if (location != null) {
-                                    onRoadNotification.setLong(location.getLongitude());
-                                    onRoadNotification.setLat(location.getLatitude());
-                                }
-                            }
-                        });
+
                 onRoadNotification.setNote(Value.getText().toString());
                 try
                 {onRoadNotification.setSpeed(parseInt(Value.getText().toString()));}
@@ -127,23 +195,28 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
 
                 final UserService userService;
                 userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
-                task.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        userService.notificationOnRoad(onRoadNotification, new Callback<DefaultResponse>() {
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(StartTour.this, new OnSuccessListener<Location>() {
                             @Override
-                            public void success(DefaultResponse defaultResponse, Response response) {
-                                Toast.makeText(StartTour.this, "Gửi thông báo thành công", Toast.LENGTH_LONG).show();
-                            }
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    onRoadNotification.setLong(location.getLongitude());
+                                    onRoadNotification.setLat(location.getLatitude());
+                                    userService.notificationOnRoad(onRoadNotification, new Callback<DefaultResponse>() {
+                                        @Override
+                                        public void success(DefaultResponse defaultResponse, Response response) {
+                                            Toast.makeText(StartTour.this, "Gửi thông báo thành công", Toast.LENGTH_LONG).show();
+                                        }
 
-                            @Override
-                            public void failure(RetrofitError error) {
-                                Toast.makeText(StartTour.this, "Thất bại", Toast.LENGTH_LONG).show();
-                                Log.e("Error:",error.toString());
+                                        @Override
+                                        public void failure(RetrofitError error) {
+                                            Toast.makeText(StartTour.this, "Thất bại", Toast.LENGTH_LONG).show();
+                                            Log.e("Error:",error.toString());
+                                        }
+                                    });
+                                }
                             }
                         });
-                    }
-                });
                 NotiDialog.cancel();
             }
         });
@@ -166,6 +239,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 Button LimitSpeed=dialogView.findViewById(R.id.LimitSpeedBtn);
 
                 Police.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onClick(View v) {
                         Key.setText("Gửi thông báo về điểm có cảnh sát giao thông?");
@@ -176,6 +250,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                     }
                 });
                 Problem.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onClick(View v) {
                         Key.setText("Vấn đề bạn gặp phải:");
@@ -187,6 +262,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                     }
                 });
                 LimitSpeed.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onClick(View v) {
                         Key.setText("Tốc độ giới hạn:");
