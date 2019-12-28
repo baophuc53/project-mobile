@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Comment;
+import com.ygaps.travelapp.Object.StopPoint;
 import com.ygaps.travelapp.adapter.CommentAdapters;
 import com.ygaps.travelapp.adapter.ExpandableHeightListView;
 import com.ygaps.travelapp.model.DefaultResponse;
@@ -37,6 +38,7 @@ import com.ygaps.travelapp.model.TourInfoResponse;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -51,6 +53,7 @@ public class DetailTourActivity extends AppCompatActivity {
     CommentAdapters commentAdapters;
     ExpandableHeightListView lvComments;
     long tourId;
+    List<StopPoint> stopPointList = new ArrayList<>();
 
     @Override
     protected void onRestart() {
@@ -139,7 +142,12 @@ public class DetailTourActivity extends AppCompatActivity {
                 return true;
             case R.id.startTour:
                 intent=new Intent(DetailTourActivity.this,StartTour.class);
+                SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
+                String userId = sharedPreferences.getString("userId", "");
                 intent.putExtra("Tour", getIntent().getLongExtra("tourId", 0));
+                intent.putExtra("userId", userId);
+                if (stopPointList.size()>0)
+                    intent.putExtra("StopPointList", (Serializable) stopPointList);
                 startActivity(intent);
                 return true;
             case android.R.id.home:
@@ -202,6 +210,7 @@ public class DetailTourActivity extends AppCompatActivity {
         userService.getTourInfo(tourId, new Callback<TourInfoResponse>() {
             @Override
             public void success(final TourInfoResponse tourInfoResponse, Response response) {
+                stopPointList = tourInfoResponse.getStopPoints();
                 editTour.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

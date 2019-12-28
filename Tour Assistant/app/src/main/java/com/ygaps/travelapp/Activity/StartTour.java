@@ -2,10 +2,14 @@ package com.ygaps.travelapp.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -30,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -38,8 +43,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
+import com.ygaps.travelapp.Object.CoordMember;
 import com.ygaps.travelapp.Object.Noti;
+import com.ygaps.travelapp.Object.StopPoint;
 import com.ygaps.travelapp.model.DefaultResponse;
+import com.ygaps.travelapp.model.GPSServiceRequest;
 import com.ygaps.travelapp.model.GetNotiResponse;
 import com.ygaps.travelapp.model.ListReviewOfTourRequest;
 import com.ygaps.travelapp.model.OnRoadNotification;
@@ -69,11 +77,25 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
     Handler handler;
     Runnable getNoti;
     long tourId;
+    String userId = "";
+    UserService userService;
+    private BitmapDescriptor cultery = null, hotel = null, parking = null, other = null;
+    Handler GPS_Handler = new Handler();
+    Runnable GPS_Runnable = null;
+    List<StopPoint> stopPointList = new ArrayList<>();
+    List<Marker> markers = new ArrayList<>();
+    List<Marker> userMarkers = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_tour);
         getLocationPermission();
+        cultery = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_cutlery);
+        hotel = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_hotel);
+        parking = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_parking);
+        other = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_24_hours);
+        userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -83,8 +105,19 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Intent intent =getIntent();
         tourId=intent.getLongExtra("Tour",0);
+        userId=intent.getStringExtra("userId");
+        stopPointList = (List<StopPoint>) intent.getSerializableExtra("StopPointList");
         addEvent();
         runThread();
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Activity context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void runThread() {
@@ -97,8 +130,8 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                     getNotiRequest.setPageIndex(Constants.ROW_PER_PAGE);
                     getNotiRequest.setPageSize(Constants.PAGE_NUM);
                     getNotiRequest.setTourId(tourId);
-                    UserService userService;
-                    userService = MyAPIClient.getInstance().getAdapter().create(UserService.class);
+
+
                     userService.getNotiByTourId(getNotiRequest.getTourId(),
                             getNotiRequest.getPageIndex(),
                             getNotiRequest.getPageSize(), new Callback<GetNotiResponse>() {
@@ -329,7 +362,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 if (addressList.size()>0) {
                     address = addressList.get(0);
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                    mMap.clear();
+                    marker.remove();
                     marker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .title(location)
@@ -347,13 +380,75 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 return false;
             }
         });
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mMap.clear();
-                marker = mMap.addMarker(new MarkerOptions().position(latLng));
+
+        if (stopPointList != null) {
+            for (StopPoint p : stopPointList) {
+                LatLng latLng = new LatLng(p.getLat(), p.get_long());
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng)
+                        .title(p.getName())
+                        .snippet(p.getAddress())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                if (p.getServiceTypeId() == 1)
+                    marker.setIcon(cultery);
+                else if(p.getServiceTypeId() == 2)
+                    marker.setIcon(hotel);
+                else if(p.getServiceTypeId() == 3)
+                    marker.setIcon(parking);
+                else if(p.getServiceTypeId() == 4)
+                    marker.setIcon(other);
+                markers.add(marker);
             }
-        });
+        }
+
+        final GPSServiceRequest gpsServiceRequest = new GPSServiceRequest();
+        gpsServiceRequest.setTourId(String.valueOf(tourId));
+        GPS_Runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            Log.d("GPSservice", "onSuccess: ok");
+                            if (location!= null) {
+                                gpsServiceRequest.setLat(location.getLatitude());
+                                gpsServiceRequest.setLong(location.getLongitude());
+                            }
+                            userService.getUserCooord(gpsServiceRequest, new Callback<List<CoordMember>>() {
+                                @Override
+                                public void success(List<CoordMember> coordMembers, Response response) {
+                                    for (Marker i : userMarkers) {
+                                        i.remove();
+                                    }
+                                    for (CoordMember p : coordMembers) {
+                                        if (!p.getId().equals(userId)) {
+                                            LatLng latLng = new LatLng(p.getLat(), p.getLong());
+                                            userMarkers.add(mMap.addMarker(new MarkerOptions().position(latLng)
+                                            .title(p.getId()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))));
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    Log.d("GPSservice", "failure: fail");
+                                }
+                            });
+                        }
+                    });
+
+                }
+                catch(Exception e)
+                {
+                    Log.e("", "run:",e );
+                }
+                finally {
+                    GPS_Handler.postDelayed(GPS_Runnable,10000);
+                }
+            }
+
+        };
+        GPS_Runnable.run();
     }
 
 }

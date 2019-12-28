@@ -1,6 +1,7 @@
 package com.ygaps.travelapp.Api;
 
 
+import com.ygaps.travelapp.Object.CoordMember;
 import com.ygaps.travelapp.model.ChangePasswordRequest;
 import com.ygaps.travelapp.model.ChangePasswordResponse;
 import com.ygaps.travelapp.model.CreateTourRequest;
@@ -8,6 +9,7 @@ import com.ygaps.travelapp.model.CreateTourResponse;
 import com.ygaps.travelapp.model.DefaultResponse;
 import com.ygaps.travelapp.model.DetailServiceResponse;
 import com.ygaps.travelapp.model.FeedbackServiceRequest;
+import com.ygaps.travelapp.model.GPSServiceRequest;
 import com.ygaps.travelapp.model.GetListFeedbackServiceResponse;
 import com.ygaps.travelapp.model.GetNotiResponse;
 import com.ygaps.travelapp.model.InviteRequest;
@@ -44,6 +46,8 @@ import com.ygaps.travelapp.model.UpdateUserInfoResponse;
 import com.ygaps.travelapp.model.UserInfoResponse;
 import com.ygaps.travelapp.model.VerifyOTPtoChangePassRequest;
 import com.ygaps.travelapp.model.VerifyOTPtoChangePassResponse;
+
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -185,4 +189,8 @@ public interface UserService {
                          @Query("pageIndex") Number pageIndex,
                          @Query("pageSize") Number pageSize,
                          Callback<GetNotiResponse> callback);
+
+    @POST("/tour/current-users-coordinate")
+    void getUserCooord(@Body GPSServiceRequest gpsServiceRequest,
+                       Callback<List<CoordMember>> callback);
 }
