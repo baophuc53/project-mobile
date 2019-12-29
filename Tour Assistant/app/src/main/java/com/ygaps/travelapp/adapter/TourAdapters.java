@@ -1,9 +1,7 @@
 package com.ygaps.travelapp.adapter;
 
 import android.app.Activity;
-
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.taufiqrahman.reviewratings.BarLabels;
-import com.taufiqrahman.reviewratings.RatingReviews;
 import com.ygaps.travelapp.Activity.R;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.PointStat;
 import com.ygaps.travelapp.Object.Tour;
 import com.ygaps.travelapp.model.PointOfReviewTourResponse;
-
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -168,6 +162,7 @@ public class TourAdapters extends ArrayAdapter<Tour> {
         charText = charText.toLowerCase(Locale.getDefault());
         // if (notesFilter.size() != 0)
         toursFilter.clear();
+        if(tours!=null)
             for (Tour no : tours) {
                 if (no.getName()!=null&&no.getName().toString().toLowerCase(Locale.getDefault()).contains(charText)) {
                     toursFilter.add(no);

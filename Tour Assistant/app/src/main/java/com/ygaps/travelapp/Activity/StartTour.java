@@ -201,31 +201,29 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
     }
 
     private void addEvent() {
-        Button sendNoti=findViewById(R.id.open_dialog);
-        final View alertLayout=getLayoutInflater().inflate(R.layout.send_notification_dialog, null);
-        final TextView Key=alertLayout.findViewById(R.id.key);
-        final EditText Value=alertLayout.findViewById(R.id.value);
+        Button sendNoti = findViewById(R.id.open_dialog);
+        final View alertLayout = getLayoutInflater().inflate(R.layout.send_notification_dialog, null);
+        final TextView Key = alertLayout.findViewById(R.id.key);
+        final EditText Value = alertLayout.findViewById(R.id.value);
         final Dialog NotiDialog = new Dialog(this);
-        final Button OKBtn=alertLayout.findViewById(R.id.OKBtn);
-        final Button CancelBtn=alertLayout.findViewById(R.id.CancelBtn);
+        final Button OKBtn = alertLayout.findViewById(R.id.OKBtn);
+        final Button CancelBtn = alertLayout.findViewById(R.id.CancelBtn);
 
         OKBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final OnRoadNotification onRoadNotification=new OnRoadNotification();
+                final OnRoadNotification onRoadNotification = new OnRoadNotification();
                 onRoadNotification.setTourId(tourId);
-                SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
-                onRoadNotification.setUserId(parseLong(sharedPreferences.getString("userId","")));
+                SharedPreferences sharedPreferences = getSharedPreferences("Data", 0);
+                onRoadNotification.setUserId(parseLong(sharedPreferences.getString("userId", "")));
 
                 onRoadNotification.setNote(Value.getText().toString());
-                try
-                {onRoadNotification.setSpeed(parseInt(Value.getText().toString()));}
-                catch (Exception e)
-                {
+                try {
+                    onRoadNotification.setSpeed(parseInt(Value.getText().toString()));
+                } catch (Exception e) {
                     onRoadNotification.setSpeed(0);
                 }
-                switch (Key.getText().toString())
-                {
+                switch (Key.getText().toString()) {
                     case "Gửi thông báo về điểm có cảnh sát giao thông?":
                         onRoadNotification.setNotificationType(1);
                         break;
@@ -254,7 +252,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                                         @Override
                                         public void failure(RetrofitError error) {
                                             Toast.makeText(StartTour.this, "Thất bại", Toast.LENGTH_LONG).show();
-                                            Log.e("Error:",error.toString());
+                                            Log.e("Error:", error.toString());
                                         }
                                     });
                                 }
@@ -277,9 +275,9 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet_start_tour, null);
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(StartTour.this);
                 bottomSheetDialog.setContentView(dialogView);
-                Button Police=dialogView.findViewById(R.id.PoliceBtn);
-                Button Problem=dialogView.findViewById(R.id.MessageBtn);
-                Button LimitSpeed=dialogView.findViewById(R.id.LimitSpeedBtn);
+                Button Police = dialogView.findViewById(R.id.PoliceBtn);
+                Button Problem = dialogView.findViewById(R.id.MessageBtn);
+                Button LimitSpeed = dialogView.findViewById(R.id.LimitSpeedBtn);
 
                 Police.setOnClickListener(new View.OnClickListener() {
                     @SuppressLint("SetTextI18n")
@@ -299,7 +297,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                         Key.setText("Vấn đề bạn gặp phải:");
                         Value.setText("");
                         Value.setVisibility(View.VISIBLE);
-                        Value.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE|InputType.TYPE_CLASS_TEXT);
+                        Value.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
                         NotiDialog.setContentView(alertLayout);
                         NotiDialog.show();
                     }
@@ -320,81 +318,88 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-       if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-
+        if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
-
-        } else if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
+        }
+        if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        } else if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+        }
+        if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-        }else {
-           final String outputFile =Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tour Assistant/" +tourId+".3gp" ;
-           File f=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tour Assistant");
-            if(!f.exists())
-                f.mkdirs();
-            myAudioPlay=new MediaPlayer();
-            recordButton = findViewById(R.id.recordBtn);
-            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
-            recordButton.setTag("play");
-            recordButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    switch (recordButton.getTag().toString()) {
-                        case "play":
-                            try {
-                                if(myAudioPlay.isPlaying())
-                                    myAudioPlay.stop();
-                                myAudioRecorder=new MediaRecorder();
-                                myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                                myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                                myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-                                myAudioRecorder.setOutputFile(outputFile);
-                                myAudioRecorder.prepare();
-                                myAudioRecorder.start();
-                            } catch (IOException e) {
-                                Log.e("Error", "record: ", e);
-                            }
-                            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_pause));
+        }
 
-                            recordButton.setTag("stop");
-                            break;
-                        case "stop":
-                            myAudioRecorder.stop();
-                            myAudioRecorder.release();
-                            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
-                            recordButton.setTag("play");
-                            break;
-                    }
-                }
-            });
+        if(ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED
+                ||ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED
+                ||ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+        {
+            Toast.makeText(StartTour.this,"Chức năng yêu cầu quyền đọc ghi và ghi âm!!!",Toast.LENGTH_LONG).show();
+            finish();
+        }
+        final String outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tour Assistant/" + tourId + ".3gp";
+        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tour Assistant");
+        if (!f.exists())
+            f.mkdirs();
+        myAudioPlay = new MediaPlayer();
+        recordButton = findViewById(R.id.recordBtn);
+        recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+        recordButton.setTag("play");
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (recordButton.getTag().toString()) {
+                    case "play":
+                        try {
+                            if (myAudioPlay.isPlaying())
+                                myAudioPlay.stop();
+                            myAudioRecorder = new MediaRecorder();
+                            myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                            myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                            myAudioRecorder.setOutputFile(outputFile);
+                            myAudioRecorder.prepare();
+                            myAudioRecorder.start();
+                        } catch (IOException e) {
+                            Log.e("Error", "record: ", e);
+                        }
+                        recordButton.setBackground(getDrawable(android.R.drawable.ic_media_pause));
 
-            playButton = findViewById(R.id.playBtn);
-            playButton.setBackground(getDrawable(R.drawable.ic_rec_button));
-            playButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (recordButton.getTag() == "stop") {
+                        recordButton.setTag("stop");
+                        break;
+                    case "stop":
                         myAudioRecorder.stop();
                         myAudioRecorder.release();
                         recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
                         recordButton.setTag("play");
-                    }
-                    try {
-                        if(myAudioPlay.isPlaying())
-                            myAudioPlay.stop();
-                        myAudioPlay=new MediaPlayer();
-                        myAudioPlay.setDataSource(outputFile);
-                        myAudioPlay.prepare();
-                        myAudioPlay.start();
-                    } catch (IOException e) {
-                        Log.e("Error", "record: ", e);
-                    }
+                        break;
                 }
-            });
-        }
+            }
+        });
+
+        playButton = findViewById(R.id.playBtn);
+        playButton.setBackground(getDrawable(R.drawable.ic_rec_button));
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (recordButton.getTag() == "stop") {
+                    myAudioRecorder.stop();
+                    myAudioRecorder.release();
+                    recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+                    recordButton.setTag("play");
+                }
+                try {
+                    if (myAudioPlay.isPlaying())
+                        myAudioPlay.stop();
+                    myAudioPlay = new MediaPlayer();
+                    myAudioPlay.setDataSource(outputFile);
+                    myAudioPlay.prepare();
+                    myAudioPlay.start();
+                } catch (IOException e) {
+                    Log.e("Error", "record: ", e);
+                }
+            }
+        });
     }
 
     private void getLocationPermission() {
