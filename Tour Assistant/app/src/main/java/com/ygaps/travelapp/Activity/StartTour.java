@@ -13,13 +13,17 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +56,7 @@ import com.ygaps.travelapp.model.GetNotiResponse;
 import com.ygaps.travelapp.model.ListReviewOfTourRequest;
 import com.ygaps.travelapp.model.OnRoadNotification;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +90,11 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
     List<StopPoint> stopPointList = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
     List<Marker> userMarkers = new ArrayList<>();
+    ImageButton recordButton;
+    MediaRecorder myAudioRecorder;
+    MediaPlayer myAudioPlay;
+    ImageButton playButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,14 +163,14 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                                                 icon= BitmapDescriptorFactory.HUE_YELLOW;
                                                 break;
                                             case 2:
-                                                title="Problem";
+                                                title="Message";
                                                 snippet=notification.getNote();
-                                                icon=BitmapDescriptorFactory.HUE_RED;
+                                                icon=BitmapDescriptorFactory.HUE_BLUE;
                                                 break;
                                             case 3:
                                                 title="Limit Speed";
                                                 snippet=notification.getSpeed().toString();
-                                                icon=BitmapDescriptorFactory.HUE_BLUE;
+                                                icon=BitmapDescriptorFactory.HUE_RED;
                                                 break;
                                         }
 
@@ -219,7 +229,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                     case "Gửi thông báo về điểm có cảnh sát giao thông?":
                         onRoadNotification.setNotificationType(1);
                         break;
-                    case "Vấn đề bạn gặp phải:":
+                    case "Tin nhắn:":
                         onRoadNotification.setNotificationType(2);
                         break;
                     default:
@@ -268,7 +278,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(StartTour.this);
                 bottomSheetDialog.setContentView(dialogView);
                 Button Police=dialogView.findViewById(R.id.PoliceBtn);
-                Button Problem=dialogView.findViewById(R.id.ProblemBtn);
+                Button Problem=dialogView.findViewById(R.id.MessageBtn);
                 Button LimitSpeed=dialogView.findViewById(R.id.LimitSpeedBtn);
 
                 Police.setOnClickListener(new View.OnClickListener() {
@@ -310,6 +320,81 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
+       if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+
+        } else if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        } else if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }else {
+           final String outputFile =Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tour Assistant/" +tourId+".3gp" ;
+           File f=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Tour Assistant");
+            if(!f.exists())
+                f.mkdirs();
+            myAudioPlay=new MediaPlayer();
+            recordButton = findViewById(R.id.recordBtn);
+            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+            recordButton.setTag("play");
+            recordButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (recordButton.getTag().toString()) {
+                        case "play":
+                            try {
+                                if(myAudioPlay.isPlaying())
+                                    myAudioPlay.stop();
+                                myAudioRecorder=new MediaRecorder();
+                                myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                                myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                                myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                                myAudioRecorder.setOutputFile(outputFile);
+                                myAudioRecorder.prepare();
+                                myAudioRecorder.start();
+                            } catch (IOException e) {
+                                Log.e("Error", "record: ", e);
+                            }
+                            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_pause));
+
+                            recordButton.setTag("stop");
+                            break;
+                        case "stop":
+                            myAudioRecorder.stop();
+                            myAudioRecorder.release();
+                            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+                            recordButton.setTag("play");
+                            break;
+                    }
+                }
+            });
+
+            playButton = findViewById(R.id.playBtn);
+            playButton.setBackground(getDrawable(R.drawable.ic_rec_button));
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recordButton.getTag() == "stop") {
+                        myAudioRecorder.stop();
+                        myAudioRecorder.release();
+                        recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+                        recordButton.setTag("play");
+                    }
+                    try {
+                        if(myAudioPlay.isPlaying())
+                            myAudioPlay.stop();
+                        myAudioPlay=new MediaPlayer();
+                        myAudioPlay.setDataSource(outputFile);
+                        myAudioPlay.prepare();
+                        myAudioPlay.start();
+                    } catch (IOException e) {
+                        Log.e("Error", "record: ", e);
+                    }
+                }
+            });
+        }
     }
 
     private void getLocationPermission() {

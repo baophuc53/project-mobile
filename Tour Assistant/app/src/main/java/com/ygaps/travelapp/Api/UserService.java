@@ -45,6 +45,7 @@ import com.ygaps.travelapp.model.UpdateTourResquest;
 import com.ygaps.travelapp.model.UpdateUserInfoRequest;
 import com.ygaps.travelapp.model.UpdateUserInfoResponse;
 import com.ygaps.travelapp.model.UserInfoResponse;
+import com.ygaps.travelapp.model.UserMessageRequest;
 import com.ygaps.travelapp.model.VerifyOTPtoChangePassRequest;
 import com.ygaps.travelapp.model.VerifyOTPtoChangePassResponse;
 
@@ -200,4 +201,6 @@ public interface UserService {
                          @Query("pageIndex") Number pageIndex,
                          @Query("pageSize") Number pageSize,
                          Callback<SearchStopPointResponse> callback);
+    @POST("/tour/notification")
+    void sendMessage(@Body UserMessageRequest userMessageRequest,Callback<DefaultResponse> callback);
 }
