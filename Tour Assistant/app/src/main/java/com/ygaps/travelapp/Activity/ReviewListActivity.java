@@ -1,19 +1,19 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.taufiqrahman.reviewratings.BarLabels;
 import com.taufiqrahman.reviewratings.RatingReviews;
@@ -23,12 +23,10 @@ import com.ygaps.travelapp.Object.PointStat;
 import com.ygaps.travelapp.Object.ReviewTour;
 import com.ygaps.travelapp.adapter.ExpandableHeightListView;
 import com.ygaps.travelapp.adapter.ReviewAdapter;
-import com.ygaps.travelapp.model.FeedbackServiceRequest;
 import com.ygaps.travelapp.model.ListReviewOfTourResponse;
 import com.ygaps.travelapp.model.PointOfReviewTourResponse;
 import com.ygaps.travelapp.model.SendReviewTourRequest;
 import com.ygaps.travelapp.model.SendReviewTourResponse;
-import com.ygaps.travelapp.model.StopPointResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,5 +172,14 @@ public class ReviewListActivity extends AppCompatActivity {
         user_rating_tour = findViewById(R.id.user_rating_tour);
         user_reviews = findViewById(R.id.user_reviews);
         send_review = findViewById(R.id.send_review);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

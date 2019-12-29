@@ -2,6 +2,7 @@ package com.ygaps.travelapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -62,5 +63,14 @@ public class ListMemberActivity extends AppCompatActivity {
     protected void addControl() {
         lvMembers = findViewById(R.id.list_member);
         search = findViewById(R.id.search_Member);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

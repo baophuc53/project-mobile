@@ -63,10 +63,10 @@ public class ListStopPointActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        TextView  title = findViewById(R.id.actionbar_textview);
+        TextView title = findViewById(R.id.actionbar_textview);
         title.setText("Stop Points");
-        Intent thisIntent=getIntent();
-        id = (int)thisIntent.getLongExtra("tourId",0);
+        Intent thisIntent = getIntent();
+        id = (int) thisIntent.getLongExtra("tourId", 0);
         addControl();
         Show();
         addSeach();
@@ -74,7 +74,7 @@ public class ListStopPointActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         if (intent.getBooleanExtra("isMyTour", false))
             getMenuInflater().inflate(R.menu.add, menu);
 
@@ -85,9 +85,12 @@ public class ListStopPointActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addPoint:
-                Intent intent=new Intent(ListStopPointActivity.this, MapsActivity.class);
+                Intent intent = new Intent(ListStopPointActivity.this, MapsActivity.class);
                 intent.putExtra("tourId", id);
                 startActivity(intent);
+                return true;
+            case R.id.home:
+                finish();
                 return true;
         }
 
@@ -407,4 +410,6 @@ public class ListStopPointActivity extends AppCompatActivity {
         search = findViewById(R.id.search_stopPoint);
         NoStopPoint = findViewById(R.id.noStopPointTv);
     }
+
+
 }

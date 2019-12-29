@@ -1,22 +1,11 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.MenuItem;
 import android.text.TextUtils;
-import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,23 +15,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.ygaps.travelapp.Object.Tour;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
-import com.ygaps.travelapp.Activity.R;
-import com.ygaps.travelapp.model.CreateTourRequest;
-import com.ygaps.travelapp.model.CreateTourResponse;
-import com.google.android.gms.maps.model.LatLng;
-import com.ygaps.travelapp.model.TourInfoRequest;
 import com.ygaps.travelapp.model.TourInfoResponse;
 import com.ygaps.travelapp.model.UpdateTourResponse;
 import com.ygaps.travelapp.model.UpdateTourResquest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.Calendar;
 
-import pub.devrel.easypermissions.EasyPermissions;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -294,4 +280,6 @@ public class UpdateTourActivity extends AppCompatActivity {
         source = (EditText) findViewById(R.id.create_tour_source_edt);
         des = (EditText) findViewById(R.id.create_tour_des_edt);
     }
+
+
 }

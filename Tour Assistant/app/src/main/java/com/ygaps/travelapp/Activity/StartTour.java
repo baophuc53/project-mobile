@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -28,7 +27,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -65,6 +63,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
@@ -99,7 +98,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_tour);
-        getLocationPermission();
+        getPermission();
         cultery = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_cutlery);
         hotel = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_hotel);
         parking = bitmapDescriptorFromVector(StartTour.this , R.drawable.ic_parking);
@@ -317,107 +316,95 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 bottomSheetDialog.show();
             }
         });
-        if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
-        }
-        if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
 
-        }
-        if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            final String outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tour Assistant/" + tourId + ".3gp";
+            File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tour Assistant");
+            if (!f.exists())
+                f.mkdirs();
+            myAudioPlay = new MediaPlayer();
+            recordButton = findViewById(R.id.recordBtn);
+            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+            recordButton.setTag("play");
+            recordButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (recordButton.getTag().toString()) {
+                        case "play":
+                            try {
+                                if (myAudioPlay.isPlaying())
+                                    myAudioPlay.stop();
+                                myAudioRecorder = new MediaRecorder();
+                                myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                                myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                                myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                                myAudioRecorder.setOutputFile(outputFile);
+                                myAudioRecorder.prepare();
+                                myAudioRecorder.start();
+                            } catch (IOException e) {
+                                Log.e("Error", "record: ", e);
+                            }
+                            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_pause));
 
-            ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-        }
+                            recordButton.setTag("stop");
+                            break;
+                        case "stop":
+                            myAudioRecorder.stop();
+                            myAudioRecorder.release();
+                            recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
+                            recordButton.setTag("play");
+                            break;
+                    }
+                }
+            });
 
-        if(ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED
-                ||ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED
-                ||ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-        {
-            Toast.makeText(StartTour.this,"Chức năng yêu cầu quyền đọc ghi và ghi âm!!!",Toast.LENGTH_LONG).show();
-            finish();
-        }
-        final String outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tour Assistant/" + tourId + ".3gp";
-        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Tour Assistant");
-        if (!f.exists())
-            f.mkdirs();
-        myAudioPlay = new MediaPlayer();
-        recordButton = findViewById(R.id.recordBtn);
-        recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
-        recordButton.setTag("play");
-        recordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (recordButton.getTag().toString()) {
-                    case "play":
-                        try {
-                            if (myAudioPlay.isPlaying())
-                                myAudioPlay.stop();
-                            myAudioRecorder = new MediaRecorder();
-                            myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                            myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                            myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-                            myAudioRecorder.setOutputFile(outputFile);
-                            myAudioRecorder.prepare();
-                            myAudioRecorder.start();
-                        } catch (IOException e) {
-                            Log.e("Error", "record: ", e);
-                        }
-                        recordButton.setBackground(getDrawable(android.R.drawable.ic_media_pause));
-
-                        recordButton.setTag("stop");
-                        break;
-                    case "stop":
+            playButton = findViewById(R.id.playBtn);
+            playButton.setBackground(getDrawable(R.drawable.ic_rec_button));
+            playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recordButton.getTag() == "stop") {
                         myAudioRecorder.stop();
                         myAudioRecorder.release();
                         recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
                         recordButton.setTag("play");
-                        break;
+                    }
+                    try {
+                        if (myAudioPlay.isPlaying())
+                            myAudioPlay.stop();
+                        myAudioPlay = new MediaPlayer();
+                        myAudioPlay.setDataSource(outputFile);
+                        myAudioPlay.prepare();
+                        myAudioPlay.start();
+                    } catch (IOException e) {
+                        Log.e("Error", "record: ", e);
+                    }
                 }
-            }
-        });
-
-        playButton = findViewById(R.id.playBtn);
-        playButton.setBackground(getDrawable(R.drawable.ic_rec_button));
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (recordButton.getTag() == "stop") {
-                    myAudioRecorder.stop();
-                    myAudioRecorder.release();
-                    recordButton.setBackground(getDrawable(android.R.drawable.ic_media_play));
-                    recordButton.setTag("play");
-                }
-                try {
-                    if (myAudioPlay.isPlaying())
-                        myAudioPlay.stop();
-                    myAudioPlay = new MediaPlayer();
-                    myAudioPlay.setDataSource(outputFile);
-                    myAudioPlay.prepare();
-                    myAudioPlay.start();
-                } catch (IOException e) {
-                    Log.e("Error", "record: ", e);
-                }
-            }
-        });
+            });
     }
-
-    private void getLocationPermission() {
+    private void getPermission() {
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (checkSelfPermission(FINE_LOCATION) == PERMISSION_GRANTED) {
+            if (checkSelfPermission(COARSE_LOCATION) == PERMISSION_GRANTED) {
                 mLocationPermissionsGranted = true;
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        permissions,
+            } else {requestPermissions(permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    permissions,
+        } else {requestPermissions(permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
+        }
+
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PERMISSION_GRANTED) {
+            requestPermissions(permissions, 0);
+        }
+        if( checkSelfPermission( Manifest.permission.WRITE_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            requestPermissions( permissions, 0);
+        }
+
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PERMISSION_GRANTED) {
+            requestPermissions(permissions, 0);
         }
     }
 
