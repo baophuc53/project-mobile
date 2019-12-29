@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -161,6 +162,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HCM, 15.0f));
         mMap.setMyLocationEnabled(true);
         if (mLocationPermissionsGranted) {
+            final ProgressDialog progress = new ProgressDialog(MapsActivity.this);
+            progress.setTitle("Loading");
+            progress.setMessage("Wait while loading...");
+            progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+            progress.show();
             final SuggestStopPointRequest suggestStopPointRequest = new SuggestStopPointRequest();
             Coord point1 = new Coord();
             Coord point2 = new Coord();
@@ -204,11 +210,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             markerList.add(marker);
                         }
                     }
+                    progress.dismiss();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    progress.dismiss();
                 }
             });
         }
