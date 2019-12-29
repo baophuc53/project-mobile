@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.Comment;
+import com.ygaps.travelapp.Object.Member;
 import com.ygaps.travelapp.Object.StopPoint;
 import com.ygaps.travelapp.adapter.CommentAdapters;
 import com.ygaps.travelapp.adapter.ExpandableHeightListView;
@@ -55,6 +56,7 @@ public class DetailTourActivity extends AppCompatActivity {
     ExpandableHeightListView lvComments;
     long tourId;
     List<StopPoint> stopPointList = new ArrayList<>();
+    List<Member> memberList = new ArrayList<>();
 
     @Override
     protected void onRestart() {
@@ -163,6 +165,8 @@ public class DetailTourActivity extends AppCompatActivity {
                 intent.putExtra("userId", userId);
                 if (stopPointList.size()>0)
                     intent.putExtra("StopPointList", (Serializable) stopPointList);
+                if (memberList.size()>0)
+                    intent.putExtra("MemberList", (Serializable) memberList);
                 startActivity(intent);
                 return true;
             case android.R.id.home:
@@ -226,6 +230,7 @@ public class DetailTourActivity extends AppCompatActivity {
             @Override
             public void success(final TourInfoResponse tourInfoResponse, Response response) {
                 stopPointList = tourInfoResponse.getStopPoints();
+                memberList = tourInfoResponse.getMembers();
                 editTour.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
