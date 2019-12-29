@@ -317,7 +317,6 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 bottomSheetDialog.show();
             }
         });
-
         if (ActivityCompat.checkSelfPermission(StartTour.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(StartTour.this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
         }

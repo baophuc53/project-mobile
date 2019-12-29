@@ -161,10 +161,12 @@ public class TourAdapters extends ArrayAdapter<Tour> {
     public void filterTag(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         // if (notesFilter.size() != 0)
-        toursFilter.clear();
+        if(toursFilter!=null)
+            toursFilter.clear();
         if(tours!=null)
             for (Tour no : tours) {
-                if (no.getName()!=null&&no.getName().toString().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if(no!=null)
+                if (no.getName()!=null&&no.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     toursFilter.add(no);
                 }
             }

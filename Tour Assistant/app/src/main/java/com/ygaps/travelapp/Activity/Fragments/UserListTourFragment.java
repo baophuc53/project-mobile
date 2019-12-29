@@ -86,7 +86,8 @@ public class UserListTourFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                tourAdapters.filterTag(newText);
+                if(tourAdapters!=null)
+                    tourAdapters.filterTag(newText);
                 return false;
             }
         });

@@ -1,9 +1,5 @@
 package com.ygaps.travelapp.Activity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -28,6 +24,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ygaps.travelapp.Api.MyAPIClient;
@@ -127,7 +127,7 @@ public class ListStopPointActivity extends AppCompatActivity {
                         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ListStopPointActivity.this);
                         bottomSheetDialog.setContentView(dialogView);
                         Button Rating =dialogView.findViewById(R.id.PoliceBtn);
-                        Button Update=dialogView.findViewById(R.id.ProblemBtn);
+                        Button Update=dialogView.findViewById(R.id.MessageBtn);
                         Button Delete=dialogView.findViewById(R.id.LimitSpeedBtn);
                         Rating.setText("Rating and reviews");
                         Update.setText("Update stop point");
