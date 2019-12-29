@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         Intent intent=getIntent();
         String flag=intent.getStringExtra("fragment");
+        list=new ArrayList<>();
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
+        list.add(R.id.action_list_tour);
         if(flag!=null)
             switch (flag)
             {
@@ -71,12 +75,18 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case "Notification":
                     fragment=notification;
+                    bottomNavigationView.setSelectedItemId(R.id.action_notifications);
+                    list.add(R.id.action_notifications);
                     break;
                 case "Setting":
                     fragment=setting;
+                    bottomNavigationView.setSelectedItemId(R.id.action_setting);
+                    list.add(R.id.action_setting);
                     break;
                 case "Map":
                     fragment=mapFragment;
+                    bottomNavigationView.setSelectedItemId(R.id.action_map);
+                    list.add(R.id.action_map);
                     break;
                 default :
                     fragment=listTour;
@@ -104,10 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void addActionBottomNavigationView() {
-        list=new ArrayList<>();
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.action_list_tour);
-        list.add(R.id.action_list_tour);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

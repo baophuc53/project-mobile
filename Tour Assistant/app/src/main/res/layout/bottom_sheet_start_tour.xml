@@ -24,21 +24,21 @@
            android:text="Police Position"
            android:textColor="#fff" />
        <Button
-           android:id="@+id/ProblemBtn"
+           android:id="@+id/MessageBtn"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_marginTop="10dp"
            android:layout_below="@id/PoliceBtn"
            android:background="#000"
            android:foreground="?attr/selectableItemBackground"
-           android:text="Problem on road"
+           android:text="Send Message"
            android:textColor="#fff" />
        <Button
            android:id="@+id/LimitSpeedBtn"
            android:layout_width="match_parent"
            android:layout_marginTop="10dp"
            android:layout_height="wrap_content"
-           android:layout_below="@id/ProblemBtn"
+           android:layout_below="@id/MessageBtn"
            android:background="#000"
            android:foreground="?attr/selectableItemBackground"
            android:text="Limit speed sign"

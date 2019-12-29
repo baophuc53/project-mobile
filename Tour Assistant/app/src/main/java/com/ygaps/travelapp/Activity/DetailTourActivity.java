@@ -34,6 +34,7 @@ import com.ygaps.travelapp.model.SendCmtRequest;
 import com.ygaps.travelapp.model.StopPointResponse;
 import com.ygaps.travelapp.model.TourInfoRequest;
 import com.ygaps.travelapp.model.TourInfoResponse;
+import com.ygaps.travelapp.model.UserMessageRequest;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -144,7 +145,21 @@ public class DetailTourActivity extends AppCompatActivity {
                 intent=new Intent(DetailTourActivity.this,StartTour.class);
                 SharedPreferences sharedPreferences=getSharedPreferences("Data",0);
                 String userId = sharedPreferences.getString("userId", "");
-                intent.putExtra("Tour", getIntent().getLongExtra("tourId", 0));
+                UserMessageRequest userMessageRequest=new UserMessageRequest(""+tourId,userId,"Tour "+nameTour.getText()+" bắt đầu");
+                UserService userService;
+                userService=MyAPIClient.getInstance().getAdapter().create(UserService.class);
+                userService.sendMessage(userMessageRequest, new Callback<DefaultResponse>() {
+                    @Override
+                    public void success(DefaultResponse defaultResponse, Response response) {
+                        Toast.makeText(DetailTourActivity.this,"Chuyến đi bắt đầu",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(DetailTourActivity.this,"Lỗi thông báo các thành viên khác",Toast.LENGTH_LONG).show();
+                    }
+                });
+                intent.putExtra("Tour", tourId);
                 intent.putExtra("userId", userId);
                 if (stopPointList.size()>0)
                     intent.putExtra("StopPointList", (Serializable) stopPointList);
