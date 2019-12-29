@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_stop_point_dialog"
+    android:minWidth="320dp"
+    android:minHeight="500dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:focusable="false"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/update_point"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Stop point infomation"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/cancel_update_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_round"
+                    android:backgroundTint="@android:color/darker_gray"
+                    android:src="@drawable/ic_clear_24px"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/update_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Name" />
+
+                <EditText
+                    android:id="@+id/edit_update_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_radius_edittext"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/update_service_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Service type" />
+
+                <Spinner
+                    android:id="@+id/edit_update_service_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_radius_edittext" />
+
+                <TextView
+                    android:id="@+id/update_arrive_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Arrive at" />
+
+                <LinearLayout
+                    android:id="@+id/edit_update_arrive_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edit_update_arrive_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Time"
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp" />
+
+                    <EditText
+                        android:id="@+id/edit_update_arrive_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/create_tour_Date_hint"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp" />
+
+                    <ImageView
+                        android:id="@+id/arrive_at_img"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/ic_icons8_calendar" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/update_leave_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Leave at" />
+
+                <LinearLayout
+                    android:id="@+id/edit_update_leave_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edit_update_leave_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_weight="3"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="Time"
+                        android:inputType="none"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp" />
+
+                    <EditText
+                        android:id="@+id/edit_update_leave_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/bg_edittext"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/create_tour_Date_hint"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp" />
+
+                    <ImageView
+                        android:id="@+id/leave_at_img"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/ic_icons8_calendar" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/update_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Address" />
+
+                <TextView
+                    android:id="@+id/edit_update_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/bg_radius_edittext"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Cao Lỗ"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/update_min_cost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="Min Cost" />
+
+                        <EditText
+                            android:id="@+id/edit_update_min_cost"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/bg_radius_edittext"
+                            android:inputType="number"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/update_max_cost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="Max Cost" />
+
+                        <EditText
+                            android:id="@+id/edit_update_max_cost"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/bg_radius_edittext"
+                            android:inputType="number"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/update_stopPointBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_button"
+                    android:text="Update"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
