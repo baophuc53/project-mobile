@@ -139,8 +139,8 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
             public void run() {
                 try{
                     final ListReviewOfTourRequest getNotiRequest=new ListReviewOfTourRequest();
-                    getNotiRequest.setPageIndex(Constants.ROW_PER_PAGE);
-                    getNotiRequest.setPageSize(Constants.PAGE_NUM);
+                    getNotiRequest.setPageIndex(Constants.PAGE_NUM);
+                    getNotiRequest.setPageSize(Constants.ROW_PER_PAGE);
                     getNotiRequest.setTourId(tourId);
 
 
@@ -149,40 +149,44 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                             getNotiRequest.getPageSize(), new Callback<GetNotiResponse>() {
                                 @Override
                                 public void success(GetNotiResponse getNotiResponses, Response response) {
-                                    if(getNotiResponses.getNotifications()!=null)
-                                    for (Noti notification:getNotiResponses.getNotifications())
-                                    {
-                                        MarkerOptions markerOptions=new MarkerOptions()
-                                                .position(new LatLng(notification.getLat(),notification.getLong()))
-                                                .anchor(0.5f, 0.5f);
-                                        String title="",snippet="";
-                                        float icon=0;
-                                        switch(notification.getNotificationType())
-                                        {
-                                            case 1:
-                                                title="Police";
-                                                snippet="";
-                                                icon= BitmapDescriptorFactory.HUE_YELLOW;
-                                                break;
-                                            case 2:
-                                                title="Message";
-                                                snippet=notification.getNote();
-                                                icon=BitmapDescriptorFactory.HUE_BLUE;
-                                                break;
-                                            case 3:
-                                                title="Limit Speed";
-                                                snippet=notification.getSpeed().toString();
-                                                icon=BitmapDescriptorFactory.HUE_RED;
-                                                break;
+                                    if (getNotiResponses.getNotifications() != null)
+                                        for (Noti notification : getNotiResponses.getNotifications()) {
+                                            try {
+                                                MarkerOptions markerOptions = new MarkerOptions()
+                                                        .position(new LatLng(notification.getLat(), notification.getLong()))
+                                                        .anchor(0.5f, 0.5f);
+                                                String title = "", snippet = "";
+                                                float icon = 0;
+                                                if (notification.getNotificationType() != null)
+                                                    switch (notification.getNotificationType()) {
+                                                        case 1:
+                                                            title = "Police";
+                                                            snippet = "";
+                                                            icon = BitmapDescriptorFactory.HUE_YELLOW;
+                                                            break;
+                                                        case 2:
+                                                            title = "Message";
+                                                            snippet = notification.getNote();
+                                                            icon = BitmapDescriptorFactory.HUE_BLUE;
+                                                            break;
+                                                        case 3:
+                                                            title = "Limit Speed";
+                                                            if (notification.getSpeed() != null)
+                                                                snippet = notification.getSpeed().toString();
+                                                            else throw new Exception("Tốc độ sai");
+                                                            icon = BitmapDescriptorFactory.HUE_RED;
+                                                            break;
+                                                    }
+
+                                                markerOptions.title(title);
+                                                markerOptions.snippet(snippet);
+                                                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(icon));
+                                                mMap.addMarker(markerOptions);
+                                            } catch (Exception e) {
+                                                Log.e("Error", "Error", e);
+                                            }
                                         }
-
-                                        markerOptions.title(title);
-                                        markerOptions.snippet(snippet);
-                                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(icon));
-                                        mMap.addMarker(markerOptions);
-                                    }
                                 }
-
                                 @Override
                                 public void failure(RetrofitError error) {
                                     Toast.makeText(StartTour.this,"Có vấn đề khi lấy thông báo",Toast.LENGTH_LONG).show();
