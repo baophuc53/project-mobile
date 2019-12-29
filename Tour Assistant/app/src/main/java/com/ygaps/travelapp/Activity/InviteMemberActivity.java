@@ -145,7 +145,7 @@ public class InviteMemberActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }

@@ -89,7 +89,7 @@ public class ListStopPointActivity extends AppCompatActivity {
                 intent.putExtra("tourId", id);
                 startActivity(intent);
                 return true;
-            case R.id.home:
+            case android.R.id.home:
                 finish();
                 return true;
         }
