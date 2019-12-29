@@ -270,7 +270,6 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                 Button Police=dialogView.findViewById(R.id.PoliceBtn);
                 Button Problem=dialogView.findViewById(R.id.ProblemBtn);
                 Button LimitSpeed=dialogView.findViewById(R.id.LimitSpeedBtn);
-
                 Police.setOnClickListener(new View.OnClickListener() {
                     @SuppressLint("SetTextI18n")
                     @Override
