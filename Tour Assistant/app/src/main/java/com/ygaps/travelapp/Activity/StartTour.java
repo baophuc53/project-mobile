@@ -48,6 +48,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.ygaps.travelapp.Api.MyAPIClient;
 import com.ygaps.travelapp.Api.UserService;
 import com.ygaps.travelapp.Object.CoordMember;
+import com.ygaps.travelapp.Object.Member;
 import com.ygaps.travelapp.Object.Noti;
 import com.ygaps.travelapp.Object.StopPoint;
 import com.ygaps.travelapp.model.DefaultResponse;
@@ -88,6 +89,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
     Handler GPS_Handler = new Handler();
     Runnable GPS_Runnable = null;
     List<StopPoint> stopPointList = new ArrayList<>();
+    List<Member> memberList = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
     List<Marker> userMarkers = new ArrayList<>();
     ImageButton recordButton;
@@ -117,6 +119,7 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
         tourId=intent.getLongExtra("Tour",0);
         userId=intent.getStringExtra("userId");
         stopPointList = (List<StopPoint>) intent.getSerializableExtra("StopPointList");
+        memberList = (List<Member>) intent.getSerializableExtra("MemberList");
         addEvent();
         runThread();
     }
@@ -512,8 +515,15 @@ public class StartTour extends FragmentActivity implements OnMapReadyCallback {
                                     for (CoordMember p : coordMembers) {
                                         if (!p.getId().equals(userId)) {
                                             LatLng latLng = new LatLng(p.getLat(), p.getLong());
-                                            userMarkers.add(mMap.addMarker(new MarkerOptions().position(latLng)
-                                            .title(p.getId()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))));
+                                            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng)
+                                                    .title(p.getId()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                                            for (Member b: memberList) {
+                                                if (p.getId().equals(String.valueOf(b.getId()))){
+                                                    marker.setTitle(b.getName());
+                                                    marker.setSnippet(b.getPhone());
+                                                }
+                                            }
+                                            userMarkers.add(marker);
                                         }
                                     }
                                 }
